@@ -62,7 +62,7 @@ if (isset($_SESSION['saeTClientV2'])) {
 			<div class="span4">
 				<div>
 					<p>
-						批量小助手是一款非常好用的微博应用。能帮助您管理好友关系，让您的粉丝涨！涨！涨！
+						批量小助手是一款非常好用的微博应用。使用批量小助手，帮您轻松玩转微博。
 					</p>
 				</div>
 				<div style="margin-top: 20px;">
