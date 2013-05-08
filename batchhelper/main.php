@@ -293,6 +293,14 @@ $user_message = $c->show_user_by_id($uid);
 				</div>
 			</div>
 		</div>
+		<div class="row">
+			<div class="span12">
+				<div style="margin: 10px 0px; text-align: center;">
+					意见反馈
+					<a href="http://weibo.com/u/3436273750" target="_blank">@批量小助手</a>
+				</div>
+			</div>
+		</div>
 	</div>
 </body>
 </html>
