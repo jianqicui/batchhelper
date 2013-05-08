@@ -119,7 +119,7 @@ $(document).ready(function() {
 
 function getRateLimit() {
 	$.ajax({
-		async : false, 
+		async : true, 
 		type: "GET", 
 		dataType: "json", 
 		url: 'action.php', 
@@ -771,14 +771,15 @@ function addFriendships(friendshipsType, users) {
 }
 
 function loadMyFriends() {
-	$('#myFriendsStatusProgressDiv').attr('class', 'alert alert-info').text('加载中，请稍候...');
-
 	$.ajax({
-		async : false, 
+		async : true, 
 		type: "GET", 
 		dataType: "json", 
 		url: 'action.php', 
-		data: {'action' : 'queryFriends', 'userId' : uid, 'cursor' : myFriendsCursor, 'count' : 100}, 
+		data: {'action' : 'queryFriends', 'userId' : uid, 'cursor' : myFriendsCursor, 'count' : 100},
+		beforeSend: function() {
+			$('#myFriendsStatusProgressDiv').attr('class', 'alert alert-info').text('加载中，请稍候...');
+		},
 		success: function(data, textStatus) {
 			var users = data['users'];
 
@@ -807,14 +808,15 @@ function loadMyFriends() {
 }
 
 function loadMyFollowers() {
-	$('#myFollowersStatusProgressDiv').attr('class', 'alert alert-info').text('加载中，请稍候...');
-
 	$.ajax({
-		async : false, 
+		async : true, 
 		type: "GET", 
 		dataType: "json", 
 		url: 'action.php', 
 		data: {'action' : 'queryFollowers', 'userId' : uid, 'cursor' : myFollowersCursor, 'count' : 100}, 
+		beforeSend: function() {
+			$('#myFollowersStatusProgressDiv').attr('class', 'alert alert-info').text('加载中，请稍候...');
+		},
 		success: function(data, textStatus) {
 			var users = data['users'];
 
@@ -843,14 +845,15 @@ function loadMyFollowers() {
 }
 
 function loadOtherFriends() {
-	$('#otherFriendsStatusProgressDiv').attr('class', 'alert alert-info').text('加载中，请稍候...');
-
 	$.ajax({
-		async : false, 
+		async : true, 
 		type: "GET", 
 		dataType: "json", 
 		url: 'action.php', 
 		data: {'action' : 'queryFriends', 'userName' : otherFriendshipsMgntQueryName, 'cursor' : otherFriendsCursor, 'count' : 100}, 
+		beforeSend: function() {
+			$('#otherFriendsStatusProgressDiv').attr('class', 'alert alert-info').text('加载中，请稍候...');
+		},
 		success: function(data, textStatus) {
 			var users = data['users'];
 
@@ -879,14 +882,15 @@ function loadOtherFriends() {
 }
 
 function loadOtherFollowers() {
-	$('#otherFollowersStatusProgressDiv').attr('class', 'alert alert-info').text('加载中，请稍候...');
-
 	$.ajax({
-		async : false, 
+		async : true, 
 		type: "GET", 
 		dataType: "json", 
 		url: 'action.php', 
 		data: {'action' : 'queryFollowers', 'userName' : otherFriendshipsMgntQueryName, 'cursor' : otherFollowersCursor, 'count' : 100}, 
+		beforeSend: function() {
+			$('#otherFollowersStatusProgressDiv').attr('class', 'alert alert-info').text('加载中，请稍候...');
+		},
 		success: function(data, textStatus) {
 			var users = data['users'];
 
@@ -987,133 +991,129 @@ function getIntArrayFromStr(data) {
 }
 
 function destroyMyFriendsFriendships() {
-	$('#myFriendsStatusProgressDiv').attr('class', 'alert alert-info').text('取消关注中，请稍候...');
-	
-	var myFriendsDestroyedFriendshipsIds;
-	
 	// Destroy Friendships
 	$.ajax({
-		async : false, 
+		async : true, 
 		type: "POST", 
 		dataType: "text", 
 		url: 'action.php', 
 		data: {'action' : 'destroyFriendships', 'userIds' : myFriendsSelectedIds.join(',')}, 
+		beforeSend: function() {
+			$('#myFriendsStatusProgressDiv').attr('class', 'alert alert-info').text('取消关注中，请稍候...');
+		},
 		success: function(data, textStatus) {
-			myFriendsDestroyedFriendshipsIds = getIntArrayFromStr(data);
+			var myFriendsDestroyedFriendshipsIds = getIntArrayFromStr(data);
+			
+			// Deselect and Remove Selected Friendshipss
+			for (var i = 0; i < myFriendsDestroyedFriendshipsIds.length; i++) {
+				var userId = myFriendsDestroyedFriendshipsIds[i];
+				
+				clickMyFriend(userId, false);
+				removeFriendship('myFriends', userId);
+			}
+
+			// Show My Friends Destroyed Friendships Count
+			var myFriendsDestroyedFriendshipsCount = parseInt($('#myFriendsDestroyedFriendshipsCountSpan').text());
+			myFriendsDestroyedFriendshipsCount += myFriendsDestroyedFriendshipsIds.length;
+			$('#myFriendsDestroyedFriendshipsCountSpan').text(myFriendsDestroyedFriendshipsCount);
+			
+			$('#myFriendsStatusProgressDiv').attr('class', 'alert alert-info').text('取消关注完成。');
 		}
 	});
-
-	// Deselect and Remove Selected Friendshipss
-	for (var i = 0; i < myFriendsDestroyedFriendshipsIds.length; i++) {
-		var userId = myFriendsDestroyedFriendshipsIds[i];
-		
-		clickMyFriend(userId, false);
-		removeFriendship('myFriends', userId);
-	}
-
-	// Show My Friends Destroyed Friendships Count
-	var myFriendsDestroyedFriendshipsCount = parseInt($('#myFriendsDestroyedFriendshipsCountSpan').text());
-	myFriendsDestroyedFriendshipsCount += myFriendsDestroyedFriendshipsIds.length;
-	$('#myFriendsDestroyedFriendshipsCountSpan').text(myFriendsDestroyedFriendshipsCount);
-	
-	$('#myFriendsStatusProgressDiv').attr('class', 'alert alert-info').text('取消关注完成。');
 }
 
 function createMyFollowersFriendships() {
-	$('#myFollowersStatusProgressDiv').attr('class', 'alert alert-info').text('关注中，请稍候...');
-	
-	var myFollowersCreatedFriendshipsIds;
-	
 	// Create Friendships
 	$.ajax({
-		async : false, 
+		async : true, 
 		type: "POST", 
 		dataType: "text", 
 		url: 'action.php', 
 		data: {'action' : 'createFriendships', 'userIds' : myFollowersSelectedIds.join(',')}, 
+		beforeSend: function() {
+			$('#myFollowersStatusProgressDiv').attr('class', 'alert alert-info').text('关注中，请稍候...');
+		},
 		success: function(data, textStatus) {
-			myFollowersCreatedFriendshipsIds = getIntArrayFromStr(data);
+			var myFollowersCreatedFriendshipsIds = getIntArrayFromStr(data);
+			
+			// Deselect and Remove Selected Friendshipss
+			for (var i = 0; i < myFollowersCreatedFriendshipsIds.length; i++) {
+				var userId = myFollowersCreatedFriendshipsIds[i];
+				
+				clickMyFollower(userId, false);
+				removeFriendship('myFollowers', userId);
+			}
+
+			// Show My Followers Created Friendships Count
+			var myFollowersCreatedFriendshipsCount = parseInt($('#myFollowersCreatedFriendshipsCountSpan').text());
+			myFollowersCreatedFriendshipsCount += myFollowersCreatedFriendshipsIds.length;
+			$('#myFollowersCreatedFriendshipsCountSpan').text(myFollowersCreatedFriendshipsCount);
+			
+			$('#myFollowersStatusProgressDiv').attr('class', 'alert alert-info').text('关注完成。');
 		}
 	});
-
-	// Deselect and Remove Selected Friendshipss
-	for (var i = 0; i < myFollowersCreatedFriendshipsIds.length; i++) {
-		var userId = myFollowersCreatedFriendshipsIds[i];
-		
-		clickMyFollower(userId, false);
-		removeFriendship('myFollowers', userId);
-	}
-
-	// Show My Followers Created Friendships Count
-	var myFollowersCreatedFriendshipsCount = parseInt($('#myFollowersCreatedFriendshipsCountSpan').text());
-	myFollowersCreatedFriendshipsCount += myFollowersCreatedFriendshipsIds.length;
-	$('#myFollowersCreatedFriendshipsCountSpan').text(myFollowersCreatedFriendshipsCount);
-	
-	$('#myFollowersStatusProgressDiv').attr('class', 'alert alert-info').text('关注完成。');
 }
 
 function createOtherFriendsFriendships() {
-	$('#otherFriendsStatusProgressDiv').attr('class', 'alert alert-info').text('关注中，请稍候...');
-	
-	var otherFriendsCreatedFriendshipsIds;
-	
 	// Create Friendships
 	$.ajax({
-		async : false, 
+		async : true, 
 		type: "POST", 
 		dataType: "text", 
 		url: 'action.php', 
 		data: {'action' : 'createFriendships', 'userIds' : otherFriendsSelectedIds.join(',')}, 
+		beforeSend: function() {
+			$('#otherFriendsStatusProgressDiv').attr('class', 'alert alert-info').text('关注中，请稍候...');
+		},
 		success: function(data, textStatus) {
-			otherFriendsCreatedFriendshipsIds = getIntArrayFromStr(data);
+			var otherFriendsCreatedFriendshipsIds = getIntArrayFromStr(data);
+			
+			// Deselect and Remove Selected Friendshipss
+			for (var i = 0; i < otherFriendsCreatedFriendshipsIds.length; i++) {
+				var userId = otherFriendsCreatedFriendshipsIds[i];
+				
+				clickOtherFriend(userId, false);
+				removeFriendship('otherFriends', userId);
+			}
+
+			// Show Other Friends Created Friendships Count
+			var otherFriendsCreatedFriendshipsCount = parseInt($('#otherFriendsCreatedFriendshipsCountSpan').text());
+			otherFriendsCreatedFriendshipsCount += otherFriendsCreatedFriendshipsIds.length;
+			$('#otherFriendsCreatedFriendshipsCountSpan').text(otherFriendsCreatedFriendshipsCount);
+			
+			$('#otherFriendsStatusProgressDiv').attr('class', 'alert alert-info').text('关注完成。');
 		}
 	});
-
-	// Deselect and Remove Selected Friendshipss
-	for (var i = 0; i < otherFriendsCreatedFriendshipsIds.length; i++) {
-		var userId = otherFriendsCreatedFriendshipsIds[i];
-		
-		clickOtherFriend(userId, false);
-		removeFriendship('otherFriends', userId);
-	}
-
-	// Show Other Friends Created Friendships Count
-	var otherFriendsCreatedFriendshipsCount = parseInt($('#otherFriendsCreatedFriendshipsCountSpan').text());
-	otherFriendsCreatedFriendshipsCount += otherFriendsCreatedFriendshipsIds.length;
-	$('#otherFriendsCreatedFriendshipsCountSpan').text(otherFriendsCreatedFriendshipsCount);
-	
-	$('#otherFriendsStatusProgressDiv').attr('class', 'alert alert-info').text('关注完成。');
 }
 
 function createOtherFollowersFriendships() {
-	$('#otherFollowersStatusProgressDiv').attr('class', 'alert alert-info').text('关注中，请稍候...');
-	
-	var otherFollowersCreatedFriendshipsIds;
-	
 	// Create Friendships
 	$.ajax({
-		async : false, 
+		async : true, 
 		type: "POST", 
 		dataType: "text", 
 		url: 'action.php', 
 		data: {'action' : 'createFriendships', 'userIds' : otherFollowersSelectedIds.join(',')}, 
+		beforeSend: function() {
+			$('#otherFollowersStatusProgressDiv').attr('class', 'alert alert-info').text('关注中，请稍候...');
+		},
 		success: function(data, textStatus) {
-			otherFollowersCreatedFriendshipsIds = getIntArrayFromStr(data);
+			var otherFollowersCreatedFriendshipsIds = getIntArrayFromStr(data);
+			
+			// Deselect and Remove Selected Friendshipss
+			for (var i = 0; i < otherFollowersCreatedFriendshipsIds.length; i++) {
+				var userId = otherFollowersCreatedFriendshipsIds[i];
+				
+				clickOtherFollower(userId, false);
+				removeFriendship('otherFollowers', userId);
+			}
+
+			// Show Other Followers Created Friendships Count
+			var otherFollowersCreatedFriendshipsCount = parseInt($('#otherFollowersCreatedFriendshipsCountSpan').text());
+			otherFollowersCreatedFriendshipsCount += otherFollowersCreatedFriendshipsIds.length;
+			$('#otherFollowersCreatedFriendshipsCountSpan').text(otherFollowersCreatedFriendshipsCount);
+			
+			$('#otherFollowersStatusProgressDiv').attr('class', 'alert alert-info').text('关注完成。');
 		}
 	});
-
-	// Deselect and Remove Selected Friendshipss
-	for (var i = 0; i < otherFollowersCreatedFriendshipsIds.length; i++) {
-		var userId = otherFollowersCreatedFriendshipsIds[i];
-		
-		clickOtherFollower(userId, false);
-		removeFriendship('otherFollowers', userId);
-	}
-
-	// Show Other Followers Created Friendships Count
-	var otherFollowersCreatedFriendshipsCount = parseInt($('#otherFollowersCreatedFriendshipsCountSpan').text());
-	otherFollowersCreatedFriendshipsCount += otherFollowersCreatedFriendshipsIds.length;
-	$('#otherFollowersCreatedFriendshipsCountSpan').text(otherFollowersCreatedFriendshipsCount);
-	
-	$('#otherFollowersStatusProgressDiv').attr('class', 'alert alert-info').text('关注完成。');
 }
