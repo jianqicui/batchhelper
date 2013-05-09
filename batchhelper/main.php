@@ -108,7 +108,7 @@ $user_message = $c->show_user_by_id($uid);
 					</div>
 				</div>
 			</div>
-			<div class="span4">
+			<div id="friendshipsMgntStatusAndOperationDiv" class="span4">
 				<div>
 					<h3 style="color: #3A87AD">状态</h3>
 				
