@@ -119,7 +119,7 @@ $(document).ready(function() {
 
 function getRateLimit() {
 	$.ajax({
-		async : true, 
+		async : false, 
 		type: "GET", 
 		dataType: "json", 
 		url: 'action.php', 
