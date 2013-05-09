@@ -67,7 +67,7 @@
 	<target name="replace" depends="compress">
 		<replace dir="${target}" includes="*.php" encoding="${charset}">
 			<replacefilter token="batchhelper.friendshipsmgnt.js" value="batchhelper.friendshipsmgnt.min.js" />
-			<replacefilter token="http://localhost/batchhelper/index.php" value="http://localhost/batchhelper-sae/index.php" />
+			<replacefilter token="http://localhost/batchhelper/index.php" value="http://batchhelper.sinaapp.com/" />
 		</replace>
 	</target>
 
