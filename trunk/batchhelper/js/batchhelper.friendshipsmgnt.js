@@ -115,6 +115,19 @@ $(document).ready(function() {
 	getRateLimit();
 	
 	setInterval('getRateLimit()', 1000 * 60 * 5);
+	
+	//Fix Friendships Management Status And Operation Div
+	var offset = $('#friendshipsMgntStatusAndOperationDiv').offset();
+	
+    $(window).scroll(function() {
+        var scrollTop = $(window).scrollTop();
+        
+        if (offset.top < scrollTop) {
+        	$("#friendshipsMgntStatusAndOperationDiv").attr('style', 'position: fixed; top: 0px; left: 862px;');
+        } else {
+        	$("#friendshipsMgntStatusAndOperationDiv").removeAttr('style');
+        }
+    });
 });
 
 function getRateLimit() {
