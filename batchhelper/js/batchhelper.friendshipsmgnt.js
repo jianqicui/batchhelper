@@ -167,15 +167,15 @@ function getRateLimit() {
 			$('#hourlyUserHitsLimitSpan').text('');
 
 			$('#resetDateTimeSpan').text('');
-			}
-		});
-	}
+		}
+	});
+}
 	
-	function trim(str) {
-　　  	return str.replace(/(^\s*)|(\s*$)/g, '');
-　　 }
+function trim(str) {
+　　  return str.replace(/(^\s*)|(\s*$)/g, '');
+}
 	
-	function addCookieArray(name, value) {
+function addCookieArray(name, value) {
 		var values = $.cookie(name);
 
 		if (values != null) {
