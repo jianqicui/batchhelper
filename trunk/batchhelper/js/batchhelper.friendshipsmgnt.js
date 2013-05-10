@@ -115,19 +115,6 @@ $(document).ready(function() {
 	getRateLimit();
 	
 	setInterval('getRateLimit()', 1000 * 60 * 5);
-	
-	//Fix Friendships Management Status And Operation Div
-	var offset = $('#friendshipsMgntStatusAndOperationDiv').offset();
-	
-    $(window).scroll(function() {
-        var scrollTop = $(window).scrollTop();
-        
-        if (offset.top < scrollTop) {
-        	$("#friendshipsMgntStatusAndOperationDiv").attr('style', 'position: fixed; top: 0px; left: 862px;');
-        } else {
-        	$("#friendshipsMgntStatusAndOperationDiv").removeAttr('style');
-        }
-    });
 });
 
 function getRateLimit() {
@@ -270,18 +257,12 @@ function changeFriendshipsMgntTab(friendshipsMgntTabId) {
         // My Friends Management Tab
     	$('#myFriendsMgntTab').tab('show');
 
-        // Friendships Div
-    	$('#myFriendsDiv').show();
-    	$('#myFollowersDiv').hide();
-    	$('#otherFriendsDiv').hide();
-    	$('#otherFollowersDiv').hide();
-
-    	// Friendships Load Button
-    	$('#myFriendsLoadButtonDiv').show();
-    	$('#myFollowersLoadButtonDiv').hide();
-    	$('#otherFriendsLoadButtonDiv').hide();
-    	$('#otherFollowersLoadButtonDiv').hide();
-
+    	//Friendships Content Div
+    	$('#myFriendsContentDiv').show();
+    	$('#myFollowersContentDiv').hide();
+    	$('#otherFriendsContentDiv').hide();
+    	$('#otherFollowersContentDiv').hide();
+    	
         // Friendships Status Progress and Result Div
     	$('#myFriendsStatusProgressDiv').show();
     	$('#myFriendsStatusResultDiv').show();
@@ -317,17 +298,11 @@ function changeFriendshipsMgntTab(friendshipsMgntTabId) {
 		// My Followers Management Tab
 		$('#myFollowersMgntTab').tab('show');
 
-		// Friendships Div
-    	$('#myFriendsDiv').hide();
-    	$('#myFollowersDiv').show();
-    	$('#otherFriendsDiv').hide();
-    	$('#otherFollowersDiv').hide();
-
-    	// Friendships Load Button
-    	$('#myFriendsLoadButtonDiv').hide();
-    	$('#myFollowersLoadButtonDiv').show();
-    	$('#otherFriendsLoadButtonDiv').hide();
-    	$('#otherFollowersLoadButtonDiv').hide();
+    	//Friendships Content Div
+    	$('#myFriendsContentDiv').hide();
+    	$('#myFollowersContentDiv').show();
+    	$('#otherFriendsContentDiv').hide();
+    	$('#otherFollowersContentDiv').hide();
 
     	// Friendships Status Progress and Result Div
     	$('#myFriendsStatusProgressDiv').hide();
@@ -435,17 +410,11 @@ function saveOtherFriendshipsMgntInputNameModal() {
 			// Other Friends Management Tab
 			$('#otherFriendsMgntTab').tab('show');
 
-			// Friendships Div
-			$('#myFriendsDiv').hide();
-        	$('#myFollowersDiv').hide();
-        	$('#otherFriendsDiv').show();
-        	$('#otherFollowersDiv').hide();
-
-        	// Friendships Load Button
-        	$('#myFriendsLoadButtonDiv').hide();
-    		$('#myFollowersLoadButtonDiv').hide();
-    		$('#otherFriendsLoadButtonDiv').show();
-    		$('#otherFollowersLoadButtonDiv').hide();
+	    	//Friendships Content Div
+	    	$('#myFriendsContentDiv').hide();
+	    	$('#myFollowersContentDiv').hide();
+	    	$('#otherFriendsContentDiv').show();
+	    	$('#otherFollowersContentDiv').hide();
 
         	// Friendships Status Progress and Result Div
         	$('#myFriendsStatusProgressDiv').hide();
@@ -482,17 +451,11 @@ function saveOtherFriendshipsMgntInputNameModal() {
 			// Other Followers Management Tab
 			$('#otherFollowersMgntTab').tab('show');
 
-			// Friendships Div
-			$('#myFriendsDiv').hide();
-        	$('#myFollowersDiv').hide();
-        	$('#otherFriendsDiv').hide();
-        	$('#otherFollowersDiv').show();
-
-        	// Friendships Load Button
-        	$('#myFriendsLoadButtonDiv').hide();
-    		$('#myFollowersLoadButtonDiv').hide();
-    		$('#otherFriendsLoadButtonDiv').hide();
-    		$('#otherFollowersLoadButtonDiv').show();
+	    	//Friendships Content Div
+	    	$('#myFriendsContentDiv').hide();
+	    	$('#myFollowersContentDiv').hide();
+	    	$('#otherFriendsContentDiv').hide();
+	    	$('#otherFollowersContentDiv').show();
 
         	// Friendships Status Progress and Result Div
         	$('#myFriendsStatusProgressDiv').hide();
@@ -792,6 +755,8 @@ function loadMyFriends() {
 		data: {'action' : 'queryFriends', 'userId' : uid, 'cursor' : myFriendsCursor, 'count' : 100},
 		beforeSend: function() {
 			$('#myFriendsStatusProgressDiv').attr('class', 'alert alert-info').text('加载中，请稍候...');
+			
+			$('#myFriendsLoadButton').attr('class', 'btn btn-info btn-large disabled').attr('disabled', 'disabled');
 		},
 		success: function(data, textStatus) {
 			var users = data['users'];
@@ -807,14 +772,17 @@ function loadMyFriends() {
 			
 			// Add My Friends
 			addFriendships('myFriends', users);
+			$('#myFriendsContentDiv').scrollTop($('#myFriendsContentDiv')[0].scrollHeight);
 
-			if (nextCursor == 0) {
-				$('#myFriendsLoadButton').attr('class', 'btn btn-info btn-large disabled').attr('disabled', 'disabled');
+			if (nextCursor != 0) {
+				$('#myFriendsLoadButton').attr('class', 'btn btn-info btn-large').removeAttr('disabled');
 			}
 
 			$('#myFriendsStatusProgressDiv').attr('class', 'alert alert-success').text('我的关注，加载成功。');
 		}, 
 		error : function(xmlHttpRequest, textStatus, errorThrown) {
+			$('#myFriendsLoadButton').attr('class', 'btn btn-info btn-large').removeAttr('disabled');
+			
 			$('#myFriendsStatusProgressDiv').attr('class', 'alert alert-error').text('我的关注，加载失败。');
 		}
 	});
@@ -829,6 +797,8 @@ function loadMyFollowers() {
 		data: {'action' : 'queryFollowers', 'userId' : uid, 'cursor' : myFollowersCursor, 'count' : 100}, 
 		beforeSend: function() {
 			$('#myFollowersStatusProgressDiv').attr('class', 'alert alert-info').text('加载中，请稍候...');
+			
+			$('#myFollowersLoadButton').attr('class', 'btn btn-info btn-large disabled').attr('disabled', 'disabled');
 		},
 		success: function(data, textStatus) {
 			var users = data['users'];
@@ -844,14 +814,17 @@ function loadMyFollowers() {
 			
 			// Add My Followers
 			addFriendships('myFollowers', users);
+			$('#myFollowersContentDiv').scrollTop($('#myFollowersContentDiv')[0].scrollHeight);
 
-			if (nextCursor == 0) {
-				$('#myFollowersLoadButton').attr('class', 'btn btn-info btn-large disabled').attr('disabled', 'disabled');
+			if (nextCursor != 0) {
+				$('#myFollowersLoadButton').attr('class', 'btn btn-info btn-large').removeAttr('disabled');
 			}
 
 			$('#myFollowersStatusProgressDiv').attr('class', 'alert alert-success').text('我的粉丝，加载成功。');
 		}, 
 		error : function(xmlHttpRequest, textStatus, errorThrown) {
+			$('#myFollowersLoadButton').attr('class', 'btn btn-info btn-large').removeAttr('disabled');
+			
 			$('#myFollowersStatusProgressDiv').attr('class', 'alert alert-error').text('我的粉丝，加载失败。');
 		}
 	});
@@ -866,6 +839,8 @@ function loadOtherFriends() {
 		data: {'action' : 'queryFriends', 'userName' : otherFriendshipsMgntQueryName, 'cursor' : otherFriendsCursor, 'count' : 100}, 
 		beforeSend: function() {
 			$('#otherFriendsStatusProgressDiv').attr('class', 'alert alert-info').text('加载中，请稍候...');
+			
+			$('#otherFriendsLoadButton').attr('class', 'btn btn-info btn-large disabled').attr('disabled', 'disabled');
 		},
 		success: function(data, textStatus) {
 			var users = data['users'];
@@ -881,14 +856,17 @@ function loadOtherFriends() {
 
 			// Add Other Friends
 			addFriendships('otherFriends', users);
+			$('#otherFriendsContentDiv').scrollTop($('#otherFriendsContentDiv')[0].scrollHeight);
 
-			if (nextCursor == 0) {
-				$('#otherFriendsLoadButton').attr('class', 'btn btn-info btn-large disabled').attr('disabled', 'disabled');
+			if (nextCursor != 0) {
+				$('#otherFriendsLoadButton').attr('class', 'btn btn-info btn-large').removeAttr('disabled');
 			}
 
 			$('#otherFriendsStatusProgressDiv').attr('class', 'alert alert-success').text('[' + otherFriendshipsMgntQueryName + ']的关注，加载成功。');
 		}, 
 		error : function(xmlHttpRequest, textStatus, errorThrown) {
+			$('#otherFriendsLoadButton').attr('class', 'btn btn-info btn-large').removeAttr('disabled');
+			
 			$('#otherFriendsStatusProgressDiv').attr('class', 'alert alert-error').text('[' + otherFriendshipsMgntQueryName + ']的关注，加载失败。');
 		}
 	});
@@ -903,6 +881,8 @@ function loadOtherFollowers() {
 		data: {'action' : 'queryFollowers', 'userName' : otherFriendshipsMgntQueryName, 'cursor' : otherFollowersCursor, 'count' : 100}, 
 		beforeSend: function() {
 			$('#otherFollowersStatusProgressDiv').attr('class', 'alert alert-info').text('加载中，请稍候...');
+			
+			$('#otherFollowersLoadButton').attr('class', 'btn btn-info btn-large disabled').attr('disabled', 'disabled');
 		},
 		success: function(data, textStatus) {
 			var users = data['users'];
@@ -918,14 +898,17 @@ function loadOtherFollowers() {
 			
 			// Add Other Followers
 			addFriendships('otherFollowers', users);
+			$('#otherFollowersContentDiv').scrollTop($('#otherFollowersContentDiv')[0].scrollHeight);
 
-			if (nextCursor == 0) {
-				$('#otherFollowersLoadButton').attr('class', 'btn btn-info btn-large disabled').attr('disabled', 'disabled');
+			if (nextCursor != 0) {
+				$('#otherFollowersLoadButton').attr('class', 'btn btn-info btn-large').removeAttr('disabled');
 			}
 
 			$('#otherFollowersStatusProgressDiv').attr('class', 'alert alert-success').text('[' + otherFriendshipsMgntQueryName + ']的粉丝，加载成功。');
 		}, 
 		error : function(xmlHttpRequest, textStatus, errorThrown) {
+			$('#otherFollowersLoadButton').attr('class', 'btn btn-info btn-large').removeAttr('disabled');
+			
 			$('#otherFollowersStatusProgressDiv').attr('class', 'alert alert-error').text('[' + otherFriendshipsMgntQueryName + ']的粉丝，加载失败。');
 		}
 	});
@@ -1013,6 +996,8 @@ function destroyMyFriendsFriendships() {
 		data: {'action' : 'destroyFriendships', 'userIds' : myFriendsSelectedIds.join(',')}, 
 		beforeSend: function() {
 			$('#myFriendsStatusProgressDiv').attr('class', 'alert alert-info').text('取消关注中，请稍候...');
+			
+			$('#myFriendsDestroyFriendshipsButton').attr('class', 'btn btn-primary btn-block disabled').attr('disabled', 'disabled');
 		},
 		success: function(data, textStatus) {
 			var myFriendsDestroyedFriendshipsIds = getIntArrayFromStr(data);
@@ -1030,6 +1015,8 @@ function destroyMyFriendsFriendships() {
 			myFriendsDestroyedFriendshipsCount += myFriendsDestroyedFriendshipsIds.length;
 			$('#myFriendsDestroyedFriendshipsCountSpan').text(myFriendsDestroyedFriendshipsCount);
 			
+			$('#myFriendsDestroyFriendshipsButton').attr('class', 'btn btn-primary btn-block').removeAttr('disabled');
+			
 			$('#myFriendsStatusProgressDiv').attr('class', 'alert alert-info').text('取消关注完成。');
 		}
 	});
@@ -1045,6 +1032,8 @@ function createMyFollowersFriendships() {
 		data: {'action' : 'createFriendships', 'userIds' : myFollowersSelectedIds.join(',')}, 
 		beforeSend: function() {
 			$('#myFollowersStatusProgressDiv').attr('class', 'alert alert-info').text('关注中，请稍候...');
+			
+			$('#myFollowersCreateFriendshipsButton').attr('class', 'btn btn-primary btn-block disabled').attr('disabled', 'disabled');
 		},
 		success: function(data, textStatus) {
 			var myFollowersCreatedFriendshipsIds = getIntArrayFromStr(data);
@@ -1062,6 +1051,8 @@ function createMyFollowersFriendships() {
 			myFollowersCreatedFriendshipsCount += myFollowersCreatedFriendshipsIds.length;
 			$('#myFollowersCreatedFriendshipsCountSpan').text(myFollowersCreatedFriendshipsCount);
 			
+			$('#myFollowersCreateFriendshipsButton').attr('class', 'btn btn-primary btn-block').removeAttr('disabled');
+			
 			$('#myFollowersStatusProgressDiv').attr('class', 'alert alert-info').text('关注完成。');
 		}
 	});
@@ -1077,6 +1068,8 @@ function createOtherFriendsFriendships() {
 		data: {'action' : 'createFriendships', 'userIds' : otherFriendsSelectedIds.join(',')}, 
 		beforeSend: function() {
 			$('#otherFriendsStatusProgressDiv').attr('class', 'alert alert-info').text('关注中，请稍候...');
+			
+			$('#otherFriendsCreateFriendshipsButton').attr('class', 'btn btn-primary btn-block disabled').attr('disabled', 'disabled');
 		},
 		success: function(data, textStatus) {
 			var otherFriendsCreatedFriendshipsIds = getIntArrayFromStr(data);
@@ -1094,6 +1087,8 @@ function createOtherFriendsFriendships() {
 			otherFriendsCreatedFriendshipsCount += otherFriendsCreatedFriendshipsIds.length;
 			$('#otherFriendsCreatedFriendshipsCountSpan').text(otherFriendsCreatedFriendshipsCount);
 			
+			$('#otherFriendsCreateFriendshipsButton').attr('class', 'btn btn-primary btn-block').removeAttr('disabled');
+			
 			$('#otherFriendsStatusProgressDiv').attr('class', 'alert alert-info').text('关注完成。');
 		}
 	});
@@ -1109,6 +1104,8 @@ function createOtherFollowersFriendships() {
 		data: {'action' : 'createFriendships', 'userIds' : otherFollowersSelectedIds.join(',')}, 
 		beforeSend: function() {
 			$('#otherFollowersStatusProgressDiv').attr('class', 'alert alert-info').text('关注中，请稍候...');
+			
+			$('#otherFollowersCreateFriendshipsButton').attr('class', 'btn btn-primary btn-block disabled').attr('disabled', 'disabled');
 		},
 		success: function(data, textStatus) {
 			var otherFollowersCreatedFriendshipsIds = getIntArrayFromStr(data);
@@ -1125,6 +1122,8 @@ function createOtherFollowersFriendships() {
 			var otherFollowersCreatedFriendshipsCount = parseInt($('#otherFollowersCreatedFriendshipsCountSpan').text());
 			otherFollowersCreatedFriendshipsCount += otherFollowersCreatedFriendshipsIds.length;
 			$('#otherFollowersCreatedFriendshipsCountSpan').text(otherFollowersCreatedFriendshipsCount);
+			
+			$('#otherFollowersCreateFriendshipsButton').attr('class', 'btn btn-primary btn-block').removeAttr('disabled');
 			
 			$('#otherFollowersStatusProgressDiv').attr('class', 'alert alert-info').text('关注完成。');
 		}

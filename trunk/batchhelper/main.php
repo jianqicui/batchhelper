@@ -15,7 +15,7 @@ if (isset($_SESSION['saeTClientV2'])) {
 }
 
 $uid_get = $c->get_uid();
-$uid = $uid_get['uid'];
+$uid = isset($uid_get['uid']) ? $uid_get['uid'] : NULL;
 $user_message = $c->show_user_by_id($uid);
 ?>
 
@@ -73,7 +73,7 @@ $user_message = $c->show_user_by_id($uid);
 			<div class="span4">
 				<p style="height: 36px; line-height: 36px;">
 					欢迎您，
-					<a title="我的微博首页" href="<?php echo ('http://weibo.com/' . $uid) ?>" target="_blank"><?php echo $user_message['screen_name'] ?></a>
+					<a title="我的微博首页" href="<?php echo ('http://weibo.com/' . $uid) ?>" target="_blank"><?php echo isset($user_message['screen_name']) ? $user_message['screen_name'] : '' ?></a>
 					 ! 
 					<a title="退出" href="logout.php">退出</a>
 				</p>
@@ -81,34 +81,44 @@ $user_message = $c->show_user_by_id($uid);
 		</div>
 		<div class="row">
 			<div class="span8">
-				<div style="background: #D9EDF7; padding: 5px 10px; min-height: 600px;">
+				<div id="myFriendsContentDiv" style="background: #D9EDF7; padding: 5px 10px; width: 618px; height: 600px; overflow-y: scroll;">
 					<div class="clearfix">
 						<div id="myFriendsDiv" ></div>
+					</div>
+					
+					<div style="margin: 5px 0px 10px 0px; text-align: center;">
+						<button id="myFriendsLoadButton" class="btn btn-info btn-large">加载100个</button>
+					</div>
+				</div>
+				<div id="myFollowersContentDiv" style="background: #D9EDF7; padding: 5px 10px; width: 618px; height: 600px; overflow-y: scroll;">
+					<div class="clearfix">
 						<div id="myFollowersDiv"></div>
+					</div>
+					
+					<div style="margin: 5px 0px 10px 0px; text-align: center;">
+						<button id="myFollowersLoadButton" class="btn btn-info btn-large">加载100个</button>
+					</div>
+				</div>
+				<div id="otherFriendsContentDiv" style="background: #D9EDF7; padding: 5px 10px; width: 618px; height: 600px; overflow-y: scroll;">
+					<div class="clearfix">
 						<div id="otherFriendsDiv"></div>
+					</div>
+					
+					<div style="margin: 5px 0px 10px 0px; text-align: center;">
+						<button id="otherFriendsLoadButton" class="btn btn-info btn-large">加载100个</button>
+					</div>
+				</div>
+				<div id="otherFollowersContentDiv" style="background: #D9EDF7; padding: 5px 10px; width: 618px; height: 600px; overflow-y: scroll;">
+					<div class="clearfix">
 						<div id="otherFollowersDiv"></div>
 					</div>
 					
-					<div style="margin: 5px 0px; text-align: center;">
-						<div id="myFriendsLoadButtonDiv">
-							<button id="myFriendsLoadButton" class="btn btn-info btn-large">加载100个</button>
-						</div>
-						
-						<div id="myFollowersLoadButtonDiv">
-							<button id="myFollowersLoadButton" class="btn btn-info btn-large">加载100个</button>
-						</div>
-						
-						<div id="otherFriendsLoadButtonDiv">
-							<button id="otherFriendsLoadButton" class="btn btn-info btn-large">加载100个</button>
-						</div>
-						
-						<div id="otherFollowersLoadButtonDiv">
-							<button id="otherFollowersLoadButton" class="btn btn-info btn-large">加载100个</button>
-						</div>
+					<div style="margin: 5px 0px 10px 0px; text-align: center;">
+						<button id="otherFollowersLoadButton" class="btn btn-info btn-large">加载100个</button>
 					</div>
 				</div>
 			</div>
-			<div id="friendshipsMgntStatusAndOperationDiv" class="span4">
+			<div class="span4">
 				<div>
 					<h3 style="color: #3A87AD">状态</h3>
 				
@@ -295,7 +305,7 @@ $user_message = $c->show_user_by_id($uid);
 		</div>
 		<div class="row">
 			<div class="span12">
-				<div style="margin: 10px 0px; text-align: center;">
+				<div style="margin: 20px 0px; text-align: center;">
 					意见反馈
 					<a href="http://weibo.com/u/3436273750" target="_blank">@批量小助手</a>
 				</div>
