@@ -9,15 +9,15 @@ var myFollowersCursor = 0;
 var otherFriendsCursor = 0;
 var otherFollowersCursor = 0;
 
-var myFriendsLoadedIds = new Array();
-var myFollowersLoadedIds = new Array();
-var otherFriendsLoadedIds = new Array();
-var otherFollowersLoadedIds = new Array();
+var myFriendsLoadedIds = [];
+var myFollowersLoadedIds = [];
+var otherFriendsLoadedIds = [];
+var otherFollowersLoadedIds = [];
 
-var myFriendsSelectedIds = new Array();
-var myFollowersSelectedIds = new Array();
-var otherFriendsSelectedIds = new Array();
-var otherFollowersSelectedIds = new Array();
+var myFriendsSelectedIds = [];
+var myFollowersSelectedIds = [];
+var otherFriendsSelectedIds = [];
+var otherFollowersSelectedIds = [];
 
 $(document).ready(function() {		
 	// Friendships Management Tabs
@@ -971,7 +971,7 @@ function deselectLoadedOtherFollowers() {
 }
 
 function getIntArrayFromStr(data) {
-	var intArray = new Array();
+	var intArray = [];
 	
 	var strArray = data.split(',');
 
