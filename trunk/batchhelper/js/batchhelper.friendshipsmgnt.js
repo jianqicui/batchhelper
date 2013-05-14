@@ -119,7 +119,7 @@ $(document).ready(function() {
 
 function getRateLimit() {
 	$.ajax({
-		async : false, 
+		async: false, 
 		type: "GET", 
 		dataType: "json", 
 		url: 'action.php', 
@@ -748,7 +748,7 @@ function addFriendships(friendshipsType, users) {
 
 function loadMyFriends() {
 	$.ajax({
-		async : true, 
+		async: true, 
 		type: "GET", 
 		dataType: "json", 
 		url: 'action.php', 
@@ -790,7 +790,7 @@ function loadMyFriends() {
 
 function loadMyFollowers() {
 	$.ajax({
-		async : true, 
+		async: true, 
 		type: "GET", 
 		dataType: "json", 
 		url: 'action.php', 
@@ -832,7 +832,7 @@ function loadMyFollowers() {
 
 function loadOtherFriends() {
 	$.ajax({
-		async : true, 
+		async: true, 
 		type: "GET", 
 		dataType: "json", 
 		url: 'action.php', 
@@ -874,7 +874,7 @@ function loadOtherFriends() {
 
 function loadOtherFollowers() {
 	$.ajax({
-		async : true, 
+		async: true, 
 		type: "GET", 
 		dataType: "json", 
 		url: 'action.php', 
@@ -989,7 +989,7 @@ function getIntArrayFromStr(data) {
 function destroyMyFriendsFriendships() {
 	// Destroy Friendships
 	$.ajax({
-		async : true, 
+		async: true, 
 		type: "POST", 
 		dataType: "text", 
 		url: 'action.php', 
@@ -1025,7 +1025,7 @@ function destroyMyFriendsFriendships() {
 function createMyFollowersFriendships() {
 	// Create Friendships
 	$.ajax({
-		async : true, 
+		async: true, 
 		type: "POST", 
 		dataType: "text", 
 		url: 'action.php', 
@@ -1061,7 +1061,7 @@ function createMyFollowersFriendships() {
 function createOtherFriendsFriendships() {
 	// Create Friendships
 	$.ajax({
-		async : true, 
+		async: true, 
 		type: "POST", 
 		dataType: "text", 
 		url: 'action.php', 
@@ -1097,7 +1097,7 @@ function createOtherFriendsFriendships() {
 function createOtherFollowersFriendships() {
 	// Create Friendships
 	$.ajax({
-		async : true, 
+		async: true, 
 		type: "POST", 
 		dataType: "text", 
 		url: 'action.php', 
