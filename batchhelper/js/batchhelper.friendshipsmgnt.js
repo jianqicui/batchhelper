@@ -736,11 +736,11 @@ function addFriendships(friendshipsType, users) {
 		var user = users[i];
 
 		var id = user['id'];
-		var name = user['screen_name'];
-		var friendsCount = user['friends_count'];
-		var followersCount = user['followers_count'];
-		var statusesCount = user['statuses_count'];
-		var profileImageUrl = user['profile_image_url'];
+		var name = user['screenName'];
+		var friendsCount = user['friendsCount'];
+		var followersCount = user['followersCount'];
+		var statusesCount = user['statusesCount'];
+		var profileImageUrl = user['profileImageUrl'];
 
 		addFriendship(friendshipsType, id, name, friendsCount, followersCount, statusesCount, profileImageUrl);
 	}
@@ -761,8 +761,8 @@ function loadMyFriends() {
 		success: function(data, textStatus) {
 			var users = data['users'];
 
-			var nextCursor = data['next_cursor'];
-			var total = data['total_number'];
+			var nextCursor = data['nextCursor'];
+			var total = data['totalNumber'];
 			
 			// Update My Friends Cursor
 			myFriendsCursor = nextCursor;
@@ -803,8 +803,8 @@ function loadMyFollowers() {
 		success: function(data, textStatus) {
 			var users = data['users'];
 
-			var nextCursor = data['next_cursor'];
-			var total = data['total_number'];
+			var nextCursor = data['nextCursor'];
+			var total = data['totalNumber'];
 
 			// Update My Followers Cursor
 			myFollowersCursor = nextCursor;
@@ -845,8 +845,8 @@ function loadOtherFriends() {
 		success: function(data, textStatus) {
 			var users = data['users'];
 
-			var nextCursor = data['next_cursor'];
-			var total = data['total_number'];
+			var nextCursor = data['nextCursor'];
+			var total = data['totalNumber'];
 
 			// Update Other Friends Cursor
 			otherFriendsCursor = nextCursor;
@@ -887,8 +887,8 @@ function loadOtherFollowers() {
 		success: function(data, textStatus) {
 			var users = data['users'];
 
-			var nextCursor = data['next_cursor'];
-			var total = data['total_number'];
+			var nextCursor = data['nextCursor'];
+			var total = data['totalNumber'];
 
 			// Update Other Followers Cursor
 			otherFollowersCursor = nextCursor;
