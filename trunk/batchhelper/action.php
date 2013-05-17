@@ -159,17 +159,17 @@ function convertFriendshipsToJson($response) {
 
 		$users[$i] = array(
 				'id' => $id,
-				'screen_name' => $screenName,
-				'friends_count' => $friendsCount,
-				'followers_count' => $followersCount,
-				'statuses_count' => $statusesCount,
-				'profile_image_url' => $profileImageUrl,
+				'screenName' => $screenName,
+				'friendsCount' => $friendsCount,
+				'followersCount' => $followersCount,
+				'statusesCount' => $statusesCount,
+				'profileImageUrl' => $profileImageUrl,
 		);
 	}
 
 	return json_encode(array(
-			'next_cursor' => $nextCursor,
-			'total_number' => $totalNumber,
+			'nextCursor' => $nextCursor,
+			'totalNumber' => $totalNumber,
 			'users' => $users,
 	));
 }
