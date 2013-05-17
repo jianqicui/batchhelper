@@ -20,37 +20,28 @@ if ('getRateLimit' == $action) {
 
 	echo json_encode($response);
 } else if ('queryFriends' == $action || 'queryFollowers' == $action) {
-	$rateLimit = getRateLimit($c);
+	$userId = NULL;
 
-	$remainingHourlyUserHitsLimit = $rateLimit['remainingHourlyUserHitsLimit'];
-	$remainingHourlyIpHitsLimit = $rateLimit['remainingHourlyIpHitsLimit'];
-
-	$minLimit = minIntValue(array($remainingHourlyUserHitsLimit, $remainingHourlyIpHitsLimit));
-
-	if ($minLimit >= 1) {
-		$userId = NULL;
-
-		if (isset($_REQUEST['userId'])) {
-			$userId = $_REQUEST['userId'];
-		}
-
-		$userName = NULL;
-
-		if (isset($_REQUEST['userName'])) {
-			$userName = $_REQUEST['userName'];
-		}
-
-		$cursor = $_REQUEST['cursor'];
-		$count = $_REQUEST['count'];
-
-		if ('queryFriends' == $action) {
-			$response = queryFriends($c, $userId, $userName, $cursor, $count);
-		} else if ('queryFollowers' == $action) {
-			$response = queryFollowers($c, $userId, $userName, $cursor, $count);
-		}
-
-		echo $response;
+	if (isset($_REQUEST['userId'])) {
+		$userId = $_REQUEST['userId'];
 	}
+
+	$userName = NULL;
+
+	if (isset($_REQUEST['userName'])) {
+		$userName = $_REQUEST['userName'];
+	}
+
+	$cursor = $_REQUEST['cursor'];
+	$count = $_REQUEST['count'];
+
+	if ('queryFriends' == $action) {
+		$response = queryFriends($c, $userId, $userName, $cursor, $count);
+	} else if ('queryFollowers' == $action) {
+		$response = queryFollowers($c, $userId, $userName, $cursor, $count);
+	}
+
+	echo $response;
 } else if ('destroyFriendships' == $action) {
 	$userIds = explode(',', $_REQUEST['userIds']);
 
@@ -150,34 +141,63 @@ function getRateLimit($c) {
 	return $rateLimit;
 }
 
-//Query Friends
-function queryFriends($c, $userId, $userName, $cursor, $count) {
-	$params = array();
-	$params['cursor'] = $cursor;
-	$params['count'] = $count;
+function convertFriendshipsToJson($response) {
+	$nextCursor = $response['next_cursor'];
+	$totalNumber = $response['total_number'];
 
-	if (isset($userId)) {
-		$params['uid'] = $userId;
-	} else if (isset($userName)) {
-		$params['screen_name'] = $userName;
+	$users;
+
+	for ($i = 0; $i < count($response['users']); $i++) {
+		$user = $response['users'][$i];
+
+		$id = $user['idstr'];
+		$screenName = $user['screen_name'];
+		$friendsCount = $user['friends_count'];
+		$followersCount = $user['followers_count'];
+		$statusesCount = $user['statuses_count'];
+		$profileImageUrl = $user['profile_image_url'];
+
+		$users[$i] = array(
+				'id' => $id,
+				'screen_name' => $screenName,
+				'friends_count' => $friendsCount,
+				'followers_count' => $followersCount,
+				'statuses_count' => $statusesCount,
+				'profile_image_url' => $profileImageUrl,
+		);
 	}
 
-	return $c->get_oauth()->oAuthRequest('friendships/friends', 'GET', $params);
+	return json_encode(array(
+			'next_cursor' => $nextCursor,
+			'total_number' => $totalNumber,
+			'users' => $users,
+	));
+}
+
+//Query Friends
+function queryFriends($c, $userId, $userName, $cursor, $count) {
+	$response;
+	
+	if (isset($userId)) {
+		$response = $c->friends_by_id($userId, $cursor, $count);
+	} else if (isset($userName)) {
+		$response = $c->friends_by_name($userName, $cursor, $count);
+	}
+
+	return convertFriendshipsToJson($response);
 }
 
 //Query Followers
 function queryFollowers($c, $userId, $userName, $cursor, $count) {
-	$params = array();
-	$params['cursor'] = $cursor;
-	$params['count'] = $count;
-
+	$response;
+	
 	if (isset($userId)) {
-		$params['uid'] = $userId;
+		$response = $c->followers_by_id($userId, $cursor, $count);
 	} else if (isset($userName)) {
-		$params['screen_name'] = $userName;
+		$response = $c->followers_by_name($userName, $cursor, $count);
 	}
-
-	return $c->get_oauth()->oAuthRequest('friendships/followers', 'GET', $params);
+	
+	return convertFriendshipsToJson($response);
 }
 
 //Destroy Friendships
