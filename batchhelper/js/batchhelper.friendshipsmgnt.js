@@ -970,8 +970,8 @@ function deselectLoadedOtherFollowers() {
 	}
 }
 
-function getIntArrayFromStr(data) {
-	var intArray = [];
+function getArrayFromStr(data) {
+	var array = [];
 	
 	var strArray = data.split(',');
 
@@ -979,11 +979,11 @@ function getIntArrayFromStr(data) {
 		var str = strArray[i];
 		
 		if (str != '') {
-			intArray.push(parseInt(str));
+			array.push(str);
 		}
 	}
 
-	return intArray;
+	return array;
 }
 
 function destroyMyFriendsFriendships() {
@@ -1000,7 +1000,7 @@ function destroyMyFriendsFriendships() {
 			$('#myFriendsDestroyFriendshipsButton').attr('class', 'btn btn-primary btn-block disabled').attr('disabled', 'disabled');
 		},
 		success: function(data, textStatus) {
-			var myFriendsDestroyedFriendshipsIds = getIntArrayFromStr(data);
+			var myFriendsDestroyedFriendshipsIds = getArrayFromStr(data);
 			
 			// Deselect and Remove Selected Friendshipss
 			for (var i = 0; i < myFriendsDestroyedFriendshipsIds.length; i++) {
@@ -1036,7 +1036,7 @@ function createMyFollowersFriendships() {
 			$('#myFollowersCreateFriendshipsButton').attr('class', 'btn btn-primary btn-block disabled').attr('disabled', 'disabled');
 		},
 		success: function(data, textStatus) {
-			var myFollowersCreatedFriendshipsIds = getIntArrayFromStr(data);
+			var myFollowersCreatedFriendshipsIds = getArrayFromStr(data);
 			
 			// Deselect and Remove Selected Friendshipss
 			for (var i = 0; i < myFollowersCreatedFriendshipsIds.length; i++) {
@@ -1072,7 +1072,7 @@ function createOtherFriendsFriendships() {
 			$('#otherFriendsCreateFriendshipsButton').attr('class', 'btn btn-primary btn-block disabled').attr('disabled', 'disabled');
 		},
 		success: function(data, textStatus) {
-			var otherFriendsCreatedFriendshipsIds = getIntArrayFromStr(data);
+			var otherFriendsCreatedFriendshipsIds = getArrayFromStr(data);
 			
 			// Deselect and Remove Selected Friendshipss
 			for (var i = 0; i < otherFriendsCreatedFriendshipsIds.length; i++) {
@@ -1108,7 +1108,7 @@ function createOtherFollowersFriendships() {
 			$('#otherFollowersCreateFriendshipsButton').attr('class', 'btn btn-primary btn-block disabled').attr('disabled', 'disabled');
 		},
 		success: function(data, textStatus) {
-			var otherFollowersCreatedFriendshipsIds = getIntArrayFromStr(data);
+			var otherFollowersCreatedFriendshipsIds = getArrayFromStr(data);
 			
 			// Deselect and Remove Selected Friendshipss
 			for (var i = 0; i < otherFollowersCreatedFriendshipsIds.length; i++) {
