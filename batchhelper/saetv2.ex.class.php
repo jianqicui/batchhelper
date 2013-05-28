@@ -124,6 +124,8 @@ class SaeTOAuthV2 {
 	 * @ignore
 	 */
 	function authorizeURL()    { return 'https://api.weibo.com/oauth2/authorize'; }
+	
+	function getTokenInfoURL() { return 'https://api.weibo.com/oauth2/get_token_info'; }
 
 	/**
 	 * construct WeiboOAuth object
@@ -214,6 +216,20 @@ class SaeTOAuthV2 {
 			throw new OAuthException("get access token failed." . $token['error']);
 		}
 		return $token;
+	}
+	
+	function getTokenInfo($access_token) {
+		$params = array();
+		$params['access_token'] = $access_token;
+		
+		$response = $this->oAuthRequest($this->getTokenInfoURL(), 'POST', $params);
+		$tokenInfo = json_decode($response, true);
+		
+		if (isset($tokenInfo['error']) ) {
+			throw new OAuthException("get token info failed." . $tokenInfo['error']);
+		}
+		
+		return $tokenInfo;
 	}
 
 	/**
