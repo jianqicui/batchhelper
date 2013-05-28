@@ -92,35 +92,45 @@ function minIntValue($intArray) {
 function getRateLimit($c) {
 	$response = $c->rate_limit_status();
 
-	$apiRateLimits = $response['api_rate_limits'];
-
 	$remainingHourlyCreateFriendshipsLimit = 0;
 	$hourlyCreateFriendshipsLimit = 0;
 
 	$remainingDailyCreateFriendshipsLimit = 0;
 	$dailyCreateFriendshipsLimit = 0;
-
-	for ($i = 0; $i < count($apiRateLimits); $i++) {
-		$apiRateLimit = $apiRateLimits[$i];
-
-		if ('/friendships/create' == $apiRateLimit['api']) {
-			if ('HOURS' == $apiRateLimit['limit_time_unit']) {
-				$remainingHourlyCreateFriendshipsLimit = $apiRateLimit['remaining_hits'];
-				$hourlyCreateFriendshipsLimit = $apiRateLimit['limit'];
-			} else if ('DAYS' == $apiRateLimit['limit_time_unit']) {
-				$remainingDailyCreateFriendshipsLimit = $apiRateLimit['remaining_hits'];
-				$dailyCreateFriendshipsLimit = $apiRateLimit['limit'];
+	
+	$remainingHourlyUserHitsLimit = 0;
+	$hourlyUserHitsLimit = 0;
+	
+	$remainingHourlyIpHitsLimit = 0;
+	$hourlyIpHitsLimit = 0;
+	
+	$resetDateTime = '';
+	
+	if (!isset($response['error']) && !isset($response['error_code'])) {
+		$apiRateLimits = $response['api_rate_limits'];
+		
+		for ($i = 0; $i < count($apiRateLimits); $i++) {
+			$apiRateLimit = $apiRateLimits[$i];
+		
+			if ('/friendships/create' == $apiRateLimit['api']) {
+				if ('HOURS' == $apiRateLimit['limit_time_unit']) {
+					$remainingHourlyCreateFriendshipsLimit = $apiRateLimit['remaining_hits'];
+					$hourlyCreateFriendshipsLimit = $apiRateLimit['limit'];
+				} else if ('DAYS' == $apiRateLimit['limit_time_unit']) {
+					$remainingDailyCreateFriendshipsLimit = $apiRateLimit['remaining_hits'];
+					$dailyCreateFriendshipsLimit = $apiRateLimit['limit'];
+				}
 			}
 		}
+		
+		$remainingHourlyUserHitsLimit = $response['remaining_user_hits'];
+		$hourlyUserHitsLimit = $response['user_limit'];
+		
+		$remainingHourlyIpHitsLimit = $response['remaining_ip_hits'];
+		$hourlyIpHitsLimit = $response['ip_limit'];
+		
+		$resetDateTime = $response['reset_time'];
 	}
-
-	$remainingHourlyUserHitsLimit = $response['remaining_user_hits'];
-	$hourlyUserHitsLimit = $response['user_limit'];
-
-	$remainingHourlyIpHitsLimit = $response['remaining_ip_hits'];
-	$hourlyIpHitsLimit = $response['ip_limit'];
-
-	$resetDateTime = $response['reset_time'];
 
 	$rateLimit = array(
 			'remainingHourlyCreateFriendshipsLimit' => $remainingHourlyCreateFriendshipsLimit,
@@ -142,29 +152,34 @@ function getRateLimit($c) {
 }
 
 function convertFriendshipsToJson($response) {
-	$nextCursor = $response['next_cursor'];
-	$totalNumber = $response['total_number'];
-
-	$users;
-
-	for ($i = 0; $i < count($response['users']); $i++) {
-		$user = $response['users'][$i];
-
-		$id = $user['idstr'];
-		$screenName = $user['screen_name'];
-		$friendsCount = $user['friends_count'];
-		$followersCount = $user['followers_count'];
-		$statusesCount = $user['statuses_count'];
-		$profileImageUrl = $user['profile_image_url'];
-
-		$users[$i] = array(
-				'id' => $id,
-				'screenName' => $screenName,
-				'friendsCount' => $friendsCount,
-				'followersCount' => $followersCount,
-				'statusesCount' => $statusesCount,
-				'profileImageUrl' => $profileImageUrl,
-		);
+	$nextCursor = 0;
+	$totalNumber = 0;
+	
+	$users = array();
+	
+	if (!isset($response['error']) && !isset($response['error_code'])) {
+		$nextCursor = $response['next_cursor'];
+		$totalNumber = $response['total_number'];
+		
+		for ($i = 0; $i < count($response['users']); $i++) {
+			$user = $response['users'][$i];
+		
+			$id = $user['idstr'];
+			$screenName = $user['screen_name'];
+			$friendsCount = $user['friends_count'];
+			$followersCount = $user['followers_count'];
+			$statusesCount = $user['statuses_count'];
+			$profileImageUrl = $user['profile_image_url'];
+		
+			$users[$i] = array(
+					'id' => $id,
+					'screenName' => $screenName,
+					'friendsCount' => $friendsCount,
+					'followersCount' => $followersCount,
+					'statusesCount' => $statusesCount,
+					'profileImageUrl' => $profileImageUrl,
+			);
+		}
 	}
 
 	return json_encode(array(
