@@ -1,0 +1,4 @@
+font: 黑体
+size: 5/25
+color: #0044CC
+background: #D9EDF7
