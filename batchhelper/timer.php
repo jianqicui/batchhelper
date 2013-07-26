@@ -33,7 +33,7 @@ $currentMenuItem = 'timer';
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/bootstrap-transition.js"></script>
 <script type="text/javascript" src="js/bootstrap-datepicker.js"></script>
-<script type="text/javascript" src="js/locales/bootstrap-datepicker.zh-CN.js"></script>
+<script type="text/javascript" src="js/bootstrap-datepicker.zh-CN.js"></script>
 <script type="text/javascript" src="js/ajaxfileupload.js"></script>
 
 <script type="text/javascript">
