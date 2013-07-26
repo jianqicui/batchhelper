@@ -735,16 +735,6 @@ function getDateTimeStr(dateTime) {
 }
 
 function updateToBeSentStatus() {
-	var statusType = checkStatus('toBeSentStatusFormUpdateDiv');
-	
-	if (statusType == -1) {
-		return;
-	} else if (statusType == 0) {
-		sendStatusImmediately();
-		
-		return;
-	}
-	
 	var id = $('#toBeSentStatusFormUpdateDiv #statusSendIdInput').val();
 	var text = $('#toBeSentStatusFormUpdateDiv #statusTextarea').val();
 	var pictureName = $('#toBeSentStatusFormUpdateDiv #uploadedPictureNameSpan').text();
@@ -755,6 +745,18 @@ function updateToBeSentStatus() {
 	}
 	
 	var dateTime = getDateTime('toBeSentStatusFormUpdateDiv');
+	
+	var statusType = checkStatus('toBeSentStatusFormUpdateDiv');
+	
+	if (statusType == -1) {
+		return;
+	} else if (statusType == 0) {
+		closeToBeSentStatusFormUpdateDiv();
+		
+		sendToBeSentStatus(id, text, pictureName, picturePath);
+		
+		return;
+	}
 	
 	$.ajax({
 		async: true, 
