@@ -16,7 +16,7 @@ if (isset($_SESSION['saeTClientV2'])) {
 	exit;
 }
 
-$storage = new SaeStorage(ACCESS_KEY, SECRET_KEY, STORE_HOST, APP_NAME, CDN_ENABLED);
+$storage = new SaeStorage();
 
 $action = $_REQUEST['action'];
 
@@ -488,7 +488,7 @@ function savePicture($storage, $fileTmpName, $pictureName) {
 	return $picturePath;
 	*/
 	
-	return $storage->upload(DOMAIN_TIMER, $fileTmpName, $pictureName);
+	return $storage->upload(DOMAIN_TIMER, $pictureName, $fileTmpName);
 }
 
 //Upload Picture

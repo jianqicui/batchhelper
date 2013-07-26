@@ -42,7 +42,7 @@
  * 
  */
  
-class SaeStorage
+class SaeStorage extends SaeObject 
 {
     /**
      * 用户accessKey
@@ -87,8 +87,6 @@ class SaeStorage
      * @var string 
      */
     private $cdndomain = 'sae.sinacdn.com';
-    
-    private $cdnEnabled = FALSE;
     /**
      * 该类所支持的所有方法
      * @var array 
@@ -112,37 +110,39 @@ class SaeStorage
      * $_accessKey与$_secretKey可以为空，为空的情况下可以认为是公开读文件
      * @param string $_accessKey 
      * @param string $_secretKey 
-     * @param string $_storeHost 
-     * @param string $_appName 
      * @return void 
      * @author Elmer Zhang
      */
-    public function __construct( $_accessKey='', $_secretKey='', $_storeHost, $_appName = '', $_cdnEnabled = FALSE )
+    public function __construct( $_accessKey='', $_secretKey='' )
     {
-        $this->setAuth( $_accessKey, $_secretKey, $_storeHost, $_appName );
-        
-        $this->cdnEnabled = $_cdnEnabled;
+        if( $_accessKey== '' ) $_accessKey = SAE_ACCESSKEY;
+        if( $_secretKey== '' ) $_secretKey = SAE_SECRETKEY;
+ 
+        $this->setAuth( $_accessKey, $_secretKey );
     }
  
     /**
      * 设置key
      *
      * 当需要访问其他APP的数据时使用
-     * @param string $_accesskey 
-     * @param string $_secretkey 
-     * @param string $_storeHost 
-     * @param string $_appName 
+     *
+     * @param string $akey 
+     * @param string $skey 
      * @return void 
      * @author Elmer Zhang
      * @ignore
      */
-    public function setAuth( $_accesskey , $_secretkey , $_storeHost, $_appName = '' )
+    public function setAuth( $akey , $skey , $_appName = '' )
     {
-        $this->initOptUrlList( $this->_optUrlList, $_storeHost );
+        $this->initOptUrlList( $this->_optUrlList);
  
-        $this->appName = $_appName;
+        if( $_appName == '') {
+            $this->appName = $_SERVER[ 'HTTP_APPNAME' ];
+        } else {
+            $this->appName = $_appName;
+        }
  
-        $this->init( $_accesskey, $_secretkey );
+        $this->init( $akey, $skey );
     }
  
     /**
@@ -198,7 +198,7 @@ class SaeStorage
         $domain = trim($domain);
         $filename = $this->formatFilename($filename);
  
-        if ( $this->cdnEnabled ) {
+        if ( SAE_CDN_ENABLED ) {
             $filePath = "http://".$this->appName.'.'.$this->cdndomain . "/.app-stor/$domain/$filename";
         } else {
             $domain = $this->getDom($domain);
@@ -891,13 +891,13 @@ class SaeStorage
     /**
      * @ignore
      */    
-    protected function initOptUrlList( $_optUrlList=array(), $_storeHost )
+    protected function initOptUrlList( $_optUrlList=array() )
     {
         $this->optUrlList = array();
         $this->optUrlList = $_optUrlList;
  
         while ( current( $this->optUrlList ) !== false ) {
-            $this->optUrlList[ key( $this->optUrlList ) ] = $_storeHost.current($this->optUrlList);
+            $this->optUrlList[ key( $this->optUrlList ) ] = SAE_STOREHOST.current($this->optUrlList);
             next( $this->optUrlList );
         }
  

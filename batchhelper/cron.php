@@ -86,7 +86,7 @@ if ('sendStatuses' == $action) {
 	
 	mysql_close($con);
 } else if ('cleanPictures' == $action) {
-	$storage = new SaeStorage(ACCESS_KEY, SECRET_KEY, STORE_HOST, APP_NAME, CDN_ENABLED);
+	$storage = new SaeStorage();
 	
 	//$storage->delete(DOMAIN_TIMER, $pictureName);
 	
