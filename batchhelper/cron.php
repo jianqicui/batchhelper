@@ -21,7 +21,7 @@ if ('sendStatuses' == $action) {
 		where \'2013-07-25 14:38\' = date_format(status_datetime, \'%Y-%m-%d %H:%i\')';
 	*/
 	
-	$sql = 'select id, user_id, status_text, status_picture_path, access_token from timer_to_be_sent_statuses
+	$sql = 'select id, user_id, status_text, status_picture_name, status_picture_path, access_token from timer_to_be_sent_statuses
 		where date_format(now(), \'%Y-%m-%d %H:%i\') = date_format(status_datetime, \'%Y-%m-%d %H:%i\')';
 	
 	$result = mysql_query($sql);
