@@ -51,8 +51,10 @@ where user_id = '3042520825'
 delete from timer_sent_statuses where id = 1
 
 //cron
+select id, user_id, status_text, status_picture_name, status_picture_path, access_token from timer_to_be_sent_statuses
+where date_format(now(), '%Y-%m-%d %H:%i') = date_format(status_datetime, '%Y-%m-%d %H:%i')
+
 insert into timer_sent_statuses_logs (message, created_datetime)
 values ('sent_statuses, successful 32, failed 18.', now())
 
-select id, user_id, status_text, status_picture_name, status_picture_path, access_token from timer_to_be_sent_statuses
-where date_format(now(), '%Y-%m-%d %H:%i') = date_format(status_datetime, '%Y-%m-%d %H:%i')
+select count(*) as num from timer_to_be_sent_statuses where status_picture_path like '%a.jpg'

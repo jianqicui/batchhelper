@@ -6,16 +6,16 @@ include_once( 'saestorage.class.php' );
 
 $action = $_REQUEST['action'];
 
+$con = mysql_connect(MYSQL_HOST . ':' . MYSQL_PORT, MYSQL_USER, MYSQL_PASS);
+mysql_query("SET NAMES 'UTF8'");
+
+if (!$con) {
+	die('Could not connect: ' . mysql_error());
+}
+
+mysql_select_db(MYSQL_DB, $con);
+
 if ('sendStatuses' == $action) {
-	$con = mysql_connect(MYSQL_HOST . ':' . MYSQL_PORT, MYSQL_USER, MYSQL_PASS);
-	mysql_query("SET NAMES 'UTF8'");
-	
-	if (!$con) {
-		die('Could not connect: ' . mysql_error());
-	}
-	
-	mysql_select_db(MYSQL_DB, $con);
-	
 	/*
 	$sql = 'select id, user_id, status_text, status_picture_name, status_picture_path, access_token from timer_to_be_sent_statuses
 		where \'2013-07-25 14:38\' = date_format(status_datetime, \'%Y-%m-%d %H:%i\')';
@@ -77,7 +77,7 @@ if ('sendStatuses' == $action) {
 		mysql_query($sql);
 	}
 	
-	$message = 'sent_statuses, successful ' . $successfulCount . ', failed ' . $failedCount . '.';
+	$message = 'sent statuses, successful ' . $successfulCount . ', failed ' . $failedCount . '.';
 	echo $message;
 	
 	/*
@@ -85,19 +85,31 @@ if ('sendStatuses' == $action) {
 		values (\'' . $message . '\', now())';
 	mysql_query($sql);
 	*/
-	
-	mysql_close($con);
 } else if ('cleanPictures' == $action) {
 	$storage = new SaeStorage();
 	
-	$pictures = $storage->getList(DOMAIN_TIMER);
+	$pictureNames = $storage->getList(DOMAIN_TIMER);
 	
-	for ($i = 0; $i < count($pictures); $i++) {
-		$picture = $pictures[$i];
+	$cleanPicturesCount = 0;
 	
-		echo $picture;
+	for ($i = 0; $i < count($pictureNames); $i++) {
+		$pictureName = $pictureNames[$i];
+	
+		$sql = 'select count(*) as num from timer_to_be_sent_statuses where status_picture_path like \'%' . $pictureName . '\'';
+		$result = mysql_query($sql);
+		$row = mysql_fetch_array($result);
+		$num = $row['num'];
+		
+		if ($num == 0) {
+			$storage->delete(DOMAIN_TIMER, $pictureName);
+			
+			$cleanPicturesCount++;
+		}
 	}
 	
-	//$storage->delete(DOMAIN_TIMER, $pictureName);
+	$message = 'clean pictures, clean ' . $cleanPicturesCount . '.';
+	echo $message;
 }
+
+mysql_close($con);
 ?>
