@@ -9,19 +9,19 @@ if (isset($_SESSION['saeTClientV2'])) {
 	
 	exit;
 } else {
-	$o = new SaeTOAuthV2( WB_AKEY , WB_SKEY );
+	$tOAuthV2 = new SaeTOAuthV2( WB_AKEY , WB_SKEY );
 	
 	if (isset($_REQUEST['code'])) {
 		$keys = array();
 		$keys['code'] = $_REQUEST['code'];
 		$keys['redirect_uri'] = WB_CALLBACK_URL;
 		
-		$token = $o->getAccessToken( 'code', $keys ) ;
-		$o->access_token = $token['access_token'];
+		$token = $tOAuthV2->getAccessToken( 'code', $keys ) ;
+		$tOAuthV2->access_token = $token['access_token'];
 		
-		$_SESSION['saeTClientV2'] = new SaeTClientV2( $o );
+		$_SESSION['saeTClientV2'] = new SaeTClientV2( $tOAuthV2 );
 		
-		setcookie( 'weibojs_'.$o->client_id, http_build_query($token) );
+		setcookie( 'weibojs_'.$tOAuthV2->client_id, http_build_query($token) );
 		
 		header('Location: main.php');
 		
@@ -33,7 +33,7 @@ if (isset($_SESSION['saeTClientV2'])) {
 			$forcelogin = TRUE;
 		}
 		
-		$codeUrl = $o->getAuthorizeURL( WB_CALLBACK_URL, 'code', NULL, NULL, $forcelogin );
+		$codeUrl = $tOAuthV2->getAuthorizeURL( WB_CALLBACK_URL, 'code', NULL, NULL, $forcelogin );
 	}
 }
 ?>
@@ -57,7 +57,7 @@ if (isset($_SESSION['saeTClientV2'])) {
 		
 		<div class="row">
 			<div class="span8">
-				<p><img src="img/wallpaper.png" /></p>
+				<p><img src="img/wall-paper.png" /></p>
 			</div>
 			<div class="span4">
 				<div>
@@ -67,27 +67,43 @@ if (isset($_SESSION['saeTClientV2'])) {
 				</div>
 				<div style="margin-top: 20px;">
 					<div class="row">
-						<div class="span2">
-							<i class="icon-ok"></i><span style="margin-left: 10px;">查询我的关注</span>
+						<div class="span2" style="auto 0;">
+							<i class="icon-ok"></i>
+							<span>查询我的关注</span>
 						</div>
-						<div class="span2">
-							<i class="icon-ok"></i><span style="margin-left: 10px;">查询我的粉丝</span>
-						</div>
-					</div>
-					<div class="row">
-						<div class="span2">
-							<i class="icon-ok"></i><span style="margin-left: 10px;">查询TA的关注</span>
-						</div>
-						<div class="span2">
-							<i class="icon-ok"></i><span style="margin-left: 10px;">查询TA的粉丝</span>
+						<div class="span2" style="auto 0;">
+							<i class="icon-ok"></i>
+							<span>查询我的粉丝</span>
 						</div>
 					</div>
 					<div class="row">
-						<div class="span2">
-							<i class="icon-ok"></i><span style="margin-left: 10px;">批量取消关注</span>
+						<div class="span2" style="auto 0;">
+							<i class="icon-ok"></i>
+							<span>查询TA的关注</span>
 						</div>
-						<div class="span2">
-							<i class="icon-ok"></i><span style="margin-left: 10px;">批量关注</span>
+						<div class="span2" style="auto 0;">
+							<i class="icon-ok"></i>
+							<span>查询TA的粉丝</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="span2" style="auto 0;">
+							<i class="icon-ok"></i>
+							<span>批量取消关注</span>
+						</div>
+						<div class="span2" style="auto 0;">
+							<i class="icon-ok"></i>
+							<span>批量增加关注</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="span2" style="auto 0;">
+							<i class="icon-ok"></i>
+							<span>定时发布微博</span>
+						</div>
+						<div class="span2" style="auto 0;">
+							<i class="icon-ok"></i>
+							<span>立即发布微博</span>
 						</div>
 					</div>
 				</div>
