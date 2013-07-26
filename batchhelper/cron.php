@@ -80,9 +80,11 @@ if ('sendStatuses' == $action) {
 	$message = 'sent_statuses, successful ' . $successfulCount . ', failed ' . $failedCount . '.';
 	echo $message;
 	
+	/*
 	$sql = 'insert into timer_sent_statuses_logs (message, created_datetime)
 		values (\'' . $message . '\', now())';
 	mysql_query($sql);
+	*/
 	
 	mysql_close($con);
 } else if ('cleanPictures' == $action) {
