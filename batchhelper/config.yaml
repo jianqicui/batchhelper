@@ -1,0 +1,12 @@
+name: batchhelper
+version: 1
+cron:
+    - description: sendStatuses
+    url: cron.php?action=sendStatuses
+    schedule: every 1 min
+    timezone: Beijing
+    
+    - description: cleanPictures
+    url: cron.php?action=cleanPictures
+    schedule: every 12 hours
+    timezone: Beijing

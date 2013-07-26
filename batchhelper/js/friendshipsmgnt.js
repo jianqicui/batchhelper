@@ -1,6 +1,6 @@
 var otherFriendshipsMgntNamesCookieName = clientId + '_' + uid + '_OtherFriendshipsMgntNames';
 
-var otherFriendshipsMgntInputNameModalOwner;
+var otherFriendshipsMgntInputNameDivOwner;
 
 var otherFriendshipsMgntQueryName;
 
@@ -19,7 +19,7 @@ var myFollowersSelectedIds = [];
 var otherFriendsSelectedIds = [];
 var otherFollowersSelectedIds = [];
 
-$(document).ready(function() {		
+$(document).ready(function() {
 	// Friendships Management Tabs
 	$('#friendshipsMgntTabsDiv a').click(function (e) {
 		e.preventDefault();
@@ -29,17 +29,17 @@ $(document).ready(function() {
 		changeFriendshipsMgntTab(friendshipsMgntTabId);
     });
 
-	// Friendships Management Input Name Modal
-	$('#otherFriendshipsMgntInputNameModalDismissButton').click(function () {
-		closeOtherFriendshipsMgntInputNameModal();
+	// Friendships Management Input Name Div
+	$('#otherFriendshipsMgntInputNameDivDismissButton').click(function () {
+		closeOtherFriendshipsMgntInputNameDiv();
 	});
 	
-	$('#otherFriendshipsMgntInputNameModalCloseButton').click(function () {
-		closeOtherFriendshipsMgntInputNameModal();
+	$('#otherFriendshipsMgntInputNameDivCloseButton').click(function () {
+		closeOtherFriendshipsMgntInputNameDiv();
 	});
 
-	$('#otherFriendshipsMgntInputNameModalSaveButton').click(function () {
-		saveOtherFriendshipsMgntInputNameModal();
+	$('#otherFriendshipsMgntInputNameDivSaveButton').click(function () {
+		saveOtherFriendshipsMgntInputNameDiv();
     });
 
 	// Friendships Load Buttons
@@ -120,8 +120,8 @@ $(document).ready(function() {
 function getRateLimit() {
 	$.ajax({
 		async: false, 
-		type: "GET", 
-		dataType: "json", 
+		type: 'GET', 
+		dataType: 'json', 
 		url: 'action.php', 
 		data: {'action' : 'getRateLimit'}, 
 		success: function(data, textStatus) {
@@ -336,38 +336,38 @@ function changeFriendshipsMgntTab(friendshipsMgntTabId) {
     	$('#otherFriendsCreateFriendshipsDiv').hide();
     	$('#otherFollowersCreateFriendshipsDiv').hide();
 	} else if ('otherFriendsMgntTab' == friendshipsMgntTabId) {
-		otherFriendshipsMgntInputNameModalOwner = 'otherFriendsMgntTab';
+		otherFriendshipsMgntInputNameDivOwner = 'otherFriendsMgntTab';
 		
-		openOtherFriendshipsMgntInputNameModal();
+		openOtherFriendshipsMgntInputNameDiv();
 	} else if ('otherFollowersMgntTab' == friendshipsMgntTabId) {
-		otherFriendshipsMgntInputNameModalOwner = 'otherFollowersMgntTab';
+		otherFriendshipsMgntInputNameDivOwner = 'otherFollowersMgntTab';
 		
-		openOtherFriendshipsMgntInputNameModal();
+		openOtherFriendshipsMgntInputNameDiv();
 	}
 }
 
-function openOtherFriendshipsMgntInputNameModal() {
+function openOtherFriendshipsMgntInputNameDiv() {
 	var otherFriendshipsMgntNames = getCookieArray(otherFriendshipsMgntNamesCookieName);
 
 	$('#otherFriendshipsMgntNameInput').typeahead({
 		source: otherFriendshipsMgntNames, items: 2
 	});
 	
-	$('#otherFriendshipsMgntInputNameModal').modal('show');
+	$('#otherFriendshipsMgntInputNameDiv').modal('show');
 }
 
-function closeOtherFriendshipsMgntInputNameModal() {
+function closeOtherFriendshipsMgntInputNameDiv() {
 	$('#otherFriendshipsMgntNameEmptySpan').hide();
-	$('#otherFriendshipsMgntInputNameModal').modal('hide');
+	$('#otherFriendshipsMgntInputNameDiv').modal('hide');
 }
 
-function saveOtherFriendshipsMgntInputNameModal() {
+function saveOtherFriendshipsMgntInputNameDiv() {
 	var otherFriendshipsMgntQueryNameValue = $('#otherFriendshipsMgntNameInput').val();
 	otherFriendshipsMgntQueryNameValue = trim(otherFriendshipsMgntQueryNameValue);
 	$('#otherFriendshipsMgntNameInput').val(otherFriendshipsMgntQueryNameValue);
 	
 	if (otherFriendshipsMgntQueryNameValue != '') {
-		closeOtherFriendshipsMgntInputNameModal();
+		closeOtherFriendshipsMgntInputNameDiv();
 		
 		// Add Other Friendships Name to Cookie
 		if (!isContainCookieArray(otherFriendshipsMgntNamesCookieName, otherFriendshipsMgntQueryNameValue)) {
@@ -406,7 +406,7 @@ function saveOtherFriendshipsMgntInputNameModal() {
 
 		otherFriendshipsMgntQueryName = otherFriendshipsMgntQueryNameValue;
 		
-		if ('otherFriendsMgntTab' == otherFriendshipsMgntInputNameModalOwner) {
+		if ('otherFriendsMgntTab' == otherFriendshipsMgntInputNameDivOwner) {
 			// Other Friends Management Tab
 			$('#otherFriendsMgntTab').tab('show');
 
@@ -447,7 +447,7 @@ function saveOtherFriendshipsMgntInputNameModal() {
         	$('#myFollowersCreateFriendshipsDiv').hide();
         	$('#otherFriendsCreateFriendshipsDiv').show();
         	$('#otherFollowersCreateFriendshipsDiv').hide();
-		} else if ('otherFollowersMgntTab' == otherFriendshipsMgntInputNameModalOwner) {
+		} else if ('otherFollowersMgntTab' == otherFriendshipsMgntInputNameDivOwner) {
 			// Other Followers Management Tab
 			$('#otherFollowersMgntTab').tab('show');
 
@@ -749,8 +749,8 @@ function addFriendships(friendshipsType, users) {
 function loadMyFriends() {
 	$.ajax({
 		async: true, 
-		type: "GET", 
-		dataType: "json", 
+		type: 'GET', 
+		dataType: 'json', 
 		url: 'action.php', 
 		data: {'action' : 'queryFriends', 'userId' : uid, 'cursor' : myFriendsCursor, 'count' : 100},
 		beforeSend: function() {
@@ -791,8 +791,8 @@ function loadMyFriends() {
 function loadMyFollowers() {
 	$.ajax({
 		async: true, 
-		type: "GET", 
-		dataType: "json", 
+		type: 'GET', 
+		dataType: 'json', 
 		url: 'action.php', 
 		data: {'action' : 'queryFollowers', 'userId' : uid, 'cursor' : myFollowersCursor, 'count' : 100}, 
 		beforeSend: function() {
@@ -833,8 +833,8 @@ function loadMyFollowers() {
 function loadOtherFriends() {
 	$.ajax({
 		async: true, 
-		type: "GET", 
-		dataType: "json", 
+		type: 'GET', 
+		dataType: 'json', 
 		url: 'action.php', 
 		data: {'action' : 'queryFriends', 'userName' : otherFriendshipsMgntQueryName, 'cursor' : otherFriendsCursor, 'count' : 100}, 
 		beforeSend: function() {
@@ -875,8 +875,8 @@ function loadOtherFriends() {
 function loadOtherFollowers() {
 	$.ajax({
 		async: true, 
-		type: "GET", 
-		dataType: "json", 
+		type: 'GET', 
+		dataType: 'json', 
 		url: 'action.php', 
 		data: {'action' : 'queryFollowers', 'userName' : otherFriendshipsMgntQueryName, 'cursor' : otherFollowersCursor, 'count' : 100}, 
 		beforeSend: function() {
@@ -990,8 +990,8 @@ function destroyMyFriendsFriendships() {
 	// Destroy Friendships
 	$.ajax({
 		async: true, 
-		type: "POST", 
-		dataType: "text", 
+		type: 'GET', 
+		dataType: 'text', 
 		url: 'action.php', 
 		data: {'action' : 'destroyFriendships', 'userIds' : myFriendsSelectedIds.join(',')}, 
 		beforeSend: function() {
@@ -1026,8 +1026,8 @@ function createMyFollowersFriendships() {
 	// Create Friendships
 	$.ajax({
 		async: true, 
-		type: "POST", 
-		dataType: "text", 
+		type: 'GET', 
+		dataType: 'text', 
 		url: 'action.php', 
 		data: {'action' : 'createFriendships', 'userIds' : myFollowersSelectedIds.join(',')}, 
 		beforeSend: function() {
@@ -1062,8 +1062,8 @@ function createOtherFriendsFriendships() {
 	// Create Friendships
 	$.ajax({
 		async: true, 
-		type: "POST", 
-		dataType: "text", 
+		type: 'GET', 
+		dataType: 'text', 
 		url: 'action.php', 
 		data: {'action' : 'createFriendships', 'userIds' : otherFriendsSelectedIds.join(',')}, 
 		beforeSend: function() {
@@ -1098,8 +1098,8 @@ function createOtherFollowersFriendships() {
 	// Create Friendships
 	$.ajax({
 		async: true, 
-		type: "POST", 
-		dataType: "text", 
+		type: 'GET', 
+		dataType: 'text', 
 		url: 'action.php', 
 		data: {'action' : 'createFriendships', 'userIds' : otherFollowersSelectedIds.join(',')}, 
 		beforeSend: function() {
