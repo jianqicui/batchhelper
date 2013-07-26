@@ -90,8 +90,14 @@ if ('sendStatuses' == $action) {
 } else if ('cleanPictures' == $action) {
 	$storage = new SaeStorage();
 	
-	//$storage->delete(DOMAIN_TIMER, $pictureName);
+	$pictures = $storage->getList(DOMAIN_TIMER);
 	
-	echo json_encode($storage->getList(DOMAIN_TIMER));
+	for ($i = 0; $i < count($pictures); $i++) {
+		$picture = $pictures[$i];
+	
+		echo $picture;
+	}
+	
+	//$storage->delete(DOMAIN_TIMER, $pictureName);
 }
 ?>
