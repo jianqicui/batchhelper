@@ -264,7 +264,7 @@ function addEmotions(containerDivId) {
 		
 		categoryDivHtml += 
 			'<div id=\'' + getLoadedEmotionsCategoryDivId(i) + '\' style=\'float: left; font-size:12px; padding: 4px 8px;\'>' + 
-				'<a href=\'javascript:showLoadedEmotionsInfoDiv("' + containerDivId + '", ' + emotionsGroupDivIndex + ', ' + i + ');\' ' + '>' + 
+				'<a href="javascript:void(0);" onclick="showLoadedEmotionsInfoDiv(\'' + containerDivId + '\', ' + emotionsGroupDivIndex + ', ' + i + ');" >' + 
 					category + 
 				'</a>' + 
 			'</div>';
@@ -373,7 +373,7 @@ function showLoadedEmotionsInfoDiv(containerDivId, emotionsGroupDivIndex, emotio
 				
 				hotInfoHtml += 
 					'<div style=\'float: left; border: 1px solid #fce089; background: #fef9e7; margin: 0px -1px -1px 0px; padding: 4px 2px; width: 26px; height: 22px; text-align: center;\'>' + 
-						'<a href="javascript:insertEmotionToStatusText(\'' + containerDivId + '\', \'' + value + '\');" title=\'' + name + '\'>' + 
+						'<a href="javascript:void(0);" onclick="insertEmotionValueToStatusText(\'' + containerDivId + '\', \'' + value + '\');" title=\'' + name + '\'>' + 
 							'<img src=\'' + icon + '\' style=\'width: 22px; height: 22px;\' />' + 
 		            	'</a>' + 
 	            	'</div>';
@@ -400,7 +400,7 @@ function showLoadedEmotionsInfoDiv(containerDivId, emotionsGroupDivIndex, emotio
 				
 				commonInfoHtml += 
 					'<div style=\'float: left; border: 1px solid #e8e8e8; margin: 0px -1px -1px 0px; padding: 4px 2px; width: 26px; height: 22px; text-align: center;\'>' + 
-						'<a href="javascript:insertEmotionToStatusText(\'' + containerDivId + '\', \'' + value + '\');" title=\'' + name + '\'>' + 
+						'<a href="javascript:void(0);" onclick="insertEmotionValueToStatusText(\'' + containerDivId + '\', \'' + value + '\');" title=\'' + name + '\'>' + 
 		            		'<img src=\'' + icon + '\' style=\'width: 22px; height: 22px;\' />' + 
 		            	'</a>' + 
 					'</div>';
@@ -416,7 +416,7 @@ function showLoadedEmotionsInfoDiv(containerDivId, emotionsGroupDivIndex, emotio
 	}
 }
 
-function insertEmotionToStatusText(containerDivId, emotionValue) {
+function insertEmotionValueToStatusText(containerDivId, emotionValue) {
 	closeLoadedEmotionsDiv(containerDivId);
 	
 	var currentStatusText = $('#' + containerDivId + ' #statusTextarea').val();
