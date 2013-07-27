@@ -509,7 +509,7 @@ function uploadPicture($storage, $fileElementName) {
 		return array(
 				'error' => 'bad format',
 		);
-	} else if ($fileSize >= (5 * 1024 * 1024)) {
+	} else if ($fileSize >= (1024 * 1024)) {
 		return array(
 				'error' => 'too large size',
 		);
