@@ -53,10 +53,10 @@
 				<div id="pictureUploadingDiv" style="display: none;">
 					<img src="img/loading.gif" />
 				</div>
-				<div id="uploadedPictureTitleDiv" style="display: none;">
-					<span id="uploadedPictureNameSpan" style="display: none;"></span>
-				    <span id="uploadedPictureThumbnailNameSpan" style="cursor: pointer;"></span>
-				    <button id="uploadedPictureDivCloseButton" type="button" class="close" style="margin-left: 5px;">&times;</button>
+				<div id="pictureTitleDiv" style="display: none;">
+					<span id="pictureNameSpan" style="display: none;"></span>
+				    <span id="pictureThumbnailNameSpan" style="cursor: pointer; font-weight: bold;"></span>
+				    <button id="pictureDivCloseButton" type="button" class="close" style="margin-left: 5px;">&times;</button>
 				</div>
 			</div>
 			<div class="clearfix"></div>
