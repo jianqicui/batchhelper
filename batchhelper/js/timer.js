@@ -16,8 +16,8 @@ $(document).ready(function() {
 		loadEmotions('statusFormCreateDiv');
 	});
 	
-	$('#statusFormCreateDiv #loadedEmotionsDivCloseButton').click(function() {
-		closeLoadedEmotionsDiv('statusFormCreateDiv');
+	$('#statusFormCreateDiv #emotionsDivCloseButton').click(function() {
+		closeEmotionsDiv('statusFormCreateDiv');
 	});
 	
 	//Picture
@@ -25,16 +25,16 @@ $(document).ready(function() {
 		uploadPicture('statusFormCreateDiv');
 	});
 	
-	$('#statusFormCreateDiv #uploadedPictureThumbnailNameSpan').mouseover(function() {
-		openUploadedPictureInfoDiv('statusFormCreateDiv');
+	$('#statusFormCreateDiv #pictureThumbnailNameSpan').mouseover(function() {
+		openPictureInfoDiv('statusFormCreateDiv');
 	});
 	
-	$('#statusFormCreateDiv #uploadedPictureThumbnailNameSpan').mouseout(function() {
-		closeUploadedPictureInfoDiv('statusFormCreateDiv');
+	$('#statusFormCreateDiv #pictureThumbnailNameSpan').mouseout(function() {
+		closePictureInfoDiv('statusFormCreateDiv');
 	});
 	
-	$('#statusFormCreateDiv #uploadedPictureDivCloseButton').click(function() {
-		closeUploadedPictureDiv('statusFormCreateDiv');
+	$('#statusFormCreateDiv #pictureDivCloseButton').click(function() {
+		closePictureDiv('statusFormCreateDiv');
 	});
 	
 	//DateTime
@@ -90,8 +90,8 @@ $(document).ready(function() {
 		loadEmotions('toBeSentStatusFormUpdateDiv');
 	});
 	
-	$('#toBeSentStatusFormUpdateDiv #loadedEmotionsDivCloseButton').click(function() {
-		closeLoadedEmotionsDiv('toBeSentStatusFormUpdateDiv');
+	$('#toBeSentStatusFormUpdateDiv #emotionsDivCloseButton').click(function() {
+		closeEmotionsDiv('toBeSentStatusFormUpdateDiv');
 	});
 	
 	//Picture
@@ -99,16 +99,16 @@ $(document).ready(function() {
 		uploadPicture('toBeSentStatusFormUpdateDiv');
 	});
 	
-	$('#toBeSentStatusFormUpdateDiv #uploadedPictureThumbnailNameSpan').mouseover(function() {
-		openUploadedPictureInfoDiv('toBeSentStatusFormUpdateDiv');
+	$('#toBeSentStatusFormUpdateDiv #pictureThumbnailNameSpan').mouseover(function() {
+		openPictureInfoDiv('toBeSentStatusFormUpdateDiv');
 	});
 	
-	$('#toBeSentStatusFormUpdateDiv #uploadedPictureThumbnailNameSpan').mouseout(function() {
-		closeUploadedPictureInfoDiv('toBeSentStatusFormUpdateDiv');
+	$('#toBeSentStatusFormUpdateDiv #pictureThumbnailNameSpan').mouseout(function() {
+		closePictureInfoDiv('toBeSentStatusFormUpdateDiv');
 	});
 	
-	$('#toBeSentStatusFormUpdateDiv #uploadedPictureDivCloseButton').click(function() {
-		closeUploadedPictureDiv('toBeSentStatusFormUpdateDiv');
+	$('#toBeSentStatusFormUpdateDiv #pictureDivCloseButton').click(function() {
+		closePictureDiv('toBeSentStatusFormUpdateDiv');
 	});
 	
 	//DateTime
@@ -168,23 +168,23 @@ function changeStatusText(containerDivId) {
 	}
 }
 
-function getLoadedEmotionsGroupDivId(emotionsGroupDivIndex) {
-	return 'loadedEmotionsGroupDiv_' + emotionsGroupDivIndex;
+function getEmotionsGroupDivId(emotionsGroupDivIndex) {
+	return 'emotionsGroupDiv_' + emotionsGroupDivIndex;
 }
 
-function getLoadedEmotionsCategoryDivId(emotionIndex) {
-	return 'loadedEmotionsCategoryDiv_' + emotionIndex;
+function getEmotionsCategoryDivId(emotionIndex) {
+	return 'emotionsCategoryDiv_' + emotionIndex;
 }
 
-function getLoadedEmotionsInfoDivId(emotionIndex) {
-	return 'loadedEmotionsInfoDiv_' + emotionIndex;
+function getEmotionsInfoDivId(emotionIndex) {
+	return 'emotionsInfoDiv_' + emotionIndex;
 }
 
-function assembleLoadedEmotionsGroupDivHtml(emotionsGroupDivIndex, categoryDivHtml, arrowDivHtml, infoDivHtml) {
-	return loadedEmotionsGroupDivHtml = 
-		'<div id=\'' + getLoadedEmotionsGroupDivId(emotionsGroupDivIndex) + '\' style=\'display: none;\'>' + 
-			'<div name=\'loadedEmotionsTitleDiv\'>' + 
-				'<div name=\'loadedEmotionsCategoryDiv\' class=\'pull-left\'>' +
+function assembleEmotionsGroupDivHtml(emotionsGroupDivIndex, categoryDivHtml, arrowDivHtml, infoDivHtml) {
+	return emotionsGroupDivHtml = 
+		'<div id=\'' + getEmotionsGroupDivId(emotionsGroupDivIndex) + '\' style=\'display: none;\'>' + 
+			'<div name=\'emotionsTitleDiv\'>' + 
+				'<div name=\'emotionsCategoryDiv\' class=\'pull-left\'>' +
 					categoryDivHtml + 
 				'</div>' + 
 				'<div class=\'pull-right\' style=\'padding: 4px 0px;\'>' +
@@ -192,7 +192,7 @@ function assembleLoadedEmotionsGroupDivHtml(emotionsGroupDivIndex, categoryDivHt
 				'</div>' + 
 				'<div class=\'clearfix\'></div>' + 
 			'</div>' + 
-			'<div name=\'loadedEmotionsInfoDiv\'>' +
+			'<div name=\'emotionsInfoDiv\'>' +
 				infoDivHtml + 
 			'</div>' + 
 		'</div>';
@@ -232,28 +232,28 @@ function addEmotions(containerDivId) {
 					arrowDivHtml = 
 						'<button class=\'btn\' style=\'padding: 0px 10px;\' type=\'button\' disabled=\'disabled\'>&lt;</button>' + 
 						'&nbsp;&nbsp;' + 
-			    		'<button class=\'btn\' style=\'padding: 0px 10px;\' type=\'button\' onclick=\'showLoadedEmotionsGroupDiv("' + 
+			    		'<button class=\'btn\' style=\'padding: 0px 10px;\' type=\'button\' onclick=\'showEmotionsGroupDiv("' + 
 			    			containerDivId + '", ' + (emotionsGroupDivIndex + 1) + ')\'>&gt;</button>'; 
 				}
 			} else {
-				$('#' + containerDivId + ' #loadedEmotionsGroupDiv').append(
-					assembleLoadedEmotionsGroupDivHtml(lastEmotionsGroupDivIndex, categoryDivHtml, arrowDivHtml, infoDivHtml)
+				$('#' + containerDivId + ' #emotionsGroupDiv').append(
+					assembleEmotionsGroupDivHtml(lastEmotionsGroupDivIndex, categoryDivHtml, arrowDivHtml, infoDivHtml)
 				);
 				
 				lastEmotionsGroupDivIndex = emotionsGroupDivIndex;
 				
 				if (length - i <= 5) {
 					arrowDivHtml = 
-						'<button class=\'btn\' style=\'padding: 0px 10px;\' type=\'button\' onclick=\'showLoadedEmotionsGroupDiv("' + 
+						'<button class=\'btn\' style=\'padding: 0px 10px;\' type=\'button\' onclick=\'showEmotionsGroupDiv("' + 
 							containerDivId + '", ' + (emotionsGroupDivIndex - 1) + ')\'>&lt;</button>' + 
 						'&nbsp;&nbsp;' + 
 			    		'<button class=\'btn\' style=\'padding: 0px 10px;\' type=\'button\' disabled=\'disabled\'>&gt;</button>'; 
 				} else {
 					arrowDivHtml = 
-						'<button class=\'btn\' style=\'padding: 0px 10px;\' type=\'button\' onclick=\'showLoadedEmotionsGroupDiv("' + 
+						'<button class=\'btn\' style=\'padding: 0px 10px;\' type=\'button\' onclick=\'showEmotionsGroupDiv("' + 
 							containerDivId + '", ' + (emotionsGroupDivIndex - 1) + ')\'>&lt;</button>' + 
 						'&nbsp;&nbsp;' + 
-			    		'<button class=\'btn\' style=\'padding: 0px 10px;\' type=\'button\' onclick=\'showLoadedEmotionsGroupDiv("' + 
+			    		'<button class=\'btn\' style=\'padding: 0px 10px;\' type=\'button\' onclick=\'showEmotionsGroupDiv("' + 
 			    			containerDivId + '", ' + (emotionsGroupDivIndex + 1) + ')\'>&gt;</button>'; 
 				}
 			}
@@ -263,99 +263,99 @@ function addEmotions(containerDivId) {
 		}
 		
 		categoryDivHtml += 
-			'<div id=\'' + getLoadedEmotionsCategoryDivId(i) + '\' style=\'float: left; font-size:12px; padding: 4px 8px;\'>' + 
-				'<a href="javascript:void(0);" onclick="showLoadedEmotionsInfoDiv(\'' + containerDivId + '\', ' + emotionsGroupDivIndex + ', ' + i + ');" >' + 
+			'<div id=\'' + getEmotionsCategoryDivId(i) + '\' style=\'float: left; font-size:12px; padding: 4px 8px;\'>' + 
+				'<a href="javascript:void(0);" onclick="showEmotionsInfoDiv(\'' + containerDivId + '\', ' + emotionsGroupDivIndex + ', ' + i + ');" >' + 
 					category + 
 				'</a>' + 
 			'</div>';
 		
 		infoDivHtml += 
-			'<div id=\'' + getLoadedEmotionsInfoDivId(i) + '\'>' + 
+			'<div id=\'' + getEmotionsInfoDivId(i) + '\'>' + 
 			'</div>';
 		
 		if (i == length - 1) {
-			$('#' + containerDivId + ' #loadedEmotionsGroupDiv').append(
-				assembleLoadedEmotionsGroupDivHtml(lastEmotionsGroupDivIndex, categoryDivHtml, arrowDivHtml, infoDivHtml)
+			$('#' + containerDivId + ' #emotionsGroupDiv').append(
+				assembleEmotionsGroupDivHtml(lastEmotionsGroupDivIndex, categoryDivHtml, arrowDivHtml, infoDivHtml)
 			);
 		}
 	}
 	
-	showLoadedEmotionsGroupDiv(containerDivId, 0);
+	showEmotionsGroupDiv(containerDivId, 0);
 }
 
-function showLoadedEmotionsGroupDiv(containerDivId, emotionsGroupDivIndex) {
+function showEmotionsGroupDiv(containerDivId, emotionsGroupDivIndex) {
 	var expression;
 	
-	expression = $('#' + containerDivId + ' #loadedEmotionsGroupDiv > div');
+	expression = $('#' + containerDivId + ' #emotionsGroupDiv > div');
 	
 	for (i = 0; i < expression.size(); i++) {
-		var loadedEmotionsGroupDiv = expression.eq(i);
+		var emotionsGroupDiv = expression.eq(i);
 		
-		var id = loadedEmotionsGroupDiv.attr('id');
+		var id = emotionsGroupDiv.attr('id');
 		
-		if (getLoadedEmotionsGroupDivId(emotionsGroupDivIndex) == id) {
-			loadedEmotionsGroupDiv.show();
+		if (getEmotionsGroupDivId(emotionsGroupDivIndex) == id) {
+			emotionsGroupDiv.show();
 		} else {
-			loadedEmotionsGroupDiv.hide();
+			emotionsGroupDiv.hide();
 		}
 	}
 	
-	expression = $('#' + containerDivId + ' #' + getLoadedEmotionsGroupDivId(emotionsGroupDivIndex) + ' > div[name=loadedEmotionsInfoDiv] > div');
+	expression = $('#' + containerDivId + ' #' + getEmotionsGroupDivId(emotionsGroupDivIndex) + ' > div[name=emotionsInfoDiv] > div');
 	
 	empty = true;
 	
 	for (i = 0; i < expression.size(); i++) {
-		var loadedEmotionsInfoDiv = expression.eq(i);
+		var emotionsInfoDiv = expression.eq(i);
 	
-		if (loadedEmotionsInfoDiv.html() != '') {
+		if (emotionsInfoDiv.html() != '') {
 			empty = false;
 			break;
 		}
 	}
 	
 	if (empty) {
-		showLoadedEmotionsInfoDiv(containerDivId, emotionsGroupDivIndex, emotionsGroupDivIndex * 5);
+		showEmotionsInfoDiv(containerDivId, emotionsGroupDivIndex, emotionsGroupDivIndex * 5);
 	}
 }
 
-function showLoadedEmotionsInfoDiv(containerDivId, emotionsGroupDivIndex, emotionIndex) {
+function showEmotionsInfoDiv(containerDivId, emotionsGroupDivIndex, emotionIndex) {
 	var expression;
 	
-	expression = $('#' + containerDivId + ' #' + getLoadedEmotionsGroupDivId(emotionsGroupDivIndex) + ' > div[name=loadedEmotionsTitleDiv] > div[name=loadedEmotionsCategoryDiv] > div');
+	expression = $('#' + containerDivId + ' #' + getEmotionsGroupDivId(emotionsGroupDivIndex) + ' > div[name=emotionsTitleDiv] > div[name=emotionsCategoryDiv] > div');
 	
 	for (i = 0; i < expression.size(); i++) {
-		var loadedEmotionsCategoryDiv = expression.eq(i);
+		var emotionsCategoryDiv = expression.eq(i);
 		
-		var id = loadedEmotionsCategoryDiv.attr('id');
+		var id = emotionsCategoryDiv.attr('id');
 		
-		if (getLoadedEmotionsCategoryDivId(emotionIndex) == id) {
+		if (getEmotionsCategoryDivId(emotionIndex) == id) {
 			$('#' + containerDivId + ' #' + id + ' > a').eq(0).css('color', '#ffffff');
-			loadedEmotionsCategoryDiv.css('background', '#0088cc');
+			emotionsCategoryDiv.css('background', '#0088cc');
 		} else {
 			$('#' + containerDivId + ' #' + id + ' > a').eq(0).css('color', '#0088cc');
-			loadedEmotionsCategoryDiv.css('background', '#ffffff');
+			emotionsCategoryDiv.css('background', '#ffffff');
 		}
 	}
 	
-	expression = $('#' + containerDivId + ' #' + getLoadedEmotionsGroupDivId(emotionsGroupDivIndex) + ' > div[name=loadedEmotionsInfoDiv] > div');
+	expression = $('#' + containerDivId + ' #' + getEmotionsGroupDivId(emotionsGroupDivIndex) + ' > div[name=emotionsInfoDiv] > div');
 	
-	var selectedLoadedEmotionsInfoDiv;
+	var selectedEmotionsInfoDiv;
 	
 	for (i = 0; i < expression.size(); i++) {
-		var loadedEmotionsInfoDiv = expression.eq(i);
+		var emotionsInfoDiv = expression.eq(i);
 		
-		var id = loadedEmotionsInfoDiv.attr('id');
+		var id = emotionsInfoDiv.attr('id');
 		
-		if (getLoadedEmotionsInfoDivId(emotionIndex) == id) {
-			selectedLoadedEmotionsInfoDiv = loadedEmotionsInfoDiv;
+		if (getEmotionsInfoDivId(emotionIndex) == id) {
+			selectedEmotionsInfoDiv = emotionsInfoDiv;
 			
-			loadedEmotionsInfoDiv.show();
+			emotionsInfoDiv.show();
 		} else {
-			loadedEmotionsInfoDiv.hide();
+			emotionsInfoDiv.hide();
 		}
 	}
 	
-	if (selectedLoadedEmotionsInfoDiv.html() == '') {
+	if (selectedEmotionsInfoDiv.html() == '') {
 		var info = emotions[emotionIndex]['info'];
 		var hotInfo = info['hotInfo'];
 		var commonInfo = info['commonInfo'];
@@ -382,9 +382,9 @@ function showLoadedEmotionsInfoDiv(containerDivId, emotionsGroupDivIndex, emotio
 			hotInfoHtml += 
 				'</div>';
 			
-			selectedLoadedEmotionsInfoDiv.append(hotInfoHtml);
+			selectedEmotionsInfoDiv.append(hotInfoHtml);
 			
-			selectedLoadedEmotionsInfoDiv.append('<div class=\'clearfix\'></div>');
+			selectedEmotionsInfoDiv.append('<div class=\'clearfix\'></div>');
 		}
 		
 		if (commonInfo.length > 0) {
@@ -409,15 +409,15 @@ function showLoadedEmotionsInfoDiv(containerDivId, emotionsGroupDivIndex, emotio
 			commonInfoHtml += 
 				'</div>';
 			
-			selectedLoadedEmotionsInfoDiv.append(commonInfoHtml);
+			selectedEmotionsInfoDiv.append(commonInfoHtml);
 			
-			selectedLoadedEmotionsInfoDiv.append('<div class=\'clearfix\'></div>');
+			selectedEmotionsInfoDiv.append('<div class=\'clearfix\'></div>');
 		}
 	}
 }
 
 function insertEmotionValueToStatusText(containerDivId, emotionValue) {
-	closeLoadedEmotionsDiv(containerDivId);
+	closeEmotionsDiv(containerDivId);
 	
 	var currentStatusText = $('#' + containerDivId + ' #statusTextarea').val();
 	$('#' + containerDivId + ' #statusTextarea').val(currentStatusText + emotionValue);
@@ -425,21 +425,21 @@ function insertEmotionValueToStatusText(containerDivId, emotionValue) {
 	changeStatusText(containerDivId);
 }
 
-function closeLoadedEmotionsDiv(containerDivId) {
-	$('#' + containerDivId + ' #loadedEmotionsDiv').hide();
+function closeEmotionsDiv(containerDivId) {
+	$('#' + containerDivId + ' #emotionsDiv').hide();
 }
 
 function loadEmotions(containerDivId) {
 	var offset = $('#' + containerDivId + ' #emotionsLoadDiv').offset();
-	$('#' + containerDivId + ' #loadedEmotionsDiv').css('top', offset.top + 20);
-	$('#' + containerDivId + ' #loadedEmotionsDiv').css('left', offset.left);
+	$('#' + containerDivId + ' #emotionsDiv').css('top', offset.top + 20);
+	$('#' + containerDivId + ' #emotionsDiv').css('left', offset.left);
 	
 	var zIndex = $('#' + containerDivId + ' #statusMainFormDiv').css('z-index');
-	$('#' + containerDivId + ' #loadedEmotionsDiv').css('z-index', zIndex + 1);
+	$('#' + containerDivId + ' #emotionsDiv').css('z-index', zIndex + 1);
 	
-	$('#' + containerDivId + ' #loadedEmotionsDiv').show();
+	$('#' + containerDivId + ' #emotionsDiv').show();
 	
-	if ($('#' + containerDivId + ' #loadedEmotionsGroupDiv').html() == '') {
+	if ($('#' + containerDivId + ' #emotionsGroupDiv').html() == '') {
 		var emotionsLoadingDivHtml = 
 			'<div id=\'emotionsLoadingDiv\' style=\'margin: 20px 0px; text-align: center;\'>' + 
 				'<img src=\'img/loading.gif\' />' + 
@@ -453,7 +453,7 @@ function loadEmotions(containerDivId) {
 				url: 'action.php', 
 				data: {'action' : 'getEmotions', 'type' : 'face'},
 				beforeSend: function() {
-					$('#' + containerDivId + ' #loadedEmotionsGroupDiv').append(emotionsLoadingDivHtml);
+					$('#' + containerDivId + ' #emotionsGroupDiv').append(emotionsLoadingDivHtml);
 				},
 				success: function(data, textStatus) {
 					$('#' + containerDivId + ' #emotionsLoadingDiv').remove();
@@ -467,7 +467,7 @@ function loadEmotions(containerDivId) {
 						
 						addEmotions(containerDivId);
 					} else {
-						$('#' + containerDivId + ' #loadedEmotionsDiv').hide();
+						$('#' + containerDivId + ' #emotionsDiv').hide();
 						
 						$('#' + containerDivId + ' #extraControlErrorSpan').text('加载表情失败');
 						$('#' + containerDivId + ' #extraControlErrorDiv').show();
@@ -475,7 +475,7 @@ function loadEmotions(containerDivId) {
 				},
 				error : function(xmlHttpRequest, textStatus, errorThrown) {
 					$('#' + containerDivId + ' #emotionsLoadingDiv').remove();
-					$('#' + containerDivId + ' #loadedEmotionsDiv').hide();
+					$('#' + containerDivId + ' #emotionsDiv').hide();
 					
 					$('#' + containerDivId + ' #extraControlErrorSpan').text('加载表情失败');
 					$('#' + containerDivId + ' #extraControlErrorDiv').show();
@@ -487,34 +487,34 @@ function loadEmotions(containerDivId) {
 	}
 }
 
-function addPicture(containerDivId, uploadedPictureName, uploadedPicturePath, 
-		uploadedPictureThumbnailWidth, uploadedPictureThumbnailHeight) {
-	var uploadedPictureThumbnailName;
+function addPicture(containerDivId, pictureName, picturePath, 
+		pictureThumbnailWidth, pictureThumbnailHeight) {
+	var pictureThumbnailName;
 	
-	if (uploadedPictureName.length <= 10) {
-		uploadedPictureThumbnailName = uploadedPictureName;
+	if (pictureName.length <= 10) {
+		pictureThumbnailName = pictureName;
 	} else {
-		uploadedPictureThumbnailName = '...' + 
-			uploadedPictureName.substring(uploadedPictureName.length - 10, uploadedPictureName.length);
+		pictureThumbnailName = '...' + 
+			pictureName.substring(pictureName.length - 10, pictureName.length);
 	}
 	
-	$('#' + containerDivId + ' #uploadedPictureNameSpan').text(uploadedPictureName);
-	$('#' + containerDivId + ' #uploadedPictureThumbnailNameSpan').text(uploadedPictureThumbnailName);
-	$('#' + containerDivId + ' #uploadedPictureTitleDiv').show();
+	$('#' + containerDivId + ' #pictureNameSpan').text(pictureName);
+	$('#' + containerDivId + ' #pictureThumbnailNameSpan').text(pictureThumbnailName);
+	$('#' + containerDivId + ' #pictureTitleDiv').show();
 	
-	$('#' + containerDivId + ' #uploadedPictureInfoImg').attr('src', uploadedPicturePath);
+	$('#' + containerDivId + ' #pictureInfoImg').attr('src', picturePath);
 	
-	$('#' + containerDivId + ' #uploadedPictureInfoDiv').css('width', uploadedPictureThumbnailWidth);
-	$('#' + containerDivId + ' #uploadedPictureInfoDiv').css('height', uploadedPictureThumbnailHeight);
+	$('#' + containerDivId + ' #pictureInfoDiv').css('width', pictureThumbnailWidth);
+	$('#' + containerDivId + ' #pictureInfoDiv').css('height', pictureThumbnailHeight);
 	
-	var offset = $('#' + containerDivId + ' #uploadedPictureTitleDiv').offset();
-	$('#' + containerDivId + ' #uploadedPictureInfoDiv').css('top', offset.top + 20);
-	$('#' + containerDivId + ' #uploadedPictureInfoDiv').css('left', offset.left);
+	var offset = $('#' + containerDivId + ' #pictureTitleDiv').offset();
+	$('#' + containerDivId + ' #pictureInfoDiv').css('top', offset.top + 20);
+	$('#' + containerDivId + ' #pictureInfoDiv').css('left', offset.left);
 	
 	var zIndex = $('#' + containerDivId + ' #statusMainFormDiv').css('z-index');
-	$('#' + containerDivId + ' #uploadedPictureInfoDiv').css('z-index', zIndex + 1);
+	$('#' + containerDivId + ' #pictureInfoDiv').css('z-index', zIndex + 1);
 	
-	$('#' + containerDivId + ' #uploadedPictureInfoDiv').slideDown(1000).delay(1000).slideUp(1000);
+	$('#' + containerDivId + ' #pictureInfoDiv').slideDown(1000).delay(1000).slideUp(1000);
 }
 
 function uploadPicture(containerDivId) {
@@ -552,13 +552,13 @@ function uploadPicture(containerDivId) {
 			} else {
 				$('#' + containerDivId + ' #extraControlErrorDiv').hide();
 				
-				var uploadedPictureName = data['uploadedPictureName'];
-				var uploadedPicturePath = data['uploadedPicturePath'];
-				var uploadedPictureThumbnailWidth = data['uploadedPictureThumbnailWidth'];
-				var uploadedPictureThumbnailHeight = data['uploadedPictureThumbnailHeight'];
+				var pictureName = data['pictureName'];
+				var picturePath = data['picturePath'];
+				var pictureThumbnailWidth = data['pictureThumbnailWidth'];
+				var pictureThumbnailHeight = data['pictureThumbnailHeight'];
 				
-				addPicture(containerDivId, uploadedPictureName, uploadedPicturePath, 
-						uploadedPictureThumbnailWidth, uploadedPictureThumbnailHeight);
+				addPicture(containerDivId, pictureName, picturePath, 
+						pictureThumbnailWidth, pictureThumbnailHeight);
 			}
         },
         error : function(xmlHttpRequest, textStatus, errorThrown) {
@@ -571,22 +571,22 @@ function uploadPicture(containerDivId) {
     });
 }
 
-function openUploadedPictureInfoDiv(containerDivId) {
-	$('#' + containerDivId + ' #uploadedPictureInfoDiv').show();
+function openPictureInfoDiv(containerDivId) {
+	$('#' + containerDivId + ' #pictureInfoDiv').show();
 }
 
-function closeUploadedPictureInfoDiv(containerDivId) {
-	$('#' + containerDivId + ' #uploadedPictureInfoDiv').hide();
+function closePictureInfoDiv(containerDivId) {
+	$('#' + containerDivId + ' #pictureInfoDiv').hide();
 }
 
-function closeUploadedPictureDiv(containerDivId) {
+function closePictureDiv(containerDivId) {
 	$('#' + containerDivId + ' #pictureUploadInput').val('');
-	$('#' + containerDivId + ' #uploadedPictureNameSpan').text('');
-	$('#' + containerDivId + ' #uploadedPictureThumbnailNameSpan').text('');
-	$('#' + containerDivId + ' #uploadedPictureInfoImg').removeAttr("style");
-	$('#' + containerDivId + ' #uploadedPictureInfoImg').removeAttr('src');
+	$('#' + containerDivId + ' #pictureNameSpan').text('');
+	$('#' + containerDivId + ' #pictureThumbnailNameSpan').text('');
+	$('#' + containerDivId + ' #pictureInfoImg').removeAttr("style");
+	$('#' + containerDivId + ' #pictureInfoImg').removeAttr('src');
 	
-	$('#' + containerDivId + ' #uploadedPictureTitleDiv').hide();
+	$('#' + containerDivId + ' #pictureTitleDiv').hide();
 	$('#' + containerDivId + ' #pictureUploadDiv').show();
 }
 
@@ -680,8 +680,8 @@ function closeToBeSentStatusFormUpdateDiv() {
 	$('#toBeSentStatusFormUpdateDiv #statusTextarea').val('');
 	changeStatusText('toBeSentStatusFormUpdateDiv');
 	
-	closeLoadedEmotionsDiv('toBeSentStatusFormUpdateDiv');
-	closeUploadedPictureDiv('toBeSentStatusFormUpdateDiv');
+	closeEmotionsDiv('toBeSentStatusFormUpdateDiv');
+	closePictureDiv('toBeSentStatusFormUpdateDiv');
 	
 	$('#toBeSentStatusFormUpdateDiv #extraControlErrorDiv').hide();
 	$('#toBeSentStatusFormUpdateDiv #dateTimeErrorDiv').hide();
@@ -737,8 +737,8 @@ function getDateTimeStr(dateTime) {
 function updateToBeSentStatus() {
 	var id = $('#toBeSentStatusFormUpdateDiv #statusSendIdInput').val();
 	var text = $('#toBeSentStatusFormUpdateDiv #statusTextarea').val();
-	var pictureName = $('#toBeSentStatusFormUpdateDiv #uploadedPictureNameSpan').text();
-	var picturePath = $('#toBeSentStatusFormUpdateDiv #uploadedPictureInfoImg').attr('src');
+	var pictureName = $('#toBeSentStatusFormUpdateDiv #pictureNameSpan').text();
+	var picturePath = $('#toBeSentStatusFormUpdateDiv #pictureInfoImg').attr('src');
 	
 	if (pictureName == '') {
 		pictureName = undefined;
@@ -910,8 +910,8 @@ function sendStatusTimingly() {
 	}
 	
 	var text = $('#statusFormCreateDiv #statusTextarea').val();
-	var pictureName = $('#statusFormCreateDiv #uploadedPictureNameSpan').text();
-	var picturePath = $('#statusFormCreateDiv #uploadedPictureInfoImg').attr('src');
+	var pictureName = $('#statusFormCreateDiv #pictureNameSpan').text();
+	var picturePath = $('#statusFormCreateDiv #pictureInfoImg').attr('src');
 	
 	if (pictureName == '') {
 		pictureName = undefined;
@@ -940,8 +940,8 @@ function sendStatusTimingly() {
 				$('#statusFormCreateDiv #statusTextarea').val('');
 				changeStatusText('statusFormCreateDiv');
 				
-				closeLoadedEmotionsDiv('statusFormCreateDiv');
-				closeUploadedPictureDiv('statusFormCreateDiv');
+				closeEmotionsDiv('statusFormCreateDiv');
+				closePictureDiv('statusFormCreateDiv');
 				
 				$('#statusFormCreateDiv #extraControlErrorDiv').hide();
 				$('#statusFormCreateDiv #dateTimeErrorDiv').hide();
@@ -1094,8 +1094,8 @@ function addSentStatus(sentStatus) {
 
 function sendStatusImmediately() {
 	var text = $('#statusFormCreateDiv #statusTextarea').val();
-	var pictureName = $('#statusFormCreateDiv #uploadedPictureNameSpan').text();
-	var picturePath = $('#statusFormCreateDiv #uploadedPictureInfoImg').attr('src');
+	var pictureName = $('#statusFormCreateDiv #pictureNameSpan').text();
+	var picturePath = $('#statusFormCreateDiv #pictureInfoImg').attr('src');
 	
 	if (pictureName == '') {
 		pictureName = undefined;
@@ -1121,8 +1121,8 @@ function sendStatusImmediately() {
 				$('#statusFormCreateDiv #statusTextarea').val('');
 				changeStatusText('statusFormCreateDiv');
 				
-				closeLoadedEmotionsDiv('statusFormCreateDiv');
-				closeUploadedPictureDiv('statusFormCreateDiv');
+				closeEmotionsDiv('statusFormCreateDiv');
+				closePictureDiv('statusFormCreateDiv');
 				
 				$('#statusFormCreateDiv #extraControlErrorDiv').hide();
 				$('#statusFormCreateDiv #dateTimeErrorDiv').hide();

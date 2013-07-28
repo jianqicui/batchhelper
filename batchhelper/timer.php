@@ -49,8 +49,8 @@ $currentMenuItem = 'timer';
 		
 		<div class="row">
 			<div id="statusFormCreateDiv" class="span12">
-				<?php include 'loadedEmotions.html'; ?>
-				<?php include 'uploadedPictureInfo.html'; ?>
+				<?php include 'emotions.html'; ?>
+				<?php include 'pictureInfo.html'; ?>
 		
 				<div id="statusMainFormDiv" style="z-index: 0;">
 					<?php include 'statusMainForm.php'; ?>
@@ -79,8 +79,8 @@ $currentMenuItem = 'timer';
 		</div>
 		
 		<div id="toBeSentStatusFormUpdateDiv">
-			<?php include 'loadedEmotions.html'; ?>
-			<?php include 'uploadedPictureInfo.html'; ?>
+			<?php include 'emotions.html'; ?>
+			<?php include 'pictureInfo.html'; ?>
 			
 			<div id="statusMainFormDiv" class="modal hide" style="position: absolute; width: 600px; margin-left: -300px; margin-top: -250px;">
 				<div class="modal-header">

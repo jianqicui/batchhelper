@@ -515,49 +515,49 @@ function uploadPicture($storage, $fileElementName) {
 		);
 	}
 
-	$uploadedPicturePath;
-	$uploadedPictureThumbnailSize;
+	$picturePath;
+	$pictureThumbnailSize;
 	
 	if ('image/jpeg' == $fileType || 'image/pjpeg' == $fileType) {
-		$uploadedPicturePath = savePicture($storage, $fileTmpName, generateSerialNumber() . '.jpg');
+		$picturePath = savePicture($storage, $fileTmpName, generateSerialNumber() . '.jpg');
 		
-		if ($uploadedPicturePath == FALSE) {
+		if ($picturePath == FALSE) {
 			return array(
 					'error' => 'upload file failed',
 			);
 		}
 		
-		$image = imagecreatefromjpeg($uploadedPicturePath);
-		$uploadedPictureThumbnailSize = getPictureThumbnailSize(imagesx($image), imagesy($image));
+		$image = imagecreatefromjpeg($picturePath);
+		$pictureThumbnailSize = getPictureThumbnailSize(imagesx($image), imagesy($image));
 	} else if ('image/png' == $fileType || 'image/x-png' == $fileType) {
-		$uploadedPicturePath = savePicture($storage, $fileTmpName, generateSerialNumber() . '.png');
+		$picturePath = savePicture($storage, $fileTmpName, generateSerialNumber() . '.png');
 		
-		if ($uploadedPicturePath == FALSE) {
+		if ($picturePath == FALSE) {
 			return array(
 					'error' => 'upload file failed',
 			);
 		}
 		
-		$image = imagecreatefrompng($uploadedPicturePath);
-		$uploadedPictureThumbnailSize = getPictureThumbnailSize(imagesx($image), imagesy($image));
+		$image = imagecreatefrompng($picturePath);
+		$pictureThumbnailSize = getPictureThumbnailSize(imagesx($image), imagesy($image));
 	} else if ('image/gif' == $fileType) {
-		$uploadedPicturePath = savePicture($storage, $fileTmpName, generateSerialNumber() . '.gif');
+		$picturePath = savePicture($storage, $fileTmpName, generateSerialNumber() . '.gif');
 		
-		if ($uploadedPicturePath == FALSE) {
+		if ($picturePath == FALSE) {
 			return array(
 					'error' => 'upload file failed',
 			);
 		}
 		
-		$image = imagecreatefromgif($uploadedPicturePath);
-		$uploadedPictureThumbnailSize = getPictureThumbnailSize(imagesx($image), imagesy($image));
+		$image = imagecreatefromgif($picturePath);
+		$pictureThumbnailSize = getPictureThumbnailSize(imagesx($image), imagesy($image));
 	}
 	
 	return array(
-			'uploadedPictureName' => $fileName,
-			'uploadedPicturePath' => $uploadedPicturePath,
-			'uploadedPictureThumbnailWidth' => $uploadedPictureThumbnailSize['thumbnailWidth'],
-			'uploadedPictureThumbnailHeight' => $uploadedPictureThumbnailSize['thumbnailHeight'],
+			'pictureName' => $fileName,
+			'picturePath' => $picturePath,
+			'pictureThumbnailWidth' => $pictureThumbnailSize['thumbnailWidth'],
+			'pictureThumbnailHeight' => $pictureThumbnailSize['thumbnailHeight'],
 	);
 }
 
