@@ -819,10 +819,10 @@ function addToBeSentStatus(toBeSentStatus) {
 	var statusDateTime = toBeSentStatus['statusDateTime'];
 	
 	var pictureHtml;
-	var sendToBeSentStatusHtml;
 	var openToBeSentStatusFormUpdateHtml;
 	
 	var toBeSentStatusDeleteButtonId = 'toBeSentStatus_delete_button_' + id;
+	var toBeSentStatusSendButtonId = 'toBeSentStatus_send_button_' + id;
 	
 	if (statusPicturePath != undefined && 
 			statusPictureThumbnailWidth != undefined && 
@@ -838,12 +838,6 @@ function addToBeSentStatus(toBeSentStatus) {
 					'<img src="' + statusPicturePath + '"/>' + 
 				'</div>' + 
 			'</div>';
-		
-		sendToBeSentStatusHtml = 
-			'<div>' + 
-				'<a href="javascript:void(0);" onclick="sendToBeSentStatus(' + id + ', \'' + statusText + '\', \'' + 
-					statusPictureName + '\', \'' + statusPicturePath + '\')">立即发布</a>' + 
-			'</div>';
 			
 		openToBeSentStatusFormUpdateHtml = 
 			'<div>' + 
@@ -854,12 +848,6 @@ function addToBeSentStatus(toBeSentStatus) {
 			'</div>';
 	} else {
 		pictureHtml = '';
-		
-		sendToBeSentStatusHtml = 
-			'<div>' + 
-				'<a href="javascript:void(0);" onclick="sendToBeSentStatus(' + id + ', \'' + statusText + '\', ' + 
-					statusPictureName + ', ' + statusPicturePath + ')">立即发布</a>' + 
-			'</div>';
 			
 		openToBeSentStatusFormUpdateHtml = 
 			'<div>' + 
@@ -889,7 +877,9 @@ function addToBeSentStatus(toBeSentStatus) {
 				'</div>' + 
 			'</td>' + 
 			'<td style="border: gray; border-style: solid; border-width: 1px; text-align: center;">' + 
-				sendToBeSentStatusHtml +
+				'<div>' + 
+					'<a id="' + toBeSentStatusSendButtonId + '" href="javascript:void(0);">立即发布</a>' + 
+				'</div>' + 
 				openToBeSentStatusFormUpdateHtml + 
 				'<div>' + 
 					'<a id="' + toBeSentStatusDeleteButtonId + '" href="javascript:void(0);">删除记录</a>' + 
@@ -904,6 +894,16 @@ function addToBeSentStatus(toBeSentStatus) {
 		'message' : '<div style="width: 530px; word-wrap: break-word;">' + statusText + '</div>',
 		'action' : function() {
 			deleteToBeSentStatus(id);
+			
+			$('.confirm-modal').modal('hide');
+		}
+	});
+	
+	$('#' + toBeSentStatusSendButtonId).confirm({
+		'title' : '立即发布确认',
+		'message' : '<div style="width: 530px; word-wrap: break-word;">' + statusText + '</div>',
+		'action' : function() {
+			sendToBeSentStatus(id, statusText, statusPictureName, statusPicturePath);
 			
 			$('.confirm-modal').modal('hide');
 		}
