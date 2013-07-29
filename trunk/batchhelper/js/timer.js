@@ -878,7 +878,7 @@ function addToBeSentStatus(toBeSentStatus) {
 				'</div>' + 
 			'</td>' + 
 			'<td style="border: gray; border-style: solid; border-width: 1px;">' + 
-				'<div>' + 
+				'<div style="width: 600px; word-wrap: break-word;">' + 
 					statusText + 
         		'</div>' + 
         		pictureHtml + 
@@ -901,7 +901,7 @@ function addToBeSentStatus(toBeSentStatus) {
 	
 	$('#' + toBeSentStatusDeleteButtonId).confirm({
 		'title' : '删除记录确认',
-		'message' : statusText,
+		'message' : '<div style="width: 530px; word-wrap: break-word;">' + statusText + '</div>',
 		'action' : function() {
 			deleteToBeSentStatus(id);
 			
@@ -1081,7 +1081,7 @@ function addSentStatus(sentStatus) {
 				'</div>' + 
 			'</td>' + 
 			'<td style="border: gray; border-style: solid; border-width: 1px;">' + 
-				'<div>' + 
+				'<div style="width: 600px; word-wrap: break-word;">' + 
 					statusText + 
         		'</div>' + 
         		pictureHtml + 
@@ -1108,7 +1108,7 @@ function addSentStatus(sentStatus) {
 	
 	$('#' + sentStatusDeleteButtonId).confirm({
 		'title' : '删除记录确认',
-		'message' : statusText,
+		'message' : '<div style="width: 530px; word-wrap: break-word;">' + statusText + '</div>',
 		'action' : function() {
 			deleteSentStatus(id);
 			
@@ -1118,7 +1118,7 @@ function addSentStatus(sentStatus) {
 	
 	$('#' + statusDeleteButtonId).confirm({
 		'title' : '删除微博确认',
-		'message' : statusText,
+		'message' : '<div style="width: 530px; word-wrap: break-word;">' + statusText + '</div>',
 		'action' : function() {
 			deleteStatus(id, statusId);
 			
