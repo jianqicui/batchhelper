@@ -822,6 +822,8 @@ function addToBeSentStatus(toBeSentStatus) {
 	var sendToBeSentStatusHtml;
 	var openToBeSentStatusFormUpdateHtml;
 	
+	var toBeSentStatusDeleteButtonId = 'toBeSentStatus_delete_button_' + id;
+	
 	if (statusPicturePath != undefined && 
 			statusPictureThumbnailWidth != undefined && 
 			statusPictureThumbnailHeight != undefined) {
@@ -890,12 +892,22 @@ function addToBeSentStatus(toBeSentStatus) {
 				sendToBeSentStatusHtml +
 				openToBeSentStatusFormUpdateHtml + 
 				'<div>' + 
-					'<a href="javascript:void(0);" onclick="deleteToBeSentStatus(' + id + ')">删除记录</a>' + 
+					'<a id="' + toBeSentStatusDeleteButtonId + '" href="javascript:void(0);">删除记录</a>' + 
 				'</div>' + 
 			'</td>' + 
 		'</tr>';
 	
 	$('#toBeSentStatusesTbody').prepend(toBeSentStatusTrHtml);
+	
+	$('#' + toBeSentStatusDeleteButtonId).confirm({
+		'title' : '删除记录确认',
+		'message' : statusText,
+		'action' : function() {
+			deleteToBeSentStatus(id);
+			
+			$('.confirm-modal').modal('hide');
+		}
+	});
 }
 
 function sendStatusTimingly() {
@@ -1040,6 +1052,9 @@ function addSentStatus(sentStatus) {
 	
 	var pictureHtml;
 	
+	var sentStatusDeleteButtonId = 'sentStatus_delete_button_' + id;
+	var statusDeleteButtonId = 'status_delete_button_' + id;
+	
 	if (statusPicturePath != undefined && 
 			statusPictureThumbnailWidth != undefined && 
 			statusPictureThumbnailHeight != undefined) {
@@ -1081,15 +1096,35 @@ function addSentStatus(sentStatus) {
 					'<a href="http://api.t.sina.com.cn/' + uid + '/statuses/' + statusId + '" target="_blank">查看微博</a>' + 
 				'</div>' + 
 				'<div>' + 
-					'<a href="javascript:void(0);" onclick="deleteStatus(' + id + ', \'' + statusId + '\')">删除微博</a>' + 
+					'<a id="' + statusDeleteButtonId + '" href="javascript:void(0);">删除微博</a>' + 
 				'</div>' + 
 				'<div>' + 
-					'<a href="javascript:void(0);" onclick="deleteSentStatus(' + id + ')">删除记录</a>' + 
+					'<a id="' + sentStatusDeleteButtonId + '" href="javascript:void(0);">删除记录</a>' + 
 				'</div>' + 
 			'</td>' + 
 		'</tr>';
 	
 	$('#sentStatusesTbody').prepend(sentStatusTrHtml);
+	
+	$('#' + sentStatusDeleteButtonId).confirm({
+		'title' : '删除记录确认',
+		'message' : statusText,
+		'action' : function() {
+			deleteSentStatus(id);
+			
+			$('.confirm-modal').modal('hide');
+		}
+	});
+	
+	$('#' + statusDeleteButtonId).confirm({
+		'title' : '删除微博确认',
+		'message' : statusText,
+		'action' : function() {
+			deleteStatus(id, statusId);
+			
+			$('.confirm-modal').modal('hide');
+		}
+	});
 }
 
 function sendStatusImmediately() {
