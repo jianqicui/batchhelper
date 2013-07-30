@@ -639,7 +639,7 @@ function removeToBeSentStatus(id) {
 function deleteToBeSentStatus(id) {
 	$.ajax({
 		async: true, 
-		type: 'GET', 
+		type: 'POST', 
 		dataType: 'json', 
 		url: 'action.php', 
 		data: {'action' : 'deleteToBeSentStatus', 'id' : id},
@@ -760,7 +760,7 @@ function updateToBeSentStatus() {
 	
 	$.ajax({
 		async: true, 
-		type: 'GET', 
+		type: 'POST', 
 		dataType: 'json', 
 		url: 'action.php', 
 		data: {'action' : 'updateToBeSentStatus', 'id' : id , 'userId' : uid, 'text' : text, 
@@ -791,7 +791,7 @@ function updateToBeSentStatus() {
 function sendToBeSentStatus(id, statusText, statusPictureName, statusPicturePath) {
 	$.ajax({
 		async: true, 
-		type: 'GET', 
+		type: 'POST', 
 		dataType: 'json', 
 		url: 'action.php', 
 		data: {'action' : 'sendToBeSentStatus', 'id' : id , 'userId' : uid, 'text' : statusText, 
@@ -933,7 +933,7 @@ function sendStatusTimingly() {
 	
 	$.ajax({
 		async: true, 
-		type: 'GET', 
+		type: 'POST', 
 		dataType: 'json', 
 		url: 'action.php', 
 		data: {'action' : 'saveStatus', 'userId' : uid, 'text' : text, 
@@ -1009,7 +1009,7 @@ function removeSentStatus(id) {
 function deleteSentStatus(id) {
 	$.ajax({
 		async: true, 
-		type: 'GET', 
+		type: 'POST', 
 		dataType: 'json', 
 		url: 'action.php', 
 		data: {'action' : 'deleteSentStatus', 'id' : id},
@@ -1026,7 +1026,7 @@ function deleteSentStatus(id) {
 function deleteStatus(id, statusId) {
 	$.ajax({
 		async: true, 
-		type: 'GET', 
+		type: 'POST', 
 		dataType: 'json', 
 		url: 'action.php', 
 		data: {'action' : 'deleteStatus', 'id' : id , 'statusId' : statusId},
@@ -1138,7 +1138,7 @@ function sendStatusImmediately() {
 	
 	$.ajax({
 		async: true, 
-		type: 'GET', 
+		type: 'POST', 
 		dataType: 'json', 
 		url: 'action.php', 
 		data: {'action' : 'sendStatus', 'userId' : uid, 'text' : text, 'pictureName' : pictureName, 'picturePath' : picturePath},
