@@ -56,7 +56,7 @@
 				<div id="pictureTitleDiv" style="display: none;">
 					<span id="pictureNameSpan" style="display: none;"></span>
 				    <span id="pictureThumbnailNameSpan" style="cursor: pointer; font-weight: bold;"></span>
-				    <button id="pictureDivCloseButton" type="button" class="close" style="margin-left: 5px;">&times;</button>
+				    <button id="pictureDivCloseButton" type="button" class="close" style="margin-left: 5px; float: none;">&times;</button>
 				</div>
 			</div>
 			<div class="clearfix"></div>
