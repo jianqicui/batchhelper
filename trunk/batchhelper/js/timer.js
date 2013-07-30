@@ -435,7 +435,12 @@ function loadEmotions(containerDivId) {
 	$('#' + containerDivId + ' #emotionsDiv').css('left', offset.left);
 	
 	var zIndex = $('#' + containerDivId + ' #statusMainFormDiv').css('z-index');
-	$('#' + containerDivId + ' #emotionsDiv').css('z-index', zIndex + 1);
+	
+	if ('auto' == zIndex) {
+		$('#' + containerDivId + ' #emotionsDiv').css('z-index', 1);
+	} else {
+		$('#' + containerDivId + ' #emotionsDiv').css('z-index', parseInt(zIndex) + 1);
+	}
 	
 	$('#' + containerDivId + ' #emotionsDiv').show();
 	
@@ -512,7 +517,12 @@ function addPicture(containerDivId, pictureName, picturePath,
 	$('#' + containerDivId + ' #pictureInfoDiv').css('left', offset.left);
 	
 	var zIndex = $('#' + containerDivId + ' #statusMainFormDiv').css('z-index');
-	$('#' + containerDivId + ' #pictureInfoDiv').css('z-index', zIndex + 1);
+	
+	if ('auto' == zIndex) {
+		$('#' + containerDivId + ' #pictureInfoDiv').css('z-index', 1);
+	} else {
+		$('#' + containerDivId + ' #pictureInfoDiv').css('z-index', parseInt(zIndex) + 1);
+	}
 	
 	$('#' + containerDivId + ' #pictureInfoDiv').slideDown(1000).delay(1000).slideUp(1000);
 }

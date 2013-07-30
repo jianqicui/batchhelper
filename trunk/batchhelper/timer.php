@@ -53,7 +53,7 @@ $currentMenuItem = 'timer';
 				<?php include 'emotions.html'; ?>
 				<?php include 'pictureInfo.html'; ?>
 		
-				<div id="statusMainFormDiv" style="z-index: 0;">
+				<div id="statusMainFormDiv">
 					<?php include 'statusMainForm.php'; ?>
 				</div>
 			</div>
