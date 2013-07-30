@@ -759,26 +759,28 @@ function loadMyFriends() {
 			$('#myFriendsLoadButton').attr('class', 'btn btn-info btn-large disabled').attr('disabled', 'disabled');
 		},
 		success: function(data, textStatus) {
+			$('#myFriendsStatusProgressDiv').attr('class', 'alert alert-success').text('我的关注，加载成功。');
+			
 			var users = data['users'];
 
-			var nextCursor = data['nextCursor'];
-			var total = data['totalNumber'];
-			
-			// Update My Friends Cursor
-			myFriendsCursor = nextCursor;
+			if (users.length != 0) {
+				var nextCursor = data['nextCursor'];
+				var total = data['totalNumber'];
+				
+				// Update My Friends Cursor
+				myFriendsCursor = nextCursor;
 
-			// Show My Friends Total Count
-			$('#myFriendsTotalCountSpan').text(total);
-			
-			// Add My Friends
-			addFriendships('myFriends', users);
-			$('#myFriendsContentDiv').scrollTop($('#myFriendsContentDiv')[0].scrollHeight);
+				// Show My Friends Total Count
+				$('#myFriendsTotalCountSpan').text(total);
+				
+				// Add My Friends
+				addFriendships('myFriends', users);
+				$('#myFriendsContentDiv').scrollTop($('#myFriendsContentDiv')[0].scrollHeight);
 
-			if (nextCursor != 0) {
-				$('#myFriendsLoadButton').attr('class', 'btn btn-info btn-large').removeAttr('disabled');
+				if (nextCursor != 0) {
+					$('#myFriendsLoadButton').attr('class', 'btn btn-info btn-large').removeAttr('disabled');
+				}
 			}
-
-			$('#myFriendsStatusProgressDiv').attr('class', 'alert alert-success').text('我的关注，加载成功。');
 		}, 
 		error : function(xmlHttpRequest, textStatus, errorThrown) {
 			$('#myFriendsLoadButton').attr('class', 'btn btn-info btn-large').removeAttr('disabled');
@@ -801,26 +803,28 @@ function loadMyFollowers() {
 			$('#myFollowersLoadButton').attr('class', 'btn btn-info btn-large disabled').attr('disabled', 'disabled');
 		},
 		success: function(data, textStatus) {
+			$('#myFollowersStatusProgressDiv').attr('class', 'alert alert-success').text('我的粉丝，加载成功。');
+			
 			var users = data['users'];
 
-			var nextCursor = data['nextCursor'];
-			var total = data['totalNumber'];
+			if (users.length != 0) {
+				var nextCursor = data['nextCursor'];
+				var total = data['totalNumber'];
 
-			// Update My Followers Cursor
-			myFollowersCursor = nextCursor;
+				// Update My Followers Cursor
+				myFollowersCursor = nextCursor;
 
-			// Show My Followers Total Count
-			$('#myFollowersTotalCountSpan').text(total);
-			
-			// Add My Followers
-			addFriendships('myFollowers', users);
-			$('#myFollowersContentDiv').scrollTop($('#myFollowersContentDiv')[0].scrollHeight);
+				// Show My Followers Total Count
+				$('#myFollowersTotalCountSpan').text(total);
+				
+				// Add My Followers
+				addFriendships('myFollowers', users);
+				$('#myFollowersContentDiv').scrollTop($('#myFollowersContentDiv')[0].scrollHeight);
 
-			if (nextCursor != 0) {
-				$('#myFollowersLoadButton').attr('class', 'btn btn-info btn-large').removeAttr('disabled');
+				if (nextCursor != 0) {
+					$('#myFollowersLoadButton').attr('class', 'btn btn-info btn-large').removeAttr('disabled');
+				}
 			}
-
-			$('#myFollowersStatusProgressDiv').attr('class', 'alert alert-success').text('我的粉丝，加载成功。');
 		}, 
 		error : function(xmlHttpRequest, textStatus, errorThrown) {
 			$('#myFollowersLoadButton').attr('class', 'btn btn-info btn-large').removeAttr('disabled');
@@ -843,26 +847,28 @@ function loadOtherFriends() {
 			$('#otherFriendsLoadButton').attr('class', 'btn btn-info btn-large disabled').attr('disabled', 'disabled');
 		},
 		success: function(data, textStatus) {
+			$('#otherFriendsStatusProgressDiv').attr('class', 'alert alert-success').text('[' + otherFriendshipsMgntQueryName + ']的关注，加载成功。');
+			
 			var users = data['users'];
 
-			var nextCursor = data['nextCursor'];
-			var total = data['totalNumber'];
+			if (users.length != 0) {
+				var nextCursor = data['nextCursor'];
+				var total = data['totalNumber'];
 
-			// Update Other Friends Cursor
-			otherFriendsCursor = nextCursor;
+				// Update Other Friends Cursor
+				otherFriendsCursor = nextCursor;
 
-			// Show Other Friends Total Count
-			$('#otherFriendsTotalCountSpan').text(total);
+				// Show Other Friends Total Count
+				$('#otherFriendsTotalCountSpan').text(total);
 
-			// Add Other Friends
-			addFriendships('otherFriends', users);
-			$('#otherFriendsContentDiv').scrollTop($('#otherFriendsContentDiv')[0].scrollHeight);
+				// Add Other Friends
+				addFriendships('otherFriends', users);
+				$('#otherFriendsContentDiv').scrollTop($('#otherFriendsContentDiv')[0].scrollHeight);
 
-			if (nextCursor != 0) {
-				$('#otherFriendsLoadButton').attr('class', 'btn btn-info btn-large').removeAttr('disabled');
+				if (nextCursor != 0) {
+					$('#otherFriendsLoadButton').attr('class', 'btn btn-info btn-large').removeAttr('disabled');
+				}
 			}
-
-			$('#otherFriendsStatusProgressDiv').attr('class', 'alert alert-success').text('[' + otherFriendshipsMgntQueryName + ']的关注，加载成功。');
 		}, 
 		error : function(xmlHttpRequest, textStatus, errorThrown) {
 			$('#otherFriendsLoadButton').attr('class', 'btn btn-info btn-large').removeAttr('disabled');
@@ -885,26 +891,28 @@ function loadOtherFollowers() {
 			$('#otherFollowersLoadButton').attr('class', 'btn btn-info btn-large disabled').attr('disabled', 'disabled');
 		},
 		success: function(data, textStatus) {
+			$('#otherFollowersStatusProgressDiv').attr('class', 'alert alert-success').text('[' + otherFriendshipsMgntQueryName + ']的粉丝，加载成功。');
+			
 			var users = data['users'];
 
-			var nextCursor = data['nextCursor'];
-			var total = data['totalNumber'];
+			if (users.length != 0) {
+				var nextCursor = data['nextCursor'];
+				var total = data['totalNumber'];
 
-			// Update Other Followers Cursor
-			otherFollowersCursor = nextCursor;
+				// Update Other Followers Cursor
+				otherFollowersCursor = nextCursor;
 
-			// Show Other Followers Total Count
-			$('#otherFollowersTotalCountSpan').text(total);
-			
-			// Add Other Followers
-			addFriendships('otherFollowers', users);
-			$('#otherFollowersContentDiv').scrollTop($('#otherFollowersContentDiv')[0].scrollHeight);
+				// Show Other Followers Total Count
+				$('#otherFollowersTotalCountSpan').text(total);
+				
+				// Add Other Followers
+				addFriendships('otherFollowers', users);
+				$('#otherFollowersContentDiv').scrollTop($('#otherFollowersContentDiv')[0].scrollHeight);
 
-			if (nextCursor != 0) {
-				$('#otherFollowersLoadButton').attr('class', 'btn btn-info btn-large').removeAttr('disabled');
+				if (nextCursor != 0) {
+					$('#otherFollowersLoadButton').attr('class', 'btn btn-info btn-large').removeAttr('disabled');
+				}
 			}
-
-			$('#otherFollowersStatusProgressDiv').attr('class', 'alert alert-success').text('[' + otherFriendshipsMgntQueryName + ']的粉丝，加载成功。');
 		}, 
 		error : function(xmlHttpRequest, textStatus, errorThrown) {
 			$('#otherFollowersLoadButton').attr('class', 'btn btn-info btn-large').removeAttr('disabled');
@@ -990,7 +998,7 @@ function destroyMyFriendsFriendships() {
 	// Destroy Friendships
 	$.ajax({
 		async: true, 
-		type: 'GET', 
+		type: 'POST', 
 		dataType: 'text', 
 		url: 'action.php', 
 		data: {'action' : 'destroyFriendships', 'userIds' : myFriendsSelectedIds.join(',')}, 
@@ -1026,7 +1034,7 @@ function createMyFollowersFriendships() {
 	// Create Friendships
 	$.ajax({
 		async: true, 
-		type: 'GET', 
+		type: 'POST', 
 		dataType: 'text', 
 		url: 'action.php', 
 		data: {'action' : 'createFriendships', 'userIds' : myFollowersSelectedIds.join(',')}, 
@@ -1062,7 +1070,7 @@ function createOtherFriendsFriendships() {
 	// Create Friendships
 	$.ajax({
 		async: true, 
-		type: 'GET', 
+		type: 'POST', 
 		dataType: 'text', 
 		url: 'action.php', 
 		data: {'action' : 'createFriendships', 'userIds' : otherFriendsSelectedIds.join(',')}, 
@@ -1098,7 +1106,7 @@ function createOtherFollowersFriendships() {
 	// Create Friendships
 	$.ajax({
 		async: true, 
-		type: 'GET', 
+		type: 'POST', 
 		dataType: 'text', 
 		url: 'action.php', 
 		data: {'action' : 'createFriendships', 'userIds' : otherFollowersSelectedIds.join(',')}, 
