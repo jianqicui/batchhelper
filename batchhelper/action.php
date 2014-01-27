@@ -197,6 +197,18 @@ if ('getRateLimit' == $action) {
 	$response = deleteStatus($tClientV2, $id, $statusId);
 	
 	echo json_encode($response);
+} else if ('uploadStatus' == $action) {
+	$text = $_REQUEST['text'];
+	
+	$picturePath = NULL;
+	
+	if (isset($_REQUEST['picturePath'])) {
+		$picturePath = $_REQUEST['picturePath'];
+	}
+	
+	$response = uploadStatus($tClientV2, $text, $picturePath);
+	
+	echo json_encode($response);
 }
 
 function minIntValue($intArray) {
@@ -950,5 +962,18 @@ function deleteStatus($tClientV2, $id, $statusId) {
 	mysql_close($con);
 
 	return $deleteStatusResponse;
+}
+
+//Upload Status
+function uploadStatus($tClientV2, $text, $picturePath) {
+	$response;
+	
+	if (isset($picturePath)) {
+		$response = $tClientV2->upload($text, $picturePath);
+	} else {
+		$response = $tClientV2->update($text);
+	}
+	
+	return $response;
 }
 ?>
