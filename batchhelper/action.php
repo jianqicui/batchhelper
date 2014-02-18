@@ -209,6 +209,25 @@ if ('getRateLimit' == $action) {
 	$response = uploadStatus($tClientV2, $text, $picturePath);
 	
 	echo json_encode($response);
+} else if ('queryFollowersIds' == $action) {
+	$userId = NULL;
+	
+	if (isset($_REQUEST['userId'])) {
+		$userId = $_REQUEST['userId'];
+	}
+	
+	$userName = NULL;
+	
+	if (isset($_REQUEST['userName'])) {
+		$userName = $_REQUEST['userName'];
+	}
+	
+	$cursor = $_REQUEST['cursor'];
+	$count = $_REQUEST['count'];
+	
+	$response = queryFollowersIds($tClientV2, $userId, $userName, $cursor, $count);
+	
+	echo json_encode($response);
 }
 
 function minIntValue($intArray) {
@@ -974,6 +993,19 @@ function uploadStatus($tClientV2, $text, $picturePath) {
 		$response = $tClientV2->update($text);
 	}
 	
+	return $response;
+}
+
+//Query Followers Ids
+function queryFollowersIds($tClientV2, $userId, $userName, $cursor, $count) {
+	$response;
+
+	if (isset($userId)) {
+		$response = $tClientV2->followers_ids_by_id($userId, $cursor, $count);
+	} else if (isset($userName)) {
+		$response = $tClientV2->followers_ids_by_name($userName, $cursor, $count);
+	}
+
 	return $response;
 }
 ?>
