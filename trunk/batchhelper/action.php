@@ -1008,4 +1008,18 @@ function queryFollowersIds($tClientV2, $userId, $userName, $cursor, $count) {
 
 	return $response;
 }
+
+//Create Friendship
+function createFriendship($tClientV2, $userId) {
+	$response = $tClientV2->follow_by_id($userId);
+
+	return $response;
+}
+
+//Destroy Friendship
+function destroyFriendship($tClientV2, $userId) {
+	$response = $tClientV2->unfollow_by_id($userId);
+
+	return $response;
+}
 ?>
