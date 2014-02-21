@@ -228,6 +228,18 @@ if ('getRateLimit' == $action) {
 	$response = queryFollowersIds($tClientV2, $userId, $userName, $cursor, $count);
 	
 	echo json_encode($response);
+} else if ('createFriendship' == $action) {
+	$userId = $_REQUEST['userId'];
+	
+	$response = createFriendship($tClientV2, $userId);
+	
+	echo $response;
+} else if ('destroyFriendship' == $action) {
+	$userId = $_REQUEST['userId'];
+	
+	$response = destroyFriendship($tClientV2, $userId);
+	
+	echo $response;
 }
 
 function minIntValue($intArray) {
@@ -1013,13 +1025,21 @@ function queryFollowersIds($tClientV2, $userId, $userName, $cursor, $count) {
 function createFriendship($tClientV2, $userId) {
 	$response = $tClientV2->follow_by_id($userId);
 
-	return $response;
+	if (!isset($response['error']) && !isset($response['error_code'])) {
+		return $response['idstr'];
+	} else {
+		return '';
+	}
 }
 
 //Destroy Friendship
 function destroyFriendship($tClientV2, $userId) {
 	$response = $tClientV2->unfollow_by_id($userId);
 
-	return $response;
+	if (!isset($response['error']) && !isset($response['error_code'])) {
+		return $response['idstr'];
+	} else {
+		return '';
+	}
 }
 ?>
