@@ -610,9 +610,10 @@ class SaeTClientV2
 	 * @param int $trim_user 返回值中user信息开关，0：返回完整的user信息、1：user字段仅返回uid，默认为0。
 	 * @return array
 	 */
-	function user_timeline_by_id( $uid = NULL , $page = 1 , $count = 50 , $since_id = 0, $max_id = 0, $feature = 0, $trim_user = 0, $base_app = 0)
+	function user_timeline_by_id( $source = NULL , $uid = NULL , $page = 1 , $count = 50 , $since_id = 0, $max_id = 0, $feature = 0, $trim_user = 0, $base_app = 0)
 	{
 		$params = array();
+		$params['source']=$source;
 		$params['uid']=$uid;
 		if ($since_id) {
 			$this->id_format($since_id);
@@ -1495,6 +1496,12 @@ class SaeTClientV2
 		return $this->oauth->get( 'users/show_batch', $params );
 	}
 
+	function users_counts( $uids ) 
+	{
+		$params = array();
+		$params['uids'] = $uids;
+		return $this->oauth->get( 'users/counts', $params );
+	}
 
 	/**
 	 * 获取用户的关注列表

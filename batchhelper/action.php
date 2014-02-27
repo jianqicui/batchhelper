@@ -228,6 +228,12 @@ if ('getRateLimit' == $action) {
 	$response = queryFollowersIds($tClientV2, $userId, $userName, $cursor, $count);
 	
 	echo json_encode($response);
+} else if ('queryUsersCounts' == $action) {
+	$userIds = $_REQUEST['userIds'];
+	
+	$response = queryUsersCounts($tClientV2, $userIds);
+	
+	echo json_encode($response);
 }
 
 function minIntValue($intArray) {
@@ -1006,6 +1012,13 @@ function queryFollowersIds($tClientV2, $userId, $userName, $cursor, $count) {
 		$response = $tClientV2->followers_ids_by_name($userName, $cursor, $count);
 	}
 
+	return $response;
+}
+
+//Query Users Counts
+function queryUsersCounts($tClientV2, $userIds) {
+	$response = $tClientV2->users_counts($userIds);
+	
 	return $response;
 }
 ?>
