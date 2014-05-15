@@ -209,31 +209,6 @@ if ('getRateLimit' == $action) {
 	$response = uploadStatus($tClientV2, $text, $picturePath);
 	
 	echo json_encode($response);
-} else if ('queryFollowersIds' == $action) {
-	$userId = NULL;
-	
-	if (isset($_REQUEST['userId'])) {
-		$userId = $_REQUEST['userId'];
-	}
-	
-	$userName = NULL;
-	
-	if (isset($_REQUEST['userName'])) {
-		$userName = $_REQUEST['userName'];
-	}
-	
-	$cursor = $_REQUEST['cursor'];
-	$count = $_REQUEST['count'];
-	
-	$response = queryFollowersIds($tClientV2, $userId, $userName, $cursor, $count);
-	
-	echo json_encode($response);
-} else if ('queryUsersCounts' == $action) {
-	$userIds = $_REQUEST['userIds'];
-	
-	$response = queryUsersCounts($tClientV2, $userIds);
-	
-	echo json_encode($response);
 }
 
 function minIntValue($intArray) {
