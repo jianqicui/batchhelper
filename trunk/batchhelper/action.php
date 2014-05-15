@@ -1001,24 +1001,4 @@ function uploadStatus($tClientV2, $text, $picturePath) {
 	
 	return $response;
 }
-
-//Query Followers Ids
-function queryFollowersIds($tClientV2, $userId, $userName, $cursor, $count) {
-	$response;
-
-	if (isset($userId)) {
-		$response = $tClientV2->followers_ids_by_id($userId, $cursor, $count);
-	} else if (isset($userName)) {
-		$response = $tClientV2->followers_ids_by_name($userName, $cursor, $count);
-	}
-
-	return $response;
-}
-
-//Query Users Counts
-function queryUsersCounts($tClientV2, $userIds) {
-	$response = $tClientV2->users_counts($userIds);
-	
-	return $response;
-}
 ?>
