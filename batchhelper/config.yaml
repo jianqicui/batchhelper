@@ -8,5 +8,10 @@ cron:
     
     - description: cleanPictures
     url: cron.php?action=cleanPictures
-    schedule: every 12 hours
+    schedule: every 1 hour
+    timezone: Beijing
+    
+    - description: collectStatuses
+    url: cron.php?action=collectStatuses
+    schedule: every 5 mins
     timezone: Beijing

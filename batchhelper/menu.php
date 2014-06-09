@@ -7,11 +7,18 @@
     			if ('friendshipsMgnt' == $currentMenuItem) {
     				$menuItemsHtml = 
     					'<li class="active"><a href="friendshipsMgnt.php">关注/粉丝管理</a></li>
-    					<li><a href="timer.php">定时器</a></li>';
+    					<li><a href="timer.php">定时器</a></li>
+    					<li><a href="contentLib.php">内容库</a></li>';
     			} else if ('timer' == $currentMenuItem) {
     				$menuItemsHtml =
 	    				'<li><a href="friendshipsMgnt.php">关注/粉丝管理</a></li>
-				    	<li class="active"><a href="timer.php">定时器</a></li>';
+				    	<li class="active"><a href="timer.php">定时器</a></li>
+    					<li><a href="contentLib.php">内容库</a></li>';
+    			} else if ('contentLib' == $currentMenuItem) {
+    				$menuItemsHtml =
+    					'<li><a href="friendshipsMgnt.php">关注/粉丝管理</a></li>
+    					<li><a href="timer.php">定时器</a></li>
+    					<li class="active"><a href="contentLib.php">内容库</a></li>';
     			}
     			
     			echo $menuItemsHtml;
