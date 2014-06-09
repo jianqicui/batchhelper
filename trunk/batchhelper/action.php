@@ -209,6 +209,19 @@ if ('getRateLimit' == $action) {
 	$response = uploadStatus($tClientV2, $text, $picturePath);
 	
 	echo json_encode($response);
+} else if ('getTypes' == $action) {
+	$response = getTypes();
+	
+	echo json_encode($response);
+} else if ('getStatusesByTypeCode' == $action) {
+	$typeCode = $_REQUEST['typeCode'];
+	
+	$page = $_REQUEST['page'];
+	$count = $_REQUEST['count'];
+	
+	$response = getStatusesByTypeCode($typeCode, $page, $count);
+	
+	echo json_encode($response);
 }
 
 function minIntValue($intArray) {
@@ -612,7 +625,7 @@ function saveStatus($tClientV2, $userId, $text, $pictureName, $picturePath, $dat
 	
 	$sql = 'insert into timer_to_be_sent_statuses (
 		user_id, status_text, status_picture_name, status_picture_path, status_datetime, access_token)
-		values (\'' . $userId . '\', \'' . $text. '\', \'' . 
+		values (\'' . $userId . '\', \'' . mysql_escape_string($text). '\', \'' . 
 		$pictureName . '\', \'' . $picturePath. '\', \'' . $datetime . '\', \'' . $accessToken . '\')';
 	
 	$saveStatusResponse;
@@ -692,7 +705,7 @@ function sendStatus($tClientV2, $userId, $text, $pictureName, $picturePath) {
 		
 		$sql = 'insert into timer_sent_statuses (
 			user_id, status_id, status_text, status_picture_name, status_picture_path, status_datetime)
-			values (\'' . $userId . '\', \'' . $statusId . '\', \'' . $statusText . '\', \'' . 
+			values (\'' . $userId . '\', \'' . $statusId . '\', \'' . mysql_escape_string($statusText) . '\', \'' . 
 			$pictureName . '\', \'' . $statusPicturePath . '\', \'' . $statusDateTime . '\')';
 		
 		if (mysql_query($sql)) {
@@ -812,7 +825,7 @@ function updateToBeSentStatus($id, $userId, $text, $pictureName, $picturePath, $
 	mysql_select_db(MYSQL_DB, $con);
 	
 	$sql = 'update timer_to_be_sent_statuses 
-		set user_id = \'' . $userId . '\', status_text = \'' . $text . '\', 
+		set user_id = \'' . $userId . '\', status_text = \'' . mysql_escape_string($text) . '\', 
 		status_picture_name = \'' . $pictureName . '\', status_picture_path = \'' . $picturePath . '\', 
 		status_datetime = \'' . $datetime . '\'
 		where id = ' . $id;
@@ -868,7 +881,7 @@ function sendToBeSentStatus($tClientV2, $id, $userId, $text, $pictureName, $pict
 	
 		$sql = 'insert into timer_sent_statuses (
 			user_id, status_id, status_text, status_picture_name, status_picture_path, status_datetime)
-			values (\'' . $userId . '\', \'' . $statusId . '\', \'' . $statusText . '\', \'' .
+			values (\'' . $userId . '\', \'' . $statusId . '\', \'' . mysql_escape_string($statusText) . '\', \'' .
 			$pictureName . '\', \'' . $statusPicturePath . '\', \'' . $statusDateTime . '\')';
 	
 		if (mysql_query($sql)) {
@@ -975,5 +988,78 @@ function uploadStatus($tClientV2, $text, $picturePath) {
 	}
 	
 	return $response;
+}
+
+function getTypes() {
+	$con = mysql_connect(MYSQL_HOST . ':' . MYSQL_PORT, MYSQL_USER, MYSQL_PASS);
+	mysql_query("SET NAMES 'UTF8'");
+	
+	if (!$con) {
+		die('Could not connect: ' . mysql_error());
+	}
+	
+	mysql_select_db(MYSQL_DB, $con);
+	
+	$sql = 'select code, name from contentlib_types order by id';
+	
+	$result = mysql_query($sql);
+	
+	$types = array();
+	
+	while ($row = mysql_fetch_array($result)) {
+		$code = $row['code'];
+		$name = $row['name'];
+	
+		array_push($types, array(
+				'code' => $code,
+				'name' => $name,
+		));
+	}
+	
+	mysql_close($con);
+	
+	return $types;
+}
+
+function getStatusesByTypeCode($typeCode, $page, $count) {
+	$con = mysql_connect(MYSQL_HOST . ':' . MYSQL_PORT, MYSQL_USER, MYSQL_PASS);
+	mysql_query("SET NAMES 'UTF8'");
+	
+	if (!$con) {
+		die('Could not connect: ' . mysql_error());
+	}
+	
+	mysql_select_db(MYSQL_DB, $con);
+	
+	$sql = 'select id, status_text, status_picture_path from contentlib_type' . $typeCode . '_statuses order by id desc limit ' . $page * $count . ', ' . $count;
+	
+	$result = mysql_query($sql);
+	
+	$statuses = array();
+	
+	while ($row = mysql_fetch_array($result)) {
+		$id = $row['id'];
+		$statusText = $row['status_text'];
+		$statusPicturePath = $row['status_picture_path'];
+	
+		array_push($statuses, array(
+				'statusId' => $id,
+				'statusText' => $statusText,
+				'statusPicturePath' => $statusPicturePath,
+		));
+	}
+	
+	$sql = 'select count(*) as num from contentlib_type' . $typeCode . '_statuses';
+	
+	$result = mysql_query($sql);
+	$row = mysql_fetch_array($result);
+	$totalNumber = $row['num'];
+	
+	mysql_close($con);
+	
+	return array(
+			'statuses' => $statuses,
+			'totalNumber' => $totalNumber,
+	);
 }
 ?>

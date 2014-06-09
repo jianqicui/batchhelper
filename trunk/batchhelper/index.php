@@ -4,37 +4,31 @@ include_once( 'saetv2.ex.class.php' );
 
 session_start();
 
-if (isset($_SESSION['saeTClientV2'])) {
+$tOAuthV2 = new SaeTOAuthV2( WB_AKEY , WB_SKEY );
+
+if (isset($_REQUEST['code'])) {
+	$keys = array();
+	$keys['code'] = $_REQUEST['code'];
+	$keys['redirect_uri'] = WB_CALLBACK_URL;
+	
+	$token = $tOAuthV2->getAccessToken( 'code', $keys ) ;
+	$tOAuthV2->access_token = $token['access_token'];
+	
+	$_SESSION['saeTClientV2'] = new SaeTClientV2( $tOAuthV2 );
+	
+	setcookie( 'weibojs_'.$tOAuthV2->client_id, http_build_query($token) );
+	
 	header('Location: main.php');
 	
 	exit;
 } else {
-	$tOAuthV2 = new SaeTOAuthV2( WB_AKEY , WB_SKEY );
+	$forcelogin = FALSE;
 	
-	if (isset($_REQUEST['code'])) {
-		$keys = array();
-		$keys['code'] = $_REQUEST['code'];
-		$keys['redirect_uri'] = WB_CALLBACK_URL;
-		
-		$token = $tOAuthV2->getAccessToken( 'code', $keys ) ;
-		$tOAuthV2->access_token = $token['access_token'];
-		
-		$_SESSION['saeTClientV2'] = new SaeTClientV2( $tOAuthV2 );
-		
-		setcookie( 'weibojs_'.$tOAuthV2->client_id, http_build_query($token) );
-		
-		header('Location: main.php');
-		
-		exit;
-	} else {
-		$forcelogin = FALSE;
-		
-		if (isset($_REQUEST['forcelogin'])) {
-			$forcelogin = TRUE;
-		}
-		
-		$codeUrl = $tOAuthV2->getAuthorizeURL( WB_CALLBACK_URL, 'code', NULL, NULL, $forcelogin );
+	if (isset($_REQUEST['forcelogin'])) {
+		$forcelogin = TRUE;
 	}
+	
+	$codeUrl = $tOAuthV2->getAuthorizeURL( WB_CALLBACK_URL, 'code', NULL, NULL, $forcelogin );
 }
 ?>
 
