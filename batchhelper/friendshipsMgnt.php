@@ -75,8 +75,8 @@ $currentMenuItem = 'friendshipsMgnt';
 				<ul class="nav nav-tabs" style="cursor: pointer;">
 					<li><a id="myFriendsMgntTab">我的关注</a></li>
 					<li><a id="myFollowersMgntTab">我的粉丝</a></li>
-					<li><a id="otherFriendsMgntTab">TA的关注</a></li>
-					<li><a id="otherFollowersMgntTab">TA的粉丝</a></li>
+					<li style="display: none;"><a id="otherFriendsMgntTab">TA的关注</a></li>
+					<li style="display: none;"><a id="otherFollowersMgntTab">TA的粉丝</a></li>
 				</ul>
 			</div>
 		</div>
