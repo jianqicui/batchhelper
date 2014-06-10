@@ -19,12 +19,12 @@ mysql_select_db(MYSQL_DB, $con);
 
 if ('sendStatuses' == $action) {
 	/*
-	$sql = 'select id, user_id, status_text, status_picture_name, status_picture_path, access_token from timer_to_be_sent_statuses
-	where \'2013-07-25 14:38\' = date_format(status_datetime, \'%Y-%m-%d %H:%i\')';
+	$sql = 'select id, user_id, status_text, status_picture_name, status_picture_path, access_token from timer_tobesent_statuses
+	where \'2013-07-25 14:38\' >= date_format(status_datetime, \'%Y-%m-%d %H:%i\')';
 	*/
 
-	$sql = 'select id, user_id, status_text, status_picture_name, status_picture_path, access_token from timer_to_be_sent_statuses
-		where date_format(now(), \'%Y-%m-%d %H:%i\') = date_format(status_datetime, \'%Y-%m-%d %H:%i\')';
+	$sql = 'select id, user_id, status_text, status_picture_name, status_picture_path, access_token from timer_tobesent_statuses
+		where date_format(now(), \'%Y-%m-%d %H:%i\') >= date_format(status_datetime, \'%Y-%m-%d %H:%i\')';
 
 	$result = mysql_query($sql);
 
@@ -74,7 +74,7 @@ if ('sendStatuses' == $action) {
 			$failedCount++;
 		}
 
-		$sql = 'delete from timer_to_be_sent_statuses where id = ' . $id;
+		$sql = 'delete from timer_tobesent_statuses where id = ' . $id;
 			
 		mysql_query($sql);
 	}
@@ -89,7 +89,7 @@ if ('sendStatuses' == $action) {
 	for ($i = 0; $i < count($pictureNames); $i++) {
 		$pictureName = $pictureNames[$i];
 
-		$sql = 'select count(*) as num from timer_to_be_sent_statuses where status_picture_path like \'%' . $pictureName . '\'';
+		$sql = 'select count(*) as num from timer_tobesent_statuses where status_picture_path like \'%' . $pictureName . '\'';
 		$result = mysql_query($sql);
 		$row = mysql_fetch_array($result);
 		$num = $row['num'];

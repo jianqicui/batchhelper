@@ -2,7 +2,7 @@ drop database batchhelper;
 create database if not exists batchhelper default charset utf8 collate utf8_general_ci;
 
 //timer
-create table timer_to_be_sent_statuses (
+create table timer_tobesent_statuses (
   id int not null auto_increment,
   user_id varchar(20) not null,
   status_text varchar(288) not null,
@@ -24,15 +24,15 @@ create table timer_sent_statuses (
   primary key (id)
 );
 
-insert into timer_to_be_sent_statuses (user_id, status_text, status_picture_name, status_picture_path, status_datetime, access_token)
+insert into timer_tobesent_statuses (user_id, status_text, status_picture_name, status_picture_path, status_datetime, access_token)
 values ('3042520825', 'status_text', 'a.jpg', 'upload/a.jpg', '2008-08-08 22:28:44', '2.00XeGu_DoQdSfD46b1776b20nIWTCD')
 
-select id, status_text, status_picture_name, status_picture_path, status_datetime from timer_to_be_sent_statuses
+select id, status_text, status_picture_name, status_picture_path, status_datetime from timer_tobesent_statuses
 where user_id = '3042520825'
 
-delete from timer_to_be_sent_statuses where id = 1
+delete from timer_tobesent_statuses where id = 1
 
-update timer_to_be_sent_statuses 
+update timer_tobesent_statuses 
 set user_id = '3042520825', status_text = 'status_text', status_picture_name = 'a.jpg', status_picture_path = 'upload/a.jpg', status_datetime = '2008-08-08 22:28:44'
 where id = 1
 
@@ -216,7 +216,7 @@ create table contentlib_type20_statuses (
 );
 
 //cron
-select id, user_id, status_text, status_picture_name, status_picture_path, access_token from timer_to_be_sent_statuses
+select id, user_id, status_text, status_picture_name, status_picture_path, access_token from timer_tobesent_statuses
 where date_format(now(), '%Y-%m-%d %H:%i') = date_format(status_datetime, '%Y-%m-%d %H:%i')
 
-select count(*) as num from timer_to_be_sent_statuses where status_picture_path like '%a.jpg'
+select count(*) as num from timer_tobesent_statuses where status_picture_path like '%a.jpg'
