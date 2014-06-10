@@ -54,27 +54,9 @@ if ('getRateLimit' == $action) {
 
 	echo join(',', $response);
 } else if ('createFriendships' == $action) {
-	$rateLimit = getRateLimit($tClientV2);
-
-	$remainingHourlyUserHitsLimit = $rateLimit['remainingHourlyUserHitsLimit'];
-	$remainingHourlyIpHitsLimit = $rateLimit['remainingHourlyIpHitsLimit'];
-	$remainingHourlyCreateFriendshipsLimit = $rateLimit['remainingHourlyCreateFriendshipsLimit'];
-	$remainingDailyCreateFriendshipsLimit = $rateLimit['remainingDailyCreateFriendshipsLimit'];
-
-	$minLimit = minIntValue(array($remainingHourlyUserHitsLimit, $remainingHourlyIpHitsLimit,
-	$remainingHourlyCreateFriendshipsLimit, $remainingDailyCreateFriendshipsLimit));
-
 	$userIds = explode(',', $_REQUEST['userIds']);
 
-	$ids;
-
-	if ($minLimit >= count($userIds)) {
-		$ids = $userIds;
-	} else {
-		$ids = array_slice($userIds, 0, $minLimit);
-	}
-
-	$response = createFriendships($tClientV2, $ids);
+	$response = createFriendships($tClientV2, $userIds);
 
 	echo join(',', $response);
 } else if ('getEmotions' == $action) {
@@ -507,12 +489,6 @@ function generateSerialNumber() {
 
 //Save Picture
 function savePicture($storage, $fileTmpName, $pictureName) {
-	/*
-	$picturePath = DOMAIN_TIMER . '/' . $pictureName;
-	move_uploaded_file($fileTmpName, $picturePath);
-	return $picturePath;
-	*/
-	
 	return $storage->upload(DOMAIN_TIMER, $pictureName, $fileTmpName);
 }
 
