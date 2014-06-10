@@ -623,7 +623,7 @@ function saveStatus($tClientV2, $userId, $text, $pictureName, $picturePath, $dat
 	
 	$accessToken = $tClientV2->get_oauth()->access_token;
 	
-	$sql = 'insert into timer_to_be_sent_statuses (
+	$sql = 'insert into timer_tobesent_statuses (
 		user_id, status_text, status_picture_name, status_picture_path, status_datetime, access_token)
 		values (\'' . $userId . '\', \'' . mysql_escape_string($text). '\', \'' . 
 		$pictureName . '\', \'' . $picturePath. '\', \'' . $datetime . '\', \'' . $accessToken . '\')';
@@ -739,7 +739,7 @@ function getStatuses($userId) {
 	mysql_select_db(MYSQL_DB, $con);
 	
 	//To Be Sent Statuses
-	$sql = 'select id, status_text, status_picture_name, status_picture_path, status_datetime from timer_to_be_sent_statuses
+	$sql = 'select id, status_text, status_picture_name, status_picture_path, status_datetime from timer_tobesent_statuses
 		where user_id = \'' . $userId . '\'';
 	
 	$result = mysql_query($sql);
@@ -796,7 +796,7 @@ function deleteToBeSentStatus($id) {
 	
 	mysql_select_db(MYSQL_DB, $con);
 	
-	$sql = 'delete from timer_to_be_sent_statuses where id = ' . $id;
+	$sql = 'delete from timer_tobesent_statuses where id = ' . $id;
 	
 	$deleteToBeSentStatusResponse;
 	
@@ -824,7 +824,7 @@ function updateToBeSentStatus($id, $userId, $text, $pictureName, $picturePath, $
 	
 	mysql_select_db(MYSQL_DB, $con);
 	
-	$sql = 'update timer_to_be_sent_statuses 
+	$sql = 'update timer_tobesent_statuses 
 		set user_id = \'' . $userId . '\', status_text = \'' . mysql_escape_string($text) . '\', 
 		status_picture_name = \'' . $pictureName . '\', status_picture_path = \'' . $picturePath . '\', 
 		status_datetime = \'' . $datetime . '\'
@@ -887,7 +887,7 @@ function sendToBeSentStatus($tClientV2, $id, $userId, $text, $pictureName, $pict
 		if (mysql_query($sql)) {
 			$sentStatusId = mysql_insert_id();
 			
-			$sql = 'delete from timer_to_be_sent_statuses where id = ' . $id;
+			$sql = 'delete from timer_tobesent_statuses where id = ' . $id;
 			
 			if (mysql_query($sql)) {
 				$sendToBeSentStatusResponse = assembleSentStatus($sentStatusId, $statusId, $statusText,
