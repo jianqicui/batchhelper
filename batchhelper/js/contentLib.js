@@ -66,6 +66,12 @@ function showStatuses(typeCode, page) {
 			statuses = data['statuses'];
 			var totalNumber = data['totalNumber'];
 			
+			var totalPage = Math.ceil(totalNumber / count);
+			
+			if (totalPage == 0) {
+				return;
+			}
+			
 			for (var i = 0; i < statuses.length; i++) {
 				var status = statuses[i];
 				
@@ -94,71 +100,67 @@ function showStatuses(typeCode, page) {
 				$('#statusesDiv').append(statusHtml);
 			}
 			
-			var totalPage = Math.ceil(totalNumber / count);
+			var paginationHtml = '';
 			
-			if (totalPage != 0) {
-				var paginationHtml = '';
-				
-				paginationHtml += 
-					'<div class="row">' + 
-						'<div class="span10" style="text-align: center;">' + 
-					    	'<div class="pagination">' + 
-					    		'<ul>';
-				
-				var firstPaginationHtml = '<a href="javascript:void(0);" onclick="showStatuses(' + typeCode + ', 0)">&lt;&lt;</a>';
-				
-				if (page == 0) {
-					paginationHtml += '<li class="disabled">' + firstPaginationHtml + '</li>';
-				} else {
-					paginationHtml += '<li>' + firstPaginationHtml + '</li>';
-				}
-				
-				var prevPageRange = 5;
-				var nextPageRange = 5;
-				
-				var beginPaginationPage;
-				var endPaginationPage;
-				
-				if (page - prevPageRange > 0 && totalPage - page > nextPageRange) {
-					beginPaginationPage = page - prevPageRange;
-					endPaginationPage = page + nextPageRange;
-				} else if (page - prevPageRange > 0) {
-					beginPaginationPage = totalPage - prevPageRange - nextPageRange > 0 ? totalPage - prevPageRange - nextPageRange : 0;
-					endPaginationPage = totalPage;
-				} else if (totalPage - page > nextPageRange) {
-					beginPaginationPage = 0;
-					endPaginationPage = prevPageRange + nextPageRange  < totalPage ? prevPageRange + nextPageRange : totalPage;
-				} else {
-					beginPaginationPage = 0;
-					endPaginationPage = totalPage;
-				}
-				
-				for (var i = beginPaginationPage; i < endPaginationPage; i++) {
-					var onePaginationHtml = '<a href="javascript:void(0);" onclick="showStatuses(' + typeCode + ', ' + i + ')">' + (i + 1) + '</a>';
-					
-					if (page == i) {
-						paginationHtml += '<li class="disabled">' + onePaginationHtml + '</li>';
-					} else {
-						paginationHtml += '<li>' + onePaginationHtml + '</li>';
-					}
-				}
-				
-				var lastPaginationHtml = '<a href="javascript:void(0);" onclick="showStatuses(' + typeCode + ', ' + (totalPage - 1) + ')">&gt;&gt;</a>';
-				
-				if (page == totalPage - 1) {
-					paginationHtml += '<li class="disabled">' + lastPaginationHtml + '</li>';
-				} else {
-					paginationHtml += '<li>' + lastPaginationHtml + '</li>';
-				}
-				
-				paginationHtml += 
-					    		'</ul>' + 
-					    	'</div>' + 
-						'</div>' + 
-					'</div>';
-				
-				$('#statusesDiv').append(paginationHtml);
+			paginationHtml += 
+				'<div class="row">' + 
+					'<div class="span10" style="text-align: center;">' + 
+				    	'<div class="pagination">' + 
+				    		'<ul>';
+			
+			var firstPaginationHtml = '<a href="javascript:void(0);" onclick="showStatuses(' + typeCode + ', 0)">&lt;&lt;</a>';
+			
+			if (page == 0) {
+				paginationHtml += '<li class="disabled">' + firstPaginationHtml + '</li>';
+			} else {
+				paginationHtml += '<li>' + firstPaginationHtml + '</li>';
 			}
+			
+			var prevPageRange = 5;
+			var nextPageRange = 5;
+			
+			var beginPaginationPage;
+			var endPaginationPage;
+			
+			if (page - prevPageRange > 0 && totalPage - page > nextPageRange) {
+				beginPaginationPage = page - prevPageRange;
+				endPaginationPage = page + nextPageRange;
+			} else if (page - prevPageRange > 0) {
+				beginPaginationPage = totalPage - prevPageRange - nextPageRange > 0 ? totalPage - prevPageRange - nextPageRange : 0;
+				endPaginationPage = totalPage;
+			} else if (totalPage - page > nextPageRange) {
+				beginPaginationPage = 0;
+				endPaginationPage = prevPageRange + nextPageRange  < totalPage ? prevPageRange + nextPageRange : totalPage;
+			} else {
+				beginPaginationPage = 0;
+				endPaginationPage = totalPage;
+			}
+			
+			for (var i = beginPaginationPage; i < endPaginationPage; i++) {
+				var onePaginationHtml = '<a href="javascript:void(0);" onclick="showStatuses(' + typeCode + ', ' + i + ')">' + (i + 1) + '</a>';
+				
+				if (page == i) {
+					paginationHtml += '<li class="disabled">' + onePaginationHtml + '</li>';
+				} else {
+					paginationHtml += '<li>' + onePaginationHtml + '</li>';
+				}
+			}
+			
+			var lastPaginationHtml = '<a href="javascript:void(0);" onclick="showStatuses(' + typeCode + ', ' + (totalPage - 1) + ')">&gt;&gt;</a>';
+			
+			if (page == totalPage - 1) {
+				paginationHtml += '<li class="disabled">' + lastPaginationHtml + '</li>';
+			} else {
+				paginationHtml += '<li>' + lastPaginationHtml + '</li>';
+			}
+			
+			paginationHtml += 
+				    		'</ul>' + 
+				    	'</div>' + 
+					'</div>' + 
+				'</div>';
+			
+			$('#statusesDiv').append(paginationHtml);
 		}
 	});
 }
