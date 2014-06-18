@@ -50,8 +50,18 @@ $(document).ready(function() {
     
     currentStatusesPage = 1;
     currentCommentsPage = 1;
-	
-    $('#batchDeleteWeiboTab').click();
+    
+    var l = window.location.href;
+    
+    var tab = l.substring(l.indexOf('#'));
+    
+    if (tab == '#batchDeleteWeibo') {
+    	$('#batchDeleteWeiboTab').click();
+    } else if (tab == '#batchDeleteComments') {
+    	$('#batchDeleteCommentsTab').click();
+    } else {
+    	$('#batchDeleteWeiboTab').click();
+    }
 });
 
 function clickBatchDeleteWeiboTab() {
