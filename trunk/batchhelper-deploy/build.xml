@@ -38,6 +38,7 @@
 				<exclude name="friendshipsmgnt.js" />
 				<exclude name="timer.js" />
 				<exclude name="contentLib.js" />
+				<exclude name="batchDelete.js" />
 			</fileset>
 		</copy>
 
@@ -56,6 +57,7 @@
 				<include name="friendshipsmgnt.js" />
 				<include name="timer.js" />
 				<include name="contentLib.js" />
+				<include name="batchDelete.js" />
 			</fileset>
 			<arg line="-jar" />
 			<arg path="${lib}/yuicompressor-2.4.2.jar" />
@@ -76,6 +78,7 @@
 			<replacefilter token="friendshipsmgnt.js" value="friendshipsmgnt.min.js" />
 			<replacefilter token="timer.js" value="timer.min.js" />
 			<replacefilter token="contentLib.js" value="contentLib.min.js" />
+			<replacefilter token="batchDelete.js" value="batchDelete.min.js" />
 			<replacefilter token="http://localhost/batchhelper/index.php" value="http://batchhelper.sinaapp.com/" />
 			<replacefilter token="'MYSQL_HOST' , 'localhost'" value="'MYSQL_HOST' , SAE_MYSQL_HOST_M" />
             <replacefilter token="'MYSQL_PORT' , '3306'" value="'MYSQL_PORT' , SAE_MYSQL_PORT" />
