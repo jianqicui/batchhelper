@@ -5,7 +5,7 @@ $(document).ready(function() {
 });
 
 function showTypes() {
-	$('#typesUl').html('');
+	$('#typesUl').empty();
 	
 	$.ajax({
 		async: true, 
@@ -49,10 +49,66 @@ function setTypeActive(typeId) {
 	}
 }
 
+function showStatusPictureDiv(statusPicturePath) {
+	var statusPictureImg = $('#statusPictureDiv > div > img').eq(0);
+	statusPictureImg.removeAttr('src');
+	statusPictureImg.attr('src', statusPicturePath);
+	
+	$('#statusPictureDiv').modal('show');
+}
+
+function sendStatusImmediately(typeCode, statusId) {
+	var text;
+	var picturePath;
+	
+	for (var i = 0; i < statuses.length; i++) {
+		var status = statuses[i];
+		
+		text = status['statusText'];
+		picturePath = status['statusPicturePath'];
+		
+		if (status['statusId'] == statusId) {
+			break;
+		}
+	}
+	
+	if (text == undefined || picturePath == undefined) {
+		return;
+	}
+	
+	var pictureName = picturePath.substring((picturePath.lastIndexOf('/') + 1), picturePath.length);
+	
+	var alertBodyDiv = $('#alertDiv > div').eq(0);
+	
+	$.ajax({
+		async: true, 
+		type: 'POST', 
+		dataType: 'json', 
+		url: 'action.php', 
+		data: {'action' : 'sendStatus', 'userId' : uid, 'text' : text, 'pictureName' : pictureName, 'picturePath' : picturePath},
+		success: function(data, textStatus) {
+			var error = data['error'];
+			
+			if (error == undefined) {
+				alertBodyDiv.text('发布成功');
+			} else {
+				alertBodyDiv.text('发布失败');
+			}
+			
+			$('#alertDiv').modal('show');
+		},
+		error : function(xmlHttpRequest, textStatus, errorThrown) {
+			alertBodyDiv.text('发布失败');
+			
+			$('#alertDiv').modal('show');
+		}
+	});
+}
+
 function showStatuses(typeCode, page) {
 	setTypeActive(typeCode);
 	
-	$('#statusesDiv').html('');
+	$('#statusesDiv').empty();
 	
 	var count = 5;
 	
@@ -161,62 +217,6 @@ function showStatuses(typeCode, page) {
 				'</div>';
 			
 			$('#statusesDiv').append(paginationHtml);
-		}
-	});
-}
-
-function showStatusPictureDiv(statusPicturePath) {
-	var statusPictureImg = $('#statusPictureDiv > div > img').eq(0);
-	statusPictureImg.removeAttr('src');
-	statusPictureImg.attr('src', statusPicturePath);
-	
-	$('#statusPictureDiv').modal('show');
-}
-
-function sendStatusImmediately(typeCode, statusId) {
-	var text;
-	var picturePath;
-	
-	for (var i = 0; i < statuses.length; i++) {
-		var status = statuses[i];
-		
-		text = status['statusText'];
-		picturePath = status['statusPicturePath'];
-		
-		if (status['statusId'] == statusId) {
-			break;
-		}
-	}
-	
-	if (text == undefined || picturePath == undefined) {
-		return;
-	}
-	
-	var pictureName = picturePath.substring((picturePath.lastIndexOf('/') + 1), picturePath.length);
-	
-	var alertBodyDiv = $('#alertDiv > div').eq(0);
-	
-	$.ajax({
-		async: true, 
-		type: 'POST', 
-		dataType: 'json', 
-		url: 'action.php', 
-		data: {'action' : 'sendStatus', 'userId' : uid, 'text' : text, 'pictureName' : pictureName, 'picturePath' : picturePath},
-		success: function(data, textStatus) {
-			var error = data['error'];
-			
-			if (error == undefined) {
-				alertBodyDiv.text('发布成功');
-			} else {
-				alertBodyDiv.text('发布失败');
-			}
-			
-			$('#alertDiv').modal('show');
-		},
-		error : function(xmlHttpRequest, textStatus, errorThrown) {
-			alertBodyDiv.text('发布失败');
-			
-			$('#alertDiv').modal('show');
 		}
 	});
 }

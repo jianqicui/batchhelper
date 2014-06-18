@@ -27,7 +27,6 @@ $currentMenuItem = 'contentLib';
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>批量小助手</title>
 <link rel="stylesheet" rev="stylesheet" type="text/css" media="all" href="css/bootstrap.min.css" />
-<link rel="stylesheet" rev="stylesheet" type="text/css" media="all" href="css/datepicker.css" />
 
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript" src="js/bootstrap.min.js"></script>

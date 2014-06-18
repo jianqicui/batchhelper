@@ -204,6 +204,42 @@ if ('getRateLimit' == $action) {
 	$response = getStatusesByTypeCode($typeCode, $page, $count);
 	
 	echo json_encode($response);
+} else if ('queryStatuses' == $action) {
+	$userId = $_REQUEST['userId'];
+	
+	$page = $_REQUEST['page'];
+	$count = $_REQUEST['count'];
+	
+	$response = queryStatuses($tClientV2, $userId, $page, $count);
+	
+	echo json_encode($response);
+} else if ('deleteStatuses' == $action) {
+	$statusesIds = NULL;
+	
+	if (isset($_REQUEST['statusesIds'])) {
+		$statusesIds = explode(',', $_REQUEST['statusesIds']);
+	}
+	
+	$response = deleteStatuses($tClientV2, $statusesIds);
+	
+	echo join(',', $response);
+} else if ('queryComments' == $action) {
+	$page = $_REQUEST['page'];
+	$count = $_REQUEST['count'];
+
+	$response = queryComments($tClientV2, $page, $count);
+
+	echo json_encode($response);
+} else if ('deleteComments' == $action) {
+	$commentsIds = NULL;
+	
+	if (isset($_REQUEST['commentsIds'])) {
+		$commentsIds = explode(',', $_REQUEST['commentsIds']);
+	}
+	
+	$response = deleteComments($tClientV2, $commentsIds);
+	
+	echo join(',', $response);
 }
 
 function minIntValue($intArray) {
@@ -1037,5 +1073,146 @@ function getStatusesByTypeCode($typeCode, $page, $count) {
 			'statuses' => $statuses,
 			'totalNumber' => $totalNumber,
 	);
+}
+
+//Query Statuses
+function queryStatuses($tClientV2, $userId, $page, $count) {
+	$response = $tClientV2->user_timeline_by_id(NUll, $userId, $page, $count);
+
+	$statuses = array();
+	$totalNumber = 0;
+
+	if (!isset($response['error']) && !isset($response['error_code'])) {
+		for ($i = 0; $i < count($response['statuses']); $i++) {
+			$status = $response['statuses'][$i];
+
+			$id = $status['idstr'];
+			$text = $status['text'];
+			$thumbnailPic = NULL;
+
+			if (isset($status['thumbnail_pic'])) {
+				$thumbnailPic = $status['thumbnail_pic'];
+			}
+
+			$statuses[$i] = array(
+					'id' => $id,
+					'text' => $text,
+					'thumbnailPic' => $thumbnailPic,
+			);
+		}
+
+		$totalNumber = $response['total_number'];
+	}
+
+	return array(
+			'statuses' => $statuses,
+			'totalNumber' => $totalNumber,
+	);
+}
+
+//Delete Statuses
+function deleteStatuses($tClientV2, $statusesIds) {
+	$deletedStatusesIds = array();
+
+	for ($i = 0; $i < count($statusesIds); $i++) {
+		$statusId = $statusesIds[$i];
+
+		$response = $tClientV2->delete($statusId);
+
+		if (!isset($response['error']) && !isset($response['error_code'])) {
+			array_push($deletedStatusesIds, $response['idstr']);
+		}
+	}
+
+	return $deletedStatusesIds;
+}
+
+//Query Comments
+function queryComments($tClientV2, $page, $count) {
+	$response = $tClientV2->comments_by_me($page, $count);
+
+	$comments = array();
+	$totalNumber = 0;
+
+	if (!isset($response['error']) && !isset($response['error_code'])) {
+		for ($i = 0; $i < count($response['comments']); $i++) {
+			$comment = $response['comments'][$i];
+
+			$replyStatus;
+				
+			$id = $comment['idstr'];
+			$text = $comment['text'];
+				
+			$status = $comment['status'];
+			$statusUser = $status['user'];
+				
+			$statusId = $status['idstr'];
+			$statusUserId = $statusUser['idstr'];
+				
+			$commentedText;
+				
+			$commentedUserId;
+			$commentedUserName;
+			$commentedUserProfileImageUrl;
+				
+			if (!isset($comment['reply_comment'])) {
+				$replyStatus = TRUE;
+
+				$commentedText = $status['text'];
+
+				$commentedUserId = $statusUser['idstr'];
+				$commentedUserName = $statusUser['screen_name'];
+				$commentedUserProfileImageUrl = $statusUser['profile_image_url'];
+			} else {
+				$replyStatus = FALSE;
+
+				$repliedComment = $comment['reply_comment'];
+
+				$commentedText = $repliedComment['text'];
+
+				$repliedCommentUser = $repliedComment['user'];
+
+				$commentedUserId = $repliedCommentUser['idstr'];
+				$commentedUserName = $repliedCommentUser['screen_name'];
+				$commentedUserProfileImageUrl = $repliedCommentUser['profile_image_url'];
+			}
+				
+			$comments[$i] = array(
+					'replyStatus' => $replyStatus,
+					'id' => $id,
+					'text' => $text,
+					'statusId' => $statusId,
+					'statusUserId' => $statusUserId,
+					'commentedText' => $commentedText,
+					'commentedUserId' => $commentedUserId,
+					'commentedUserName' => $commentedUserName,
+					'commentedUserProfileImageUrl' => $commentedUserProfileImageUrl,
+			);
+		}
+
+		$totalNumber = $response['total_number'];
+	}
+
+	return array(
+			'comments' => $comments,
+			'totalNumber' => $totalNumber,
+	);
+}
+
+//Delete Comments
+function deleteComments($tClientV2, $commentsIds) {
+	$deletedCommentsIds = array();
+
+	for ($i = 0; $i < count($commentsIds); $i++) {
+		$commentId = $commentsIds[$i];
+
+		$response = $tClientV2->comment_destroy($commentId);
+
+		if (!isset($response['error']) && !isset($response['error_code'])) {
+			array_push($deletedCommentsIds, $response['idstr']);
+		}
+	}
+
+	return $deletedCommentsIds;
 }
 ?>

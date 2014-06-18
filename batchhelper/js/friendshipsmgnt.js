@@ -382,7 +382,7 @@ function saveOtherFriendshipsMgntInputNameDiv() {
         	// Other Friends
         	$('#otherFriendsLoadButton').attr('class', 'btn btn-info btn-large').removeAttr('disabled');
         	
-    		$('#otherFriendsDiv').html('');
+    		$('#otherFriendsDiv').empty();
 
     		$('#otherFriendsStatusProgressDiv').text('准备就绪。请点击“加载100个”。');
 
@@ -394,7 +394,7 @@ function saveOtherFriendshipsMgntInputNameDiv() {
     		// Other Followers
     		$('#otherFollowersLoadButton').attr('class', 'btn btn-info btn-large').removeAttr('disabled');
     		
-    		$('#otherFollowersDiv').html('');
+    		$('#otherFollowersDiv').empty();
 
     		$('#otherFollowersStatusProgressDiv').text('准备就绪。请点击“加载100个”。');
 
