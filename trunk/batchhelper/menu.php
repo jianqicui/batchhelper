@@ -2,23 +2,35 @@
     <div class="navbar-inner">
     	<ul class="nav">
     		<?php
-    			$menuItemsHtml;
+    			$menuItemsHtml = '';
     		
+    			$friendshipsMgntMenuItemHtml = '<a href="friendshipsMgnt.php">关注/粉丝管理</a>';
+    			$timerMenuItemHtml = '<a href="timer.php">定时器</a>';
+    			$contentLibMenuItemHtml = '<a href="contentLib.php">内容库</a>';
+    			$batchDeleteMenuItemHtml = '<a href="batchDelete.php#batchDeleteWeibo">批量删除</a>';
+    			
     			if ('friendshipsMgnt' == $currentMenuItem) {
-    				$menuItemsHtml = 
-    					'<li class="active"><a href="friendshipsMgnt.php">关注/粉丝管理</a></li>
-    					<li><a href="timer.php">定时器</a></li>
-    					<li><a href="contentLib.php">内容库</a></li>';
-    			} else if ('timer' == $currentMenuItem) {
-    				$menuItemsHtml =
-	    				'<li><a href="friendshipsMgnt.php">关注/粉丝管理</a></li>
-				    	<li class="active"><a href="timer.php">定时器</a></li>
-    					<li><a href="contentLib.php">内容库</a></li>';
-    			} else if ('contentLib' == $currentMenuItem) {
-    				$menuItemsHtml =
-    					'<li><a href="friendshipsMgnt.php">关注/粉丝管理</a></li>
-    					<li><a href="timer.php">定时器</a></li>
-    					<li class="active"><a href="contentLib.php">内容库</a></li>';
+    				$menuItemsHtml .= '<li class="active">' . $friendshipsMgntMenuItemHtml . '</li>';
+    			} else {
+    				$menuItemsHtml .= '<li>' . $friendshipsMgntMenuItemHtml . '</li>';
+    			}
+    			
+    			if ('timer' == $currentMenuItem) {
+    				$menuItemsHtml .= '<li class="active">' . $timerMenuItemHtml . '</li>';
+    			} else {
+    				$menuItemsHtml .= '<li>' . $timerMenuItemHtml . '</li>';
+    			}
+    			
+    			if ('contentLib' == $currentMenuItem) {
+    				$menuItemsHtml .= '<li class="active">' . $contentLibMenuItemHtml . '</li>';
+    			} else {
+    				$menuItemsHtml .= '<li>' . $contentLibMenuItemHtml . '</li>';
+    			}
+    			
+    			if ('batchDelete' == $currentMenuItem) {
+    				$menuItemsHtml .= '<li class="active">' . $batchDeleteMenuItemHtml . '</li>';
+    			} else {
+    				$menuItemsHtml .= '<li>' . $batchDeleteMenuItemHtml . '</li>';
     			}
     			
     			echo $menuItemsHtml;
