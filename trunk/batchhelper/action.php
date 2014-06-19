@@ -240,6 +240,23 @@ if ('getRateLimit' == $action) {
 	$response = deleteComments($tClientV2, $commentsIds);
 	
 	echo join(',', $response);
+} else if ('queryFavs' == $action) {
+	$page = $_REQUEST['page'];
+	$count = $_REQUEST['count'];
+
+	$response = queryFavs($tClientV2, $page, $count);
+
+	echo json_encode($response);
+} else if ('deleteFavs' == $action) {
+	$favsIds = NULL;
+	
+	if (isset($_REQUEST['favsIds'])) {
+		$favsIds = explode(',', $_REQUEST['favsIds']);
+	}
+	
+	$response = deleteFavs($tClientV2, $favsIds);
+	
+	echo join(',', $response);
 }
 
 function minIntValue($intArray) {
@@ -1214,5 +1231,67 @@ function deleteComments($tClientV2, $commentsIds) {
 	}
 
 	return $deletedCommentsIds;
+}
+
+//Query Favs
+function queryFavs($tClientV2, $page, $count) {
+	$response = $tClientV2->get_favorites($page, $count);
+
+	$favs = array();
+	$totalNumber = 0;
+
+	if (!isset($response['error']) && !isset($response['error_code'])) {
+		for ($i = 0; $i < count($response['favorites']); $i++) {
+			$fav = $response['favorites'][$i];
+
+			$status = $fav['status'];
+			$id = $status['idstr'];
+			$statusText = $status['text'];
+				
+			$statusThumbnailPic = NULL;
+				
+			if (isset($status['thumbnail_pic'])) {
+				$statusThumbnailPic = $status['thumbnail_pic'];
+			}
+				
+			$statusUser = $status['user'];
+			$statusUserId = $statusUser['idstr'];
+			$statusUserName = $statusUser['screen_name'];
+			$statusUserProfileImageUrl = $statusUser['profile_image_url'];
+
+			$favs[$i] = array(
+					'id' => $id,
+					'statusText' => $statusText,
+					'statusThumbnailPic' => $statusThumbnailPic,
+					'statusUserId' => $statusUserId,
+					'statusUserName' => $statusUserName,
+					'statusUserProfileImageUrl' => $statusUserProfileImageUrl,
+			);
+		}
+
+		$totalNumber = $response['total_number'];
+	}
+
+	return array(
+			'favs' => $favs,
+			'totalNumber' => $totalNumber,
+	);
+}
+
+//Delete Favs
+function deleteFavs($tClientV2, $favsIds) {
+	$deletedFavsIds = array();
+
+	for ($i = 0; $i < count($favsIds); $i++) {
+		$favId = $favsIds[$i];
+
+		$response = $tClientV2->remove_from_favorites($favId);
+
+		if (!isset($response['error']) && !isset($response['error_code'])) {
+			array_push($deletedFavsIds, $response['status']['idstr']);
+		}
+	}
+
+	return $deletedFavsIds;
 }
 ?>

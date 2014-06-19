@@ -52,6 +52,7 @@ $currentMenuItem = 'batchDelete';
 				<ul class="nav nav-tabs" style="cursor: pointer;">
 					<li><a id="batchDeleteWeiboTab" href="#batchDeleteWeibo" onclick="clickBatchDeleteWeiboTab()">批量删微博</a></li>
 					<li><a id="batchDeleteCommentsTab" href="#batchDeleteComments" onclick="clickBatchDeleteCommentsTab()">批量删评论</a></li>
+					<li><a id="batchDeleteFavsTab" href="#batchDeleteFavs" onclick="clickBatchDeleteFavsTab()">批量删收藏</a></li>
 				</ul>
 			</div>
 		</div>
@@ -167,6 +168,64 @@ $currentMenuItem = 'batchDelete';
 					<ul class="pager">
 						<li style="margin-right: 10px;"><a href="javascript:void(0);" onclick="showPreviousComments()">前一页</a></li>
 						<li style="margin-left: 10px;"><a href="javascript:void(0);" onclick="showNextComments()">后一页</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		
+		<div id="batchDeleteFavsDiv">
+			<div id="favsLoadingDiv" class="modal hide fade" style="width: 300px; margin-left: -150px; margin-top: 200px; background: #DDDDDD;">
+				<p style="text-align: center; padding-top: 10px;">
+					加载收藏中，请稍候...
+				</p>
+		    </div>
+		    
+		    <div id="favsDeletingDiv" class="modal hide fade" style="width: 300px; margin-left: -150px; margin-top: 200px; background: #DDDDDD;">
+				<p style="text-align: center; padding-top: 10px;">
+					删除收藏中，请稍候...
+				</p>
+		    </div>
+		    
+		    <div class="row" style="padding-top: 10px; border-bottom: 2px solid #DDDDDD;">
+				<div class="span1">
+					<p style="text-align: center;">
+						<input name="favsCheckbox" type="checkbox" onclick="clickFavsCheckbox(this.checked)"/>
+					</p>
+				</div>
+				<div class="span9">
+					<p style="font-size: 18px; font-weight: bold;">
+						我的收藏列表
+					</p>
+				</div>
+				<div class="span2">
+					<p style="text-align: center;">
+						<button name="favsDeleteButton" class="btn disabled" disabled="disabled" onclick="clickFavsDeleteButton()">删除</button>
+					</p>
+				</div>
+			</div>
+		
+			<div id="favsDiv"></div>
+			
+			<div class="row" style="padding-top: 10px; border-bottom: 2px solid #DDDDDD;">
+				<div class="span1">
+					<p style="text-align: center;">
+						<input name="favsCheckbox" type="checkbox" onclick="clickFavsCheckbox(this.checked)"/>
+					</p>
+				</div>
+				<div class="span9">
+				</div>
+				<div class="span2">
+					<p style="text-align: center;">
+						<button name="favsDeleteButton" class="btn disabled" disabled="disabled" onclick="clickFavsDeleteButton()">删除</button>
+					</p>
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="span12">
+					<ul class="pager">
+						<li style="margin-right: 10px;"><a href="javascript:void(0);" onclick="showPreviousFavs()">前一页</a></li>
+						<li style="margin-left: 10px;"><a href="javascript:void(0);" onclick="showNextFavs()">后一页</a></li>
 					</ul>
 				</div>
 			</div>

@@ -1,11 +1,15 @@
 var currentStatusesPage;
 var currentCommentsPage;
+var currentFavsPage;
 
 var statusesLoadedIds = [];
 var statusesSelectedIds = [];
 
 var commentsLoadedIds = [];
 var commentsSelectedIds = [];
+
+var favsLoadedIds = [];
+var favsSelectedIds = [];
 
 function getArrayFromStr(data) {
 	var array = [];
@@ -48,8 +52,21 @@ $(document).ready(function() {
     	show : false
     });
     
+    $('#favsLoadingDiv').modal({
+    	backdrop : false,
+    	keyboard : false,
+    	show : false
+    });
+
+    $('#favsDeletingDiv').modal({
+    	backdrop : false,
+    	keyboard : false,
+    	show : false
+    });
+    
     currentStatusesPage = 1;
     currentCommentsPage = 1;
+    currentFavsPage = 1;
     
     var l = window.location.href;
     
@@ -59,6 +76,8 @@ $(document).ready(function() {
     	$('#batchDeleteWeiboTab').click();
     } else if (tab == '#batchDeleteComments') {
     	$('#batchDeleteCommentsTab').click();
+    } else if (tab == '#batchDeleteFavs') {
+    	$('#batchDeleteFavsTab').click();
     } else {
     	$('#batchDeleteWeiboTab').click();
     }
@@ -69,6 +88,7 @@ function clickBatchDeleteWeiboTab() {
 	
 	$('#batchDeleteWeiboDiv').show();
 	$('#batchDeleteCommentsDiv').hide();
+	$('#batchDeleteFavsDiv').hide();
 	
 	if ($('#statusesDiv').html() == '') {
 		showStatuses();
@@ -80,9 +100,22 @@ function clickBatchDeleteCommentsTab() {
 	
 	$('#batchDeleteWeiboDiv').hide();
 	$('#batchDeleteCommentsDiv').show();
+	$('#batchDeleteFavsDiv').hide();
 	
 	if ($('#commentsDiv').html() == '') {
 		showComments();
+	}
+}
+
+function clickBatchDeleteFavsTab() {
+	$('#batchDeleteFavsTab').tab('show');
+	
+	$('#batchDeleteWeiboDiv').hide();
+	$('#batchDeleteCommentsDiv').hide();
+	$('#batchDeleteFavsDiv').show();
+	
+	if ($('#favsDiv').html() == '') {
+		showFavs();
 	}
 }
 
@@ -444,6 +477,10 @@ function clickCommentsDeleteButton() {
 	deleteComment(commentsSelectedIds.join(','));
 }
 
+function clickFavsDeleteButton() {
+	deleteFav(favsSelectedIds.join(','));
+}
+
 function showComments() {
 	$(window).scrollTop(0);
 	
@@ -569,4 +606,241 @@ function showNextComments() {
 	currentCommentsPage++;
 	
 	showComments();
+}
+
+function getFavCheckboxId(favId) {
+	return favId + '_fav_checkbox';
+}
+
+function getFavDivId(favId) {
+	return favId + '_fav_div';
+}
+
+function addFavIdToArray(favsIds, favId) {
+	favsIds.push(favId);
+}
+
+function removeFavIdFromArray(favsIds, favId) {
+	var index = -1;
+	
+	for (var i = 0; i < favsIds.length; i++) {
+		if (favId == favsIds[i]) {
+			index = i;
+			break;
+		}
+	}
+
+	if (index != -1) {
+		favsIds.splice(index, 1);
+	}
+}
+
+function checkFav(favId) {
+	var favDivId = getFavDivId(favId);
+	
+	$('#' + favDivId).css('background', '#D9EDF7');
+
+	addFavIdToArray(favsSelectedIds, favId);
+
+	$("button[name='favsDeleteButton']").attr('class', 'btn btn-primary').removeAttr('disabled');
+
+	if (favsSelectedIds.length == favsLoadedIds.length) {
+		$("input[name='favsCheckbox']").prop('checked', true);
+	}
+}
+
+function uncheckFav(favId) {
+	var favDivId = getFavDivId(favId);
+	
+	$('#' + favDivId).css('background', '#FFFFFF');
+
+	removeFavIdFromArray(favsSelectedIds, favId);
+
+	if (favsSelectedIds.length == 0) {
+		$("button[name='favsDeleteButton']").attr('class', 'btn disabled').attr('disabled', 'disabled');
+	}
+
+	if (favsSelectedIds.length != favsLoadedIds.length) {
+		$("input[name='favsCheckbox']").prop('checked', false);
+	}
+}
+
+function clickFavCheckbox(favId) {
+	var favCheckboxId = getFavCheckboxId(favId);
+
+	var favCheckboxChecked = $('#' + favCheckboxId).prop('checked');
+	
+	if (favCheckboxChecked) {
+		checkFav(favId);
+	} else {
+		uncheckFav(favId);
+	}
+}
+
+function clickFavsCheckbox(favsCheckboxChecked) {
+	$("input[name='favsCheckbox']").prop('checked', favsCheckboxChecked);
+	
+	if (favsCheckboxChecked) {
+		for (var i = 0; i < favsLoadedIds.length; i++) {
+			var favId = favsLoadedIds[i];
+
+			var favCheckboxId = getFavCheckboxId(favId);
+
+			$('#' + favCheckboxId).prop('checked', true);
+			
+			checkFav(favId);
+		}
+	} else {
+		for (var i = 0; i < favsLoadedIds.length; i++) {
+			var favId = favsLoadedIds[i];
+
+			var favCheckboxId = getFavCheckboxId(favId);
+
+			$('#' + favCheckboxId).prop('checked', false);
+			
+			uncheckFav(favId);
+		}
+	}
+}
+
+function deleteFav(favsIds) {
+	$.ajax({
+		async: true, 
+		type: 'POST', 
+		dataType: 'text', 
+		url: 'action.php', 
+		data: {'action' : 'deleteFavs', 'favsIds' : favsIds}, 
+		beforeSend: function() {
+			$('#favsDeletingDiv').modal('show');
+		},
+		success: function(data, textFav) {
+			$('#favsDeletingDiv').modal('hide');
+			
+			var deletedFavsIds = getArrayFromStr(data);
+
+			for (var i = 0; i < deletedFavsIds.length; i++) {
+				var favId = deletedFavsIds[i];
+				
+				uncheckFav(favId);
+				
+				var favDivId = getFavDivId(favId);
+
+				$('#' + favDivId).remove();
+
+				removeFavIdFromArray(favsLoadedIds, favId);
+			}
+		}
+	});
+}
+
+function clickFavDeleteButton(favId) {
+	deleteFav(favId);
+}
+
+function showFavs() {
+	$(window).scrollTop(0);
+	
+	var pageCount = 50;
+	
+	$.ajax({
+		async: true, 
+		type: 'GET', 
+		dataType: 'json', 
+		url: 'action.php', 
+		data: {'action' : 'queryFavs', 'page' : currentFavsPage, 'count' : pageCount}, 
+		beforeSend: function() {
+			$('#favsLoadingDiv').modal('show');
+		},
+		success: function(data, textFav) {
+			$('#favsLoadingDiv').modal('hide');
+			
+			$("input[name='favsCheckbox']").prop('checked', false);
+
+			$("button[name='favsDeleteButton']").attr('class', 'btn disabled').attr('disabled', 'disabled');
+			
+			var totalNumber = data['totalNumber'];
+			var favs = data['favs'];
+
+			var totalPage = Math.ceil(totalNumber / pageCount);
+			
+			if (totalPage == 0) {
+				return;
+			}
+			
+			$('#favsDiv').empty();
+			
+			favsLoadedIds = [];
+			favsSelectedIds = [];
+			
+			for (var i = 0; i < favs.length; i++) {
+				var fav = favs[i];
+
+				var id = fav['id'];
+				
+				var statusText = fav['statusText'];
+				var statusThumbnailPic = fav['statusThumbnailPic'];
+				
+				var statusUserId = fav['statusUserId'];
+				var statusUserName = fav['statusUserName'];
+				var statusUserProfileImageUrl = fav['statusUserProfileImageUrl'];
+
+				var statusThumbnailPicHtml = '';
+
+				if (statusThumbnailPic != undefined && statusThumbnailPic != '') {
+					statusThumbnailPicHtml = '<p>' + '<img src=\'' + statusThumbnailPic + '\' />' + '</p>';
+				}
+				
+				var favCheckboxId = getFavCheckboxId(id);
+				var favDivId = getFavDivId(id);
+
+				var favHtml = 
+					'<div id=\'' + favDivId + '\' class=\'row\' style=\'padding-top: 10px; border-bottom: 1px solid #DDDDDD;\'>'  + 
+						'<div class=\'span1\'>' + 
+							'<p style=\'text-align: center;\'>' + 
+								'<input id=\'' + favCheckboxId + '\' type=\'checkbox\' onclick=\'clickFavCheckbox(' + id + ')\'/>' + 
+							'</p>' + 
+						'</div>' + 
+						'<div class=\'span1\'>' + 
+							'<p style=\'text-align: center;\'>' + 
+								'<a href=\'http://weibo.com/u/' + statusUserId + '\' title=\'' + statusUserName + '\' target=\'_blank\' >' + 
+									'<img src=\'' + statusUserProfileImageUrl + '\' />' + 
+								'</a>' + 
+							'</p>' + 
+						'</div>' + 
+						'<div class=\'span8\'>' + 
+							'<p>' + 
+								'<a href=\'http://weibo.com/u/' + statusUserId + '\' target=\'_blank\' >' + 
+									statusUserName + 
+								'</a>' + 
+							'</p>' + 
+							'<p>' + 
+								statusText + 
+							'</p>' + 
+							statusThumbnailPicHtml + 
+						'</div>' + 
+						'<div class=\'span2\'>' + 
+							'<p style=\'text-align: center; \'>' + 
+								'<button class=\'btn btn-primary\' onclick=\'clickFavDeleteButton(' + id + ')\'>删除</button>' + 
+							'</p>' + 
+						'</div>' + 
+					'</div>'
+
+				$('#favsDiv').append(favHtml);
+
+				addFavIdToArray(favsLoadedIds, id);
+			}
+		}
+	});
+}
+
+function showPreviousFavs() {
+	currentFavsPage--;
+	
+	showFavs();
+}
+
+function showNextFavs() {
+	currentFavsPage++;
+	
+	showFavs();
 }
