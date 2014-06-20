@@ -84,7 +84,7 @@ $currentMenuItem = 'friendshipsMgnt';
 			<div class="span8">
 				<div id="myFriendsContentDiv" style="background: #D9EDF7; padding: 5px 10px; width: 618px; height: 600px; overflow-y: scroll;">
 					<div class="clearfix">
-						<div id="myFriendsDiv" ></div>
+						<div id="myFriendsDiv"></div>
 					</div>
 					
 					<div style="margin: 5px 0px 10px 0px; text-align: center;">
