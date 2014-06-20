@@ -42,7 +42,7 @@ $currentMenuItem = 'friendshipsMgnt';
 	var uid = '<?php echo $uid ?>';
 </script>
 
-<script type="text/javascript" src="js/friendshipsmgnt.js"></script>
+<script type="text/javascript" src="js/friendshipsMgnt.js"></script>
 </head>
 
 <body>
