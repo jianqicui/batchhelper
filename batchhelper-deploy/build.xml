@@ -35,7 +35,7 @@
 		<copy todir="${target}/js">
 			<fileset dir="${src}/js">
 				<include name="*.js" />
-				<exclude name="friendshipsmgnt.js" />
+				<exclude name="friendshipsMgnt.js" />
 				<exclude name="timer.js" />
 				<exclude name="contentLib.js" />
 				<exclude name="batchDelete.js" />
@@ -54,7 +54,7 @@
 	<target name="compress" depends="build">
 		<apply executable="java" parallel="false">
 			<fileset dir="${src}/js">
-				<include name="friendshipsmgnt.js" />
+				<include name="friendshipsMgnt.js" />
 				<include name="timer.js" />
 				<include name="contentLib.js" />
 				<include name="batchDelete.js" />
@@ -75,7 +75,7 @@
 
 	<target name="replace" depends="compress">
 		<replace dir="${target}" includes="*.php" encoding="${charset}">
-			<replacefilter token="friendshipsmgnt.js" value="friendshipsmgnt.min.js" />
+			<replacefilter token="friendshipsMgnt.js" value="friendshipsMgnt.min.js" />
 			<replacefilter token="timer.js" value="timer.min.js" />
 			<replacefilter token="contentLib.js" value="contentLib.min.js" />
 			<replacefilter token="batchDelete.js" value="batchDelete.min.js" />
