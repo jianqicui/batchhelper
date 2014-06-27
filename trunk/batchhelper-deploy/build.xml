@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project name="batchhelper-deploy" default="deploy" basedir=".">
-	<property name="src" location="D:/Tools/httpd-2.2-x64/htdocs/batchhelper" />
-	<property name="target" location="D:/Workspace/Java/batchhelper-sae" />
+	<property name="src" location="C:/Data/Tools/httpd-2.2-x64/htdocs/batchhelper" />
+	<property name="target" location="C:/Data/Workspace/Java/batchhelper-sae" />
 	<property name="lib" location="lib" />
 	<property name="charset" value="utf-8" />
 
