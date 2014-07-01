@@ -131,7 +131,6 @@ function addStatusIdToArray(statusesIds, statusId) {
 	statusesIds.push(statusId);
 }
 
-
 function removeStatusIdFromArray(statusesIds, statusId) {
 	var index = -1;
 	
