@@ -257,6 +257,18 @@ if ('getRateLimit' == $action) {
 	$response = deleteFavs($tClientV2, $favsIds);
 	
 	echo join(',', $response);
+} else if ('queryDeadFriendsIds' == $action) {
+	$userId = $_REQUEST['userId'];
+	
+	$response = queryDeadFriendsIds($tClientV2, $userId);
+	
+	echo json_encode($response);
+} else if ('queryDeadFollowersIds' == $action) {
+	$userId = $_REQUEST['userId'];
+	
+	$response = queryDeadFollowersIds($tClientV2, $userId);
+	
+	echo json_encode($response);
 }
 
 function minIntValue($intArray) {
@@ -1019,6 +1031,7 @@ function uploadStatus($tClientV2, $text, $picturePath) {
 	return $response;
 }
 
+//Get Types
 function getTypes() {
 	$con = mysql_connect(MYSQL_HOST . ':' . MYSQL_PORT, MYSQL_USER, MYSQL_PASS);
 	mysql_query("SET NAMES 'UTF8'");
@@ -1050,6 +1063,7 @@ function getTypes() {
 	return $types;
 }
 
+//Get Statuses By Type Code
 function getStatusesByTypeCode($typeCode, $page, $count) {
 	$con = mysql_connect(MYSQL_HOST . ':' . MYSQL_PORT, MYSQL_USER, MYSQL_PASS);
 	mysql_query("SET NAMES 'UTF8'");
@@ -1293,5 +1307,123 @@ function deleteFavs($tClientV2, $favsIds) {
 	}
 
 	return $deletedFavsIds;
+}
+
+//Query Dead Friends Ids
+function queryDeadFriendsIds($tClientV2, $userId) {
+	$userCount = $tClientV2->users_counts($userId);
+	
+	$friendsCount = $userCount[0]['friends_count'];
+	
+	$times;
+	
+	$count = 200;
+	
+	if ($friendsCount > 2000) {
+		$times = 10;
+	} else {
+		$times = ceil($friendsCount / $count);
+	}
+	
+	$normalFriendsIds = array();
+	
+	$cursor = 0;
+	
+	for ($i = 0; $i < $times; $i++) {
+		$vFriends = $tClientV2->friends_by_id($userId, $cursor, $count);
+		
+		for ($j = 0; $j < count($vFriends['users']); $j++) {
+			array_push($normalFriendsIds, $vFriends['users'][$j]['idstr']);
+		}
+		
+		$cursor += $count;
+	}
+	
+	$vFriendsIds = $tClientV2->friends_ids_by_id($userId, 0, 2000);
+	
+	$friendsIds = $vFriendsIds['ids'];
+	
+	$deadFriendsIds = array();
+	
+	$j = 0;
+	
+	if (count($friendsIds) > count($normalFriendsIds)) {
+		for ($i = 0; $i < count($friendsIds); $i++) {
+			$friendsId = $friendsIds[$i];
+		
+			if ($j < count($normalFriendsIds)) {
+				$normalFriendsId = $normalFriendsIds[$j];
+					
+				if ($friendsId == $normalFriendsId) {
+					$j++;
+				} else {
+					array_push($deadFriendsIds, $friendsId);
+				}
+			} else {
+				array_push($deadFriendsIds, $friendsId);
+			}
+		}
+	}
+	
+	return $deadFriendsIds;
+}
+
+//Query Dead Followers Ids
+function queryDeadFollowersIds($tClientV2, $userId) {
+	$userCount = $tClientV2->users_counts($userId);
+	
+	$followersCount = $userCount[0]['followers_count'];
+	
+	$times;
+	
+	$count = 200;
+	
+	if ($followersCount > 5000) {
+		$times = 25;
+	} else {
+		$times = ceil($followersCount / $count);
+	}
+	
+	$normalFollowersIds = array();
+	
+	$cursor = 0;
+	
+	for ($i = 0; $i < $times; $i++) {
+		$vFollowers = $tClientV2->followers_by_id($userId, $cursor, $count);
+	
+		for ($j = 0; $j < count($vFollowers['users']); $j++) {
+			array_push($normalFollowersIds, $vFollowers['users'][$j]['idstr']);
+		}
+	
+		$cursor += $count;
+	}
+	
+	$vFollowersIds = $tClientV2->followers_ids_by_id($userId, 0, 5000);
+	
+	$followersIds = $vFollowersIds['ids'];
+	
+	$deadFollowersIds = array();
+	
+	$j = 0;
+	
+	if (count($followersIds) > count($normalFollowersIds)) {
+		for ($i = 0; $i < count($followersIds); $i++) {
+			$followersId = $followersIds[$i];
+	
+			if ($j < count($normalFollowersIds)) {
+				$normalFollowersId = $normalFollowersIds[$j];
+					
+				if ($followersId == $normalFollowersId) {
+					$j++;
+				} else {
+					array_push($deadFollowersIds, $followersId);
+				}
+			} else {
+				array_push($deadFollowersIds, $followersId);
+			}
+		}
+	}
+	
+	return $deadFollowersIds;
 }
 ?>

@@ -8,6 +8,7 @@
     			$timerMenuItemHtml = '<a href="timer.php">定时器</a>';
     			$contentLibMenuItemHtml = '<a href="contentLib.php">内容库</a>';
     			$batchDeleteMenuItemHtml = '<a href="batchDelete.php#batchDeleteWeibo">批量删除</a>';
+    			$removeDeadUsersItemHtml = '<a href="removeDeadUsers.php#removeDeadFriends">清除死亡用户</a>';
     			
     			if ('friendshipsMgnt' == $currentMenuItem) {
     				$menuItemsHtml .= '<li class="active">' . $friendshipsMgntMenuItemHtml . '</li>';
@@ -31,6 +32,12 @@
     				$menuItemsHtml .= '<li class="active">' . $batchDeleteMenuItemHtml . '</li>';
     			} else {
     				$menuItemsHtml .= '<li>' . $batchDeleteMenuItemHtml . '</li>';
+    			}
+    			
+    			if ('removeDeadUsers' == $currentMenuItem) {
+    				$menuItemsHtml .= '<li class="active">' . $removeDeadUsersItemHtml . '</li>';
+    			} else {
+    				$menuItemsHtml .= '<li>' . $removeDeadUsersItemHtml . '</li>';
     			}
     			
     			echo $menuItemsHtml;
