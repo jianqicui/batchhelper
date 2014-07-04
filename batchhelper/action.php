@@ -1378,8 +1378,8 @@ function queryDeadFollowersIds($tClientV2, $userId) {
 	
 	$count = 200;
 	
-	if ($followersCount > 5000) {
-		$times = 25;
+	if ($followersCount > 2000) {
+		$times = 10;
 	} else {
 		$times = ceil($followersCount / $count);
 	}
@@ -1398,7 +1398,7 @@ function queryDeadFollowersIds($tClientV2, $userId) {
 		$cursor += $count;
 	}
 	
-	$vFollowersIds = $tClientV2->followers_ids_by_id($userId, 0, 5000);
+	$vFollowersIds = $tClientV2->followers_ids_by_id($userId, 0, 2000);
 	
 	$followersIds = $vFollowersIds['ids'];
 	
