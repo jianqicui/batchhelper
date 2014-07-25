@@ -104,9 +104,11 @@ if ('sendStatuses' == $action) {
 	$message = 'clean pictures, clean ' . $cleanPicturesCount . '.';
 	echo $message;
 } else if ('collectStatuses' == $action) {
-	$types = getTypes();
-
 	$collectStatusesCount = 0;
+	
+	$domain = DOMAIN_BLOGS;
+	
+	$types = getTypes();
 	
 	for ($i = 0; $i < count($types); $i++) {
 		$type = $types[$i];
@@ -117,7 +119,7 @@ if ('sendStatuses' == $action) {
 
 		$entrance = 'type' . $code . '/type' . $code . '_' . ($statusIndex + 1);
 		
-		$statusTextPicturePathes = $storage->read(DOMAIN_CONTENTLIB, $entrance);
+		$statusTextPicturePathes = $storage->read($domain, $entrance);
 		
 		if ($statusTextPicturePathes != false) {
 			$statusTextPicturePathArray = explode(',', $statusTextPicturePathes);
@@ -125,19 +127,28 @@ if ('sendStatuses' == $action) {
 			$statusTextPath = $statusTextPicturePathArray[0];
 			$statusPicturePath = $statusTextPicturePathArray[1];
 			
-			$statusTextPath = substr($statusTextPath, 1);
-			$statusPicturePath = 'http://' .  APP_NAME . '-' .  DOMAIN_CONTENTLIB . '.stor.sinaapp.com' . $statusPicturePath;
+			$statusText = $storage->read($domain, $statusTextPath);
 			
-			$statusText = $storage->read(DOMAIN_CONTENTLIB, $statusTextPath);
-			
-			$sql = 'insert into contentlib_type' . $code . '_statuses (status_text, status_picture_path) values (\'' . mysql_escape_string($statusText) . '\', \'' . $statusPicturePath . '\')';
-			
-			if (mysql_query($sql)) {
+			if ($statusText != false) {
+				$statusPicturePath = 'http://' .  APP_NAME . '-' .  $domain . '.stor.sinaapp.com/' . $statusPicturePath;
+				
 				$statusIndex++;
 				
-				updateTypeStatusIndex($id, $statusIndex);
+				$sql = 'insert into contentlib_type' . $code . '_statuses (id, status_text, status_picture_path) values (' . $statusIndex . ', \'' . mysql_escape_string($statusText) . '\', \'' . $statusPicturePath . '\')';
 				
-				$collectStatusesCount++;
+				mysql_query($sql);
+				
+				if ($statusIndex > 0) {
+					$previousStatusTextPath = 'type' . $code . '/type' . $code . '_' . $statusIndex . '.txt';
+					$previousEntrance = 'type' . $code . '/type' . $code . '_' . $statusIndex;
+					
+					$storage->delete($domain, $previousStatusTextPath);
+					$storage->delete($domain, $previousEntrance);
+				}
+				
+				if (updateTypeStatusIndex($id, $statusIndex)) {
+					$collectStatusesCount++;
+				}
 			}
 		}
 	}
@@ -173,7 +184,9 @@ function getTypes() {
 function updateTypeStatusIndex($id, $statusIndex) {
 	$sql = 'update contentlib_types set status_index = ' . $statusIndex . ' where id = ' . $id;
 	
-	mysql_query($sql);
+	$result = mysql_query($sql);
+	
+	return $result;
 }
 
 ?>
