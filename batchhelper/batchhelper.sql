@@ -1,6 +1,14 @@
 drop database batchhelper;
 create database if not exists batchhelper default charset utf8 collate utf8_general_ci;
 
+create table login_user (
+  id int not null auto_increment,
+  user_id varchar(20) not null,
+  access_token varchar(64) not null,
+  user_datetime datetime not null,
+  primary key (id)
+);
+
 //timer
 create table timer_tobesent_statuses (
   id int not null auto_increment,
