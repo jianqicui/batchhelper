@@ -1,4 +1,5 @@
 <?php
+include_once( 'mysql.php' );
 include_once( 'config.php' );
 include_once( 'saetv2.ex.class.php' );
 
@@ -12,8 +13,37 @@ if (isset($_REQUEST['code'])) {
 	$keys['redirect_uri'] = WB_CALLBACK_URL;
 	
 	$token = $tOAuthV2->getAccessToken( 'code', $keys ) ;
-	$tOAuthV2->access_token = $token['access_token'];
 	
+	$accessToken = $token['access_token'];
+	$uid = $token['uid'];
+	
+	//save access token
+	$con = mysql_connect(MYSQL_HOST . ':' . MYSQL_PORT, MYSQL_USER, MYSQL_PASS);
+	mysql_query("SET NAMES 'UTF8'");
+	
+	if (!$con) {
+		die('Could not connect: ' . mysql_error());
+	}
+	
+	mysql_select_db(MYSQL_DB, $con);
+	
+	$sql = 'select id from login_user where user_id = \'' . $uid . '\'';
+	
+	$result = mysql_query($sql);
+	$row = mysql_fetch_array($result);
+	
+	if ($row) {
+		$sql = 'update login_user set access_token = \'' . $accessToken . '\', user_datetime = now() where id = ' . $row['id'];
+	} else {
+		$sql = 'insert into login_user (user_id, access_token, user_datetime) values (\'' . $uid . '\', \'' . $accessToken . '\', now())';
+	}
+	
+	mysql_query($sql);
+	
+	mysql_close($con);
+	
+	//save OAuth to session
+	$tOAuthV2->access_token = $accessToken;
 	$_SESSION['saeTClientV2'] = new SaeTClientV2( $tOAuthV2 );
 	
 	setcookie( 'weibojs_'.$tOAuthV2->client_id, http_build_query($token) );
