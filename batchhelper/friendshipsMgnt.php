@@ -40,6 +40,7 @@ $currentMenuItem = 'friendshipsMgnt';
 <script type="text/javascript">
 	var clientId = '<?php echo $tClientV2->get_oauth()->client_id ?>';
 	var uid = '<?php echo $uid ?>';
+	var accessToken = '<?php echo $tClientV2->get_oauth()->access_token ?>';
 </script>
 
 <script type="text/javascript" src="js/friendshipsMgnt.js"></script>
